@@ -75,11 +75,12 @@ Original zip filenames are not stored. 23andMe’s names often include the custo
 | `PORT` | Listen port for `python app.py`. Default `8741`. |
 | `GENEMEAL_COOKIE_SECURE` | `1` marks the session cookie Secure. Leave unset for local HTTP. |
 | `GENEMEAL_FORBID_NETWORK` | `1` makes the FDC client refuse live HTTP. The test suite sets this. |
-| `BILLING_ENABLED` | `1` (default) allows Checkout once the Stripe vars below are set. `0` refuses Checkout even if keys are present. |
-| `STRIPE_SECRET_KEY` | Restricted key (`rk_…`) or secret key for the Stripe account that owns the price. Never commit it. |
-| `STRIPE_PUBLISHABLE_KEY` | Publishable key (`pk_…`) from that same account. |
-| `STRIPE_PRICE_ID` | Recurring monthly Price id for the $13 plan. |
-| `STRIPE_WEBHOOK_SECRET` | Signing secret for the webhook endpoint. |
+| `BILLING_ENABLED` | `1` (default) allows checkout once the PayPal vars below are set. `0` refuses checkout even if credentials are present. |
+| `PAYPAL_CLIENT_ID` | REST app client ID from developer.paypal.com (Apps & Credentials) for the GeneMeal business account. |
+| `PAYPAL_CLIENT_SECRET` | That app's secret. Never commit it. |
+| `PAYPAL_WEBHOOK_ID` | ID of the webhook registered on that app for `/paypal/webhook`. Used to verify signatures. |
+| `PAYPAL_PLAN_ID` | `P-…` plan id printed by `scripts/create_paypal_plan.py`. |
+| `PAYPAL_ENV` | `sandbox` (default) or `live`. Credentials must match the environment. |
 | `PUBLIC_BASE_URL` | Optional absolute origin for Checkout return URLs, such as `https://genemeal.onrender.com`. When unset, the request host is used. |
 
 Reminders that are due can be recorded with `POST /account/reminders/process` (CSRF token required). Nothing sends email.
@@ -96,17 +97,18 @@ GeneMeal Monthly is **$13.00** per month:
 
 The breakdown sits on the home page next to the upload control, and on `/pricing` (linked from the nav and footer). Amounts live in `pricing.py`. Upload, parse, the week plan, geo-block, and reminders behave as before. Upload is not blocked on a subscription.
 
-Checkout is implemented in `billing.py` and stays disabled until every Stripe variable above is set and `BILLING_ENABLED=1`. The page then shows **Subscribe**, which creates a Checkout Session in `subscription` mode for `STRIPE_PRICE_ID`. While any of those keys are missing, Subscribe is disabled and the page says **Add Stripe keys to enable checkout**. No Stripe secret is written into the repo or the HTML.
+Checkout uses PayPal Subscriptions (`billing.py`) and stays disabled until every PayPal variable above is set and `BILLING_ENABLED=1`. While any are missing, Subscribe is disabled and the page says **Add PayPal credentials to enable checkout**. Visitors from blocked states are never offered or sent to checkout (HTTP 451), whether or not `GEO_BLOCK_ENABLED` is on.
 
-Use a restricted API key rather than a full secret key. Do not put `payment_method_types` on the session; Stripe chooses methods from the Dashboard. `automatic_tax` is off. Turn on Stripe Tax only after you have an active registration — without one, Stripe collects no tax. See Stripe’s guide to collecting taxes for recurring payments.
+Setup:
 
-Create the webhook in the Stripe Dashboard (or a sandbox) pointing at:
+1. Create a REST app at developer.paypal.com on the GeneMeal business account (sandbox first) and copy the client ID and secret.
+2. Run `PAYPAL_CLIENT_ID=… PAYPAL_CLIENT_SECRET=… python scripts/create_paypal_plan.py` once. It creates the product and the $13.00/month plan and prints `PAYPAL_PLAN_ID`.
+3. On the app, add a webhook for `https://genemeal.onrender.com/paypal/webhook` with `BILLING.SUBSCRIPTION.ACTIVATED`, `BILLING.SUBSCRIPTION.CANCELLED`, `BILLING.SUBSCRIPTION.SUSPENDED`, `BILLING.SUBSCRIPTION.EXPIRED`, `BILLING.SUBSCRIPTION.PAYMENT.FAILED`, `BILLING.SUBSCRIPTION.RE-ACTIVATED`, `PAYMENT.SALE.COMPLETED`, `PAYMENT.SALE.REFUNDED`, and `PAYMENT.SALE.REVERSED`. Put its ID in `PAYPAL_WEBHOOK_ID`.
+4. Set the env vars on Render.
 
-`https://genemeal.onrender.com/stripe/webhook`
+Subscribe creates a subscription and redirects to PayPal's approval page. Status is recorded only from webhooks, which are verified with PayPal's `verify-webhook-signature` API. The return page does not grant access by itself.
 
-Subscribe to `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`, `charge.dispute.created`, `charge.refunded`, and `radar.early_fraud_warning.created`. Put that endpoint’s signing secret in `STRIPE_WEBHOOK_SECRET`. The handler checks the signature and records the subscription. The browser return page does not grant access by itself.
-
-This deploy does not ship a Stripe account id or price id. Create the $13/month Price on the account you want to use, then set the env vars on Render. Test-mode keys and live keys both work; the key prefix tells you which mode you are in. Clear any retired account’s keys before expecting the disabled state.
+Statement descriptor: GeneMeal intends charges to read `GENEMEAL` (`billing.SOFT_DESCRIPTOR`). The PayPal Subscriptions API has no per-charge soft descriptor, so recurring charges use the account's credit card statement name (PayPal business settings). The descriptor must name this business, not another company's brand.
 
 ## FoodData Central
 

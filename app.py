@@ -57,7 +57,7 @@ def geo_block_gate():
 
 @app.before_request
 def csrf_gate():
-    if request.path.rstrip("/") == "/stripe/webhook":
+    if request.path.rstrip("/") == "/paypal/webhook":
         return None
     if request.method == "GET":
         if "csrf" not in session:
@@ -182,7 +182,7 @@ def billing_checkout():
             mimetype="text/html",
         )
     user = _load()
-    if not billing.keys_present() or billing.StripeClient is None:
+    if not billing.keys_present():
         _notice(billing.KEYS_MISSING_MESSAGE, "error")
         return redirect(url_for("home"))
     if not billing.billing_enabled():
@@ -192,7 +192,7 @@ def billing_checkout():
         url = billing.start_checkout(user, _external_base())
     except Exception as exc:
         app.logger.info("checkout start failed: %s", billing.safe_error(exc))
-        _notice("Checkout could not be started. Check the Stripe keys and price.", "error")
+        _notice("Checkout could not be started. Check the PayPal credentials and plan.", "error")
         return redirect(url_for("home"))
     return redirect(url, code=303)
 
@@ -203,8 +203,8 @@ def billing_success():
         "message.html",
         title="Checkout returned",
         body=(
-            "Stripe Checkout returned to GeneMeal. The subscription is recorded "
-            "when Stripe sends the webhook. Upload stays available on the guide page."
+            "PayPal returned to GeneMeal. The subscription is recorded "
+            "when PayPal sends the webhook. Upload stays available on the guide page."
         ),
     )
 
@@ -215,36 +215,28 @@ def billing_cancel():
     return redirect(url_for("home"))
 
 
-@app.post("/stripe/webhook")
-def stripe_webhook():
-    secret = billing.webhook_secret()
-    if not secret:
+@app.post("/paypal/webhook")
+def paypal_webhook():
+    if not billing.keys_present():
         return jsonify({"error": billing.KEYS_MISSING_MESSAGE}), 503
     payload = request.get_data(cache=False) or b""
-    signature = request.headers.get("Stripe-Signature", "")
     try:
-        event = billing.construct_webhook_event(payload, signature, secret)
+        event = billing.verify_webhook(request.headers, payload)
     except billing.SignatureError:
         return jsonify({"error": "invalid signature"}), 400
     except Exception as exc:
-        app.logger.info("stripe webhook rejected: %s", billing.safe_error(exc))
-        return jsonify({"error": "invalid payload"}), 400
-    event_id = getattr(event, "id", None)
-    event_type = getattr(event, "type", None)
-    app.logger.info("stripe webhook type=%s id=%s", event_type, event_id)
+        app.logger.info("paypal webhook verify failed: %s", billing.safe_error(exc))
+        return jsonify({"error": "verification unavailable"}), 503
+    event_id = event.get("id")
+    event_type = event.get("event_type")
+    app.logger.info("paypal webhook type=%s id=%s", event_type, event_id)
     try:
-        client = None
-        if billing.secret_key() and os.environ.get("GENEMEAL_FORBID_NETWORK") != "1":
-            client = billing.build_client()
-        billing.apply_event(event, client=client)
+        billing.apply_event(event)
     except billing.UserNotFound:
-        app.logger.info("stripe webhook user not found type=%s id=%s", event_type, event_id)
+        app.logger.info("paypal webhook user not found type=%s id=%s", event_type, event_id)
         return jsonify({"error": "user not found"}), 500
-    except billing.CheckoutError as exc:
-        app.logger.info("stripe webhook skipped: %s", billing.safe_error(exc))
-        return jsonify({"error": "webhook unavailable"}), 503
     except Exception as exc:
-        app.logger.info("stripe webhook failed: %s", billing.safe_error(exc))
+        app.logger.info("paypal webhook failed: %s", billing.safe_error(exc))
         return jsonify({"error": "webhook failed"}), 500
     return jsonify({"received": True})
 

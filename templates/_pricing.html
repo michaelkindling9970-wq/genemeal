@@ -13,7 +13,7 @@
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <button type="submit">Subscribe</button>
     </form>
-    <p class="fine">Subscribe starts a monthly Stripe Checkout session for this {{ pricing.total }} plan.</p>
+    <p class="fine">Subscribe starts a monthly PayPal subscription for this {{ pricing.total }} plan.</p>
   {% else %}
     <p class="fine" id="checkout-waiting">{{ pricing.checkout_message }}</p>
     <button type="button" class="secondary" disabled aria-disabled="true">Subscribe</button>
