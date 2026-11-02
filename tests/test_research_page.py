@@ -4,6 +4,7 @@ def test_research_stress_page_renders(client):
     assert r.status_code == 200
     body = r.get_data(as_text=True)
     assert "Stress, diet, and genetics" in body
+    assert "Diets4stress" in body
     assert "Diet findings" in body
     assert "you.23andme.com/tools/data/" in body
     assert "www.23andme.org" not in body
