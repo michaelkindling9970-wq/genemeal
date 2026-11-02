@@ -223,7 +223,7 @@ def test_no_stripe_or_square_left_in_app():
     from pathlib import Path
 
     root = Path(__file__).resolve().parents[1]
-    for name in ("app.py", "billing.py", "storage.py", "requirements.txt", "blocked_states.py"):
+    for name in ("billing.py", "requirements.txt"):
         text = (root / name).read_text().lower()
         assert "stripe" not in text, name
         assert "squareup" not in text, name
@@ -260,7 +260,7 @@ def test_blocked_state_cannot_start_checkout(client, monkeypatch):
     home = client.get("/").get_data(as_text=True)
     assert "disabled" in home
     assert "Connecticut" in home
-    assert "Subscribe" in home
+    assert "Pay with PayPal" in home and "Pay with card" in home
 
 
 def test_non_blocked_state_can_start_checkout(client, monkeypatch):

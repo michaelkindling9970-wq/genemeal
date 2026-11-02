@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from flask import Flask, Response, flash, jsonify, redirect, render_template, request, session, url_for
 
 import billing
+import stripe_billing
 import blocked_states
 import fdc
 import genome
@@ -57,7 +58,7 @@ def geo_block_gate():
 
 @app.before_request
 def csrf_gate():
-    if request.path.rstrip("/").lower() == "/paypal/webhook":
+    if request.path.rstrip("/").lower() in {"/paypal/webhook", "/stripe/webhook"}:
         return None
     if request.method == "GET":
         if "csrf" not in session:
@@ -90,11 +91,14 @@ def _pricing_context() -> dict:
             status = user.get("subscription_status") or ""
     data = pricing.view()
     data.update(billing.checkout_view(status))
+    data.update(stripe_billing.checkout_view())
     # Never offer checkout to visitors in blocked states (even if GEO_BLOCK_ENABLED is off).
     charge_blocked, state = blocked_states.billing_blocked(request)
     if charge_blocked:
         info = blocked_states.alert_copy(state)
         data["checkout_ready"] = False
+        data["stripe_ready"] = False
+        data["stripe_message"] = info["billing_message"]
         data["geo_billing_blocked"] = True
         data["checkout_message"] = info["billing_message"]
     else:
@@ -197,14 +201,65 @@ def billing_checkout():
     return redirect(url, code=303)
 
 
+@app.post("/stripe/checkout")
+def stripe_checkout():
+    # Same blocked-state gate as PayPal: blocked visitors are never charged.
+    charge_blocked, state = blocked_states.billing_blocked(request)
+    if charge_blocked:
+        try:
+            app.logger.info("billing_block deny state=%s gateway=stripe", state)
+        except Exception:
+            pass
+        return Response(blocked_states.render_unavailable_html(state), status=451, mimetype="text/html")
+    user = _load()
+    if not stripe_billing.keys_present():
+        _notice(stripe_billing.KEYS_MISSING_MESSAGE, "error")
+        return redirect(url_for("home"))
+    if not stripe_billing.billing_enabled():
+        _notice(stripe_billing.BILLING_OFF_MESSAGE, "error")
+        return redirect(url_for("home"))
+    try:
+        url = stripe_billing.start_checkout(user, _external_base())
+    except Exception as exc:
+        app.logger.info("stripe checkout start failed: %s", stripe_billing.safe_error(exc))
+        _notice("Card checkout could not be started. Check the Stripe keys and price.", "error")
+        return redirect(url_for("home"))
+    return redirect(url, code=303)
+
+
+@app.post("/stripe/webhook")
+def stripe_webhook():
+    if not stripe_billing.webhook_secret():
+        return jsonify({"error": stripe_billing.KEYS_MISSING_MESSAGE}), 503
+    payload = request.get_data(cache=False) or b""
+    try:
+        event = stripe_billing.verify_signature(
+            payload, request.headers.get("Stripe-Signature", ""), stripe_billing.webhook_secret()
+        )
+    except stripe_billing.SignatureError:
+        return jsonify({"error": "invalid signature"}), 400
+    event_type = event.get("type")
+    event_id = event.get("id")
+    app.logger.info("stripe webhook type=%s id=%s", event_type, event_id)
+    try:
+        stripe_billing.apply_event(event)
+    except stripe_billing.UserNotFound:
+        app.logger.info("stripe webhook user not found type=%s id=%s", event_type, event_id)
+        return jsonify({"error": "user not found"}), 500
+    except Exception as exc:
+        app.logger.info("stripe webhook failed: %s", stripe_billing.safe_error(exc))
+        return jsonify({"error": "webhook failed"}), 500
+    return jsonify({"received": True})
+
+
 @app.get("/billing/success")
 def billing_success():
     return render_template(
         "message.html",
         title="Checkout returned",
         body=(
-            "PayPal returned to GeneMeal. The subscription is recorded "
-            "when PayPal sends the webhook. Upload stays available on the guide page."
+            "Checkout returned to GeneMeal. The subscription is recorded "
+            "when the payment provider sends its webhook. Upload stays available on the guide page."
         ),
     )
 

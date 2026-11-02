@@ -8,14 +8,27 @@
   <p class="price-total"><span>Monthly total</span><strong>{{ pricing.total }}</strong></p>
   {% if pricing.subscription_status in ["active", "trialing"] %}
     <p class="fine">Subscription active.</p>
-  {% elif pricing.checkout_ready %}
-    <form method="post" action="{{ url_for('billing_checkout') }}">
-      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-      <button type="submit">Subscribe</button>
-    </form>
-    <p class="fine">Subscribe starts a monthly PayPal subscription for this {{ pricing.total }} plan.</p>
   {% else %}
-    <p class="fine" id="checkout-waiting">{{ pricing.checkout_message }}</p>
-    <button type="button" class="secondary" disabled aria-disabled="true">Subscribe</button>
+    <div class="pay-buttons">
+      {% if pricing.checkout_ready %}
+        <form method="post" action="{{ url_for('billing_checkout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" id="pay-paypal">Pay with PayPal</button>
+        </form>
+      {% else %}
+        <button type="button" id="pay-paypal" class="secondary" disabled aria-disabled="true">Pay with PayPal</button>
+        <p class="fine" id="checkout-waiting">{{ pricing.checkout_message }}</p>
+      {% endif %}
+      {% if pricing.stripe_ready %}
+        <form method="post" action="{{ url_for('stripe_checkout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" id="pay-card">Pay with card</button>
+        </form>
+      {% else %}
+        <button type="button" id="pay-card" class="secondary" disabled aria-disabled="true">Pay with card</button>
+        <p class="fine" id="card-waiting">{{ pricing.stripe_message }}</p>
+      {% endif %}
+    </div>
+    <p class="fine">Either button starts the same monthly {{ pricing.total }} subscription. Card payments run through Stripe Checkout.</p>
   {% endif %}
 </section>

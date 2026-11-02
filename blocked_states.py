@@ -327,6 +327,8 @@ EXEMPT_PATH_PREFIXES = (
     # PayPal delivers webhooks from its own network, not the visitor's state.
     "/paypal/webhook",
     "/PayPal/webhook",
+    # Stripe delivers webhooks from its own network too.
+    "/stripe/webhook",
 )
 
 _cache: dict[str, tuple[float, Optional[str]]] = {}

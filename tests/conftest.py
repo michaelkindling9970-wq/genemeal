@@ -28,6 +28,10 @@ def _no_paypal_env(monkeypatch):
         "PAYPAL_WEBHOOK_ID",
         "PAYPAL_PLAN_ID",
         "PAYPAL_ENV",
+        "STRIPE_SECRET_KEY",
+        "STRIPE_PRICE_ID",
+        "STRIPE_WEBHOOK_SECRET",
+        "STRIPE_PUBLISHABLE_KEY",
         "BILLING_ENABLED",
         "PUBLIC_BASE_URL",
     ):
