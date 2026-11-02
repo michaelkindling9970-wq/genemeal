@@ -19,3 +19,4 @@ __pycache__/
 server.log
 server.pid
 .pytest_cache/
+data/auto_blocked_states.json

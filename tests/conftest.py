@@ -10,6 +10,16 @@ sys.path.insert(0, str(ROOT))
 
 
 @pytest.fixture(autouse=True)
+def _reset_geo_watch():
+    import blocked_states as B
+    B.clear_cache()
+    B.clear_auto_blocked()
+    yield
+    B.clear_cache()
+    B.clear_auto_blocked()
+
+
+@pytest.fixture(autouse=True)
 def _no_stripe_env(monkeypatch):
     """Checkout tests opt in by setting keys. A developer shell must not leak them."""
     for name in (
@@ -42,6 +52,7 @@ def client(tmp_path, monkeypatch):
     monkeypatch.delenv("FDC_API_KEY", raising=False)
     monkeypatch.delenv("REMINDER_EMAIL_ENABLED", raising=False)
     monkeypatch.delenv("GEO_BLOCK_ENABLED", raising=False)
+    monkeypatch.delenv("GEO_BLOCK_FORCE_ENACTED", raising=False)
     import app as A
 
     A.app.config["TESTING"] = True

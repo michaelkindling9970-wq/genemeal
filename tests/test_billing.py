@@ -219,3 +219,47 @@ def test_repo_does_not_contain_retired_account_fragment():
             continue
         text = path.read_text(encoding="utf-8", errors="ignore")
         assert retired not in text, path
+
+
+def test_blocked_state_cannot_start_checkout(client, monkeypatch):
+    """Blocked-state visitors are never charged, even when GEO_BLOCK_ENABLED is off."""
+    fake = _FakeStripe()
+    _arm_keys(monkeypatch, fake)
+    monkeypatch.delenv("GEO_BLOCK_ENABLED", raising=False)
+    monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "CT")
+
+    response = post(client, "/billing/checkout")
+    assert response.status_code == 451
+    body = response.get_data(as_text=True)
+    assert "Connecticut" in body
+    assert "prevents you from using this service" in body
+    assert fake.sessions.params is None
+
+    home = client.get("/").get_data(as_text=True)
+    assert "disabled" in home
+    assert "Connecticut" in home
+    assert "Subscribe" in home
+
+
+def test_non_blocked_state_can_start_checkout(client, monkeypatch):
+    fake = _FakeStripe()
+    _arm_keys(monkeypatch, fake)
+    monkeypatch.delenv("GEO_BLOCK_ENABLED", raising=False)
+    monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "OH")
+
+    response = post(client, "/billing/checkout")
+    assert response.status_code == 303
+    assert fake.sessions.params is not None
+
+
+def test_pa_cannot_be_charged_after_bill_enacted(client, monkeypatch):
+    fake = _FakeStripe()
+    _arm_keys(monkeypatch, fake)
+    monkeypatch.delenv("GEO_BLOCK_ENABLED", raising=False)
+    monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "PA")
+    assert "PA" in B.refresh_pending_watches(fetch=lambda w: "Became Law")
+
+    response = post(client, "/billing/checkout")
+    assert response.status_code == 451
+    assert "Pennsylvania" in response.get_data(as_text=True)
+    assert fake.sessions.params is None
