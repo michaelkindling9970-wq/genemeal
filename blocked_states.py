@@ -439,45 +439,45 @@ def render_unavailable_html(state: Optional[str]) -> str:
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>{headline} — GeneMeal</title>
 <style>
-  :root {{ color-scheme: dark; }}
+  :root {{ color-scheme: light; }}
   * {{ box-sizing: border-box; }}
   body {{
     margin: 0; min-height: 100vh; display: grid; place-items: center;
     padding: 2rem 1.25rem;
     font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
-    background: radial-gradient(1200px 600px at 50% -10%, #1a2a44 0%, #0b1220 55%);
-    color: #e8eef8;
+    background: linear-gradient(180deg, #f3ecdf 0%, #e7dcc8 100%);
+    color: #1c2822;
   }}
   main {{
     width: min(34rem, 100%);
-    background: rgba(15, 23, 42, 0.92);
-    border: 1px solid rgba(148, 163, 184, 0.22);
+    background: linear-gradient(160deg, #fffaf3 0%, #fbf3e6 100%);
+    border: 1px solid #ddcbb3;
     border-radius: 1rem;
     padding: 1.75rem 1.6rem 1.5rem;
-    box-shadow: 0 18px 50px rgba(0,0,0,.35);
+    box-shadow: 0 10px 30px rgba(28,40,34,.10);
   }}
   .badge {{
     display: inline-block; font-size: .72rem; letter-spacing: .06em; text-transform: uppercase;
-    color: #fbbf24; background: rgba(251, 191, 36, .12); border: 1px solid rgba(251,191,36,.35);
+    color: #8a4e12; background: #f8ead4; border: 1px solid #e1b15a;
     border-radius: 999px; padding: .25rem .65rem; margin-bottom: .9rem;
   }}
   h1 {{ font-size: 1.35rem; line-height: 1.25; margin: 0 0 .85rem; font-weight: 650; }}
-  p {{ margin: 0 0 .85rem; color: #b7c4d8; line-height: 1.55; font-size: 1.02rem; }}
+  p {{ margin: 0 0 .85rem; color: #4d5e55; line-height: 1.55; font-size: 1.02rem; }}
   .statute {{
     margin: 1rem 0 1.15rem; padding: .9rem 1rem;
-    background: rgba(30, 41, 59, .85); border-radius: .75rem;
-    border-left: 3px solid #38bdf8;
+    background: #f8ead4; border-radius: .75rem;
+    border-left: 3px solid #1f6a4e;
   }}
-  .statute strong {{ display: block; color: #e2e8f0; font-size: .78rem; letter-spacing: .04em;
+  .statute strong {{ display: block; color: #143d2e; font-size: .78rem; letter-spacing: .04em;
     text-transform: uppercase; margin-bottom: .35rem; font-weight: 600; }}
-  .statute span {{ color: #f1f5f9; line-height: 1.45; }}
+  .statute span {{ color: #1c2822; line-height: 1.45; }}
   a.statute-link {{
     display: inline-flex; align-items: center; gap: .4rem;
-    color: #7dd3fc; text-decoration: none; font-weight: 600;
-    border-bottom: 1px solid rgba(125, 211, 252, .45); padding-bottom: 1px;
+    color: #143d2e; text-decoration: none; font-weight: 600;
+    border-bottom: 1px solid rgba(31,106,78,.45); padding-bottom: 1px;
   }}
-  a.statute-link:hover {{ color: #bae6fd; border-bottom-color: #bae6fd; }}
-  .fine {{ margin: 1.15rem 0 0; font-size: .88rem; color: #94a3b8; }}
+  a.statute-link:hover {{ color: #1f6a4e; border-bottom-color: #1f6a4e; }}
+  .fine {{ margin: 1.15rem 0 0; font-size: .88rem; color: #4d5e55; }}
 </style>
 </head>
 <body>

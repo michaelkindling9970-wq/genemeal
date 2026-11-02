@@ -1,0 +1,529 @@
+{
+ "source": {
+  "note": "USDA MyPlate / Dietary Guidelines for Americans 2020-2025, Healthy U.S.-Style Dietary Pattern (ages 2+). choosemyplate.gov and choosemyplate.org redirect to myplate.gov. Values transcribed from the published USDA tables; the live site could not be fetched from the build box on 2026-11-02, so re-check against the URLs before relying on them.",
+  "urls": [
+   "https://www.myplate.gov/",
+   "https://www.myplate.gov/myplate-plan",
+   "https://www.myplate.gov/eat-healthy/food-group-gateway",
+   "https://www.dietaryguidelines.gov/sites/default/files/2020-12/Dietary_Guidelines_for_Americans_2020-2025.pdf"
+  ]
+ },
+ "myplate_plan_inputs": {
+  "age": "years (2+)",
+  "sex": [
+   "male",
+   "female"
+  ],
+  "height": "ft/in",
+  "weight": "lb",
+  "physical_activity": [
+   "less than 30 minutes",
+   "30 to 60 minutes",
+   "more than 60 minutes"
+  ],
+  "pregnant_or_breastfeeding": "female 14+ only",
+  "calorie_levels": [
+   1000,
+   1200,
+   1400,
+   1600,
+   1800,
+   2000,
+   2200,
+   2400,
+   2600,
+   2800,
+   3000,
+   3200
+  ]
+ },
+ "food_groups": {
+  "grains": {
+   "unit": "oz-eq",
+   "tip": "Make half your grains whole grains",
+   "subgroups": [
+    "whole grains",
+    "refined grains"
+   ]
+  },
+  "vegetables": {
+   "unit": "cup-eq",
+   "tip": "Vary your veggies",
+   "subgroups": [
+    "dark green",
+    "red & orange",
+    "beans, peas, lentils",
+    "starchy",
+    "other"
+   ]
+  },
+  "fruits": {
+   "unit": "cup-eq",
+   "tip": "Focus on whole fruits",
+   "subgroups": []
+  },
+  "dairy": {
+   "unit": "cup-eq",
+   "tip": "Move to low-fat or fat-free dairy milk or yogurt (or lactose-free / fortified soy)",
+   "subgroups": []
+  },
+  "protein_foods": {
+   "unit": "oz-eq",
+   "tip": "Vary your protein routine",
+   "subgroups": [
+    "meats, poultry, eggs",
+    "seafood",
+    "nuts, seeds, soy"
+   ]
+  },
+  "oils": {
+   "unit": "g",
+   "tip": "Oils are not a food group but supply essential nutrients",
+   "subgroups": []
+  }
+ },
+ "daily_amounts_by_calorie_level": {
+  "1000": {
+   "vegetables": 1,
+   "fruits": 1,
+   "grains": 3,
+   "dairy": 2,
+   "protein_foods": 2,
+   "oils": 15
+  },
+  "1200": {
+   "vegetables": 1.5,
+   "fruits": 1,
+   "grains": 4,
+   "dairy": 2.5,
+   "protein_foods": 3,
+   "oils": 17
+  },
+  "1400": {
+   "vegetables": 1.5,
+   "fruits": 1.5,
+   "grains": 5,
+   "dairy": 2.5,
+   "protein_foods": 4,
+   "oils": 17
+  },
+  "1600": {
+   "vegetables": 2,
+   "fruits": 1.5,
+   "grains": 5,
+   "dairy": 3,
+   "protein_foods": 5,
+   "oils": 22
+  },
+  "1800": {
+   "vegetables": 2.5,
+   "fruits": 1.5,
+   "grains": 6,
+   "dairy": 3,
+   "protein_foods": 5,
+   "oils": 24
+  },
+  "2000": {
+   "vegetables": 2.5,
+   "fruits": 2,
+   "grains": 6,
+   "dairy": 3,
+   "protein_foods": 5.5,
+   "oils": 27
+  },
+  "2200": {
+   "vegetables": 3,
+   "fruits": 2,
+   "grains": 7,
+   "dairy": 3,
+   "protein_foods": 6,
+   "oils": 29
+  },
+  "2400": {
+   "vegetables": 3,
+   "fruits": 2,
+   "grains": 8,
+   "dairy": 3,
+   "protein_foods": 6.5,
+   "oils": 31
+  },
+  "2600": {
+   "vegetables": 3.5,
+   "fruits": 2,
+   "grains": 9,
+   "dairy": 3,
+   "protein_foods": 6.5,
+   "oils": 34
+  },
+  "2800": {
+   "vegetables": 3.5,
+   "fruits": 2.5,
+   "grains": 10,
+   "dairy": 3,
+   "protein_foods": 7,
+   "oils": 36
+  },
+  "3000": {
+   "vegetables": 4,
+   "fruits": 2.5,
+   "grains": 10,
+   "dairy": 3,
+   "protein_foods": 7,
+   "oils": 44
+  },
+  "3200": {
+   "vegetables": 4,
+   "fruits": 2.5,
+   "grains": 10,
+   "dairy": 3,
+   "protein_foods": 7,
+   "oils": 51
+  }
+ },
+ "estimated_calorie_needs": {
+  "_activity_order": [
+   "sedentary",
+   "moderately_active",
+   "active"
+  ],
+  "female": {
+   "2-3": [
+    1000,
+    1200,
+    1400
+   ],
+   "4-8": [
+    1200,
+    1400,
+    1600
+   ],
+   "9-13": [
+    1600,
+    1800,
+    2000
+   ],
+   "14-18": [
+    1800,
+    2000,
+    2400
+   ],
+   "19-30": [
+    2000,
+    2200,
+    2400
+   ],
+   "31-50": [
+    1800,
+    2000,
+    2200
+   ],
+   "51+": [
+    1600,
+    1800,
+    2000
+   ]
+  },
+  "male": {
+   "2-3": [
+    1000,
+    1200,
+    1400
+   ],
+   "4-8": [
+    1400,
+    1600,
+    1800
+   ],
+   "9-13": [
+    1800,
+    2000,
+    2200
+   ],
+   "14-18": [
+    2200,
+    2600,
+    3000
+   ],
+   "19-30": [
+    2400,
+    2800,
+    3000
+   ],
+   "31-50": [
+    2200,
+    2600,
+    2800
+   ],
+   "51+": [
+    2000,
+    2400,
+    2600
+   ]
+  }
+ },
+ "equivalents": {
+  "grains": "1 oz-eq = 1 slice bread, 1/2 cup cooked rice/pasta/oatmeal, 1 cup ready-to-eat cereal",
+  "vegetables": "1 cup-eq = 1 cup raw/cooked, 2 cups raw leafy greens",
+  "fruits": "1 cup-eq = 1 cup fruit or 100% juice, 1/2 cup dried",
+  "dairy": "1 cup-eq = 1 cup milk/yogurt/fortified soy milk, 1.5 oz natural cheese",
+  "protein_foods": "1 oz-eq = 1 oz meat/fish, 1 egg, 1/4 cup cooked beans, 1 Tbsp nut butter, 1/2 oz nuts"
+ },
+ "foods": {
+  "grains": [
+   [
+    "Oatmeal, cooked (1/2 cup)",
+    1,
+    [
+     "fiber"
+    ]
+   ],
+   [
+    "Whole-wheat bread (1 slice)",
+    1,
+    [
+     "fiber"
+    ]
+   ],
+   [
+    "Brown rice, cooked (1 cup)",
+    2,
+    [
+     "fiber"
+    ]
+   ],
+   [
+    "Quinoa, cooked (1/2 cup)",
+    1,
+    [
+     "fiber"
+    ]
+   ],
+   [
+    "Whole-wheat pasta, cooked (1 cup)",
+    2,
+    [
+     "fiber"
+    ]
+   ],
+   [
+    "Corn tortilla (1 small)",
+    1,
+    []
+   ],
+   [
+    "White rice, cooked (1/2 cup)",
+    1,
+    []
+   ]
+  ],
+  "vegetables": [
+   [
+    "Spinach, raw (2 cups)",
+    1,
+    [
+     "folate",
+     "carotenoid"
+    ]
+   ],
+   [
+    "Broccoli (1 cup)",
+    1,
+    [
+     "folate"
+    ]
+   ],
+   [
+    "Sweet potato (1 cup)",
+    1,
+    [
+     "carotenoid"
+    ]
+   ],
+   [
+    "Carrots (1/2 cup)",
+    0.5,
+    [
+     "carotenoid"
+    ]
+   ],
+   [
+    "Lentils, cooked (1/2 cup)",
+    0.5,
+    [
+     "fiber",
+     "folate"
+    ]
+   ],
+   [
+    "Bell pepper (1 cup)",
+    1,
+    [
+     "carotenoid"
+    ]
+   ],
+   [
+    "Mixed salad greens (1 cup)",
+    0.5,
+    []
+   ]
+  ],
+  "fruits": [
+   [
+    "Apple (1 small)",
+    1,
+    [
+     "fiber"
+    ]
+   ],
+   [
+    "Banana (1 large)",
+    1,
+    []
+   ],
+   [
+    "Berries (1 cup)",
+    1,
+    [
+     "fiber"
+    ]
+   ],
+   [
+    "Orange (1 large)",
+    1,
+    [
+     "folate"
+    ]
+   ],
+   [
+    "Raisins (1/4 cup)",
+    0.5,
+    []
+   ],
+   [
+    "Mango (1/2 cup)",
+    0.5,
+    [
+     "carotenoid"
+    ]
+   ]
+  ],
+  "dairy": [
+   [
+    "Low-fat milk (1 cup)",
+    1,
+    []
+   ],
+   [
+    "Plain yogurt (1 cup)",
+    1,
+    []
+   ],
+   [
+    "Fortified soy milk (1 cup)",
+    1,
+    [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   ],
+   [
+    "Lactose-free milk (1 cup)",
+    1,
+    [
+     "lactose_free"
+    ]
+   ],
+   [
+    "Cheddar cheese (1.5 oz)",
+    1,
+    []
+   ]
+  ],
+  "protein_foods": [
+   [
+    "Salmon (3 oz)",
+    3,
+    [
+     "omega3",
+     "vitamin_d"
+    ]
+   ],
+   [
+    "Sardines (3 oz)",
+    3,
+    [
+     "omega3",
+     "vitamin_d"
+    ]
+   ],
+   [
+    "Chicken breast (3 oz)",
+    3,
+    [
+     "appetite"
+    ]
+   ],
+   [
+    "Eggs (2)",
+    2,
+    [
+     "vitamin_d"
+    ]
+   ],
+   [
+    "Black beans, cooked (1/2 cup)",
+    2,
+    [
+     "fiber",
+     "sat_fat"
+    ]
+   ],
+   [
+    "Tofu (1/2 cup)",
+    2,
+    [
+     "sat_fat"
+    ]
+   ],
+   [
+    "Walnuts (1/2 oz)",
+    1,
+    [
+     "omega3"
+    ]
+   ],
+   [
+    "Peanut butter (1 Tbsp)",
+    1,
+    []
+   ]
+  ],
+  "oils": [
+   [
+    "Olive oil (1 tsp)",
+    4.5,
+    [
+     "sat_fat"
+    ]
+   ],
+   [
+    "Canola oil (1 tsp)",
+    4.5,
+    [
+     "omega3"
+    ]
+   ],
+   [
+    "Avocado (1/4)",
+    6,
+    []
+   ],
+   [
+    "Almonds (1/2 oz)",
+    7,
+    []
+   ]
+  ]
+ },
+ "protein_grams_per_oz_eq": 7
+}

@@ -260,7 +260,7 @@ def test_blocked_state_cannot_start_checkout(client, monkeypatch):
     home = client.get("/").get_data(as_text=True)
     assert "disabled" in home
     assert "Connecticut" in home
-    assert "Subscribe" in home
+    assert ">PayPal</button>" in home
 
 
 def test_non_blocked_state_can_start_checkout(client, monkeypatch):

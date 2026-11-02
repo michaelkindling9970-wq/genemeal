@@ -28,6 +28,8 @@ def _no_paypal_env(monkeypatch):
         "PAYPAL_WEBHOOK_ID",
         "PAYPAL_PLAN_ID",
         "PAYPAL_ENV",
+        "PREVIEW_MODE",
+        "PREVIEW_TOKEN",
         "BILLING_ENABLED",
         "PUBLIC_BASE_URL",
     ):

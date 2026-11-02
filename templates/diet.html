@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% block title %}Diet plan — GeneMeal{% endblock %}
+{% block body %}
+<section class="intro">
+  <h1>Build your day</h1>
+  <p class="lede">Daily targets come from the USDA MyPlate {{ diet.targets.calories }}-calorie pattern{% if diet.targets.flags %}, adjusted for your flagged markers{% endif %}. Pick foods per meal; totals update as you go.</p>
+</section>
+<form method="get" action="{{ url_for('diet_builder') }}" class="diet-inputs">
+  <label>Age <input type="number" name="age" min="2" max="110" value="{{ age }}"></label>
+  <label>Sex <select name="sex" class="pulse-select">
+    <option value="female" {% if sex=='female' %}selected{% endif %}>Female</option>
+    <option value="male" {% if sex=='male' %}selected{% endif %}>Male</option></select></label>
+  <label>Activity <select name="activity" class="pulse-select">
+    {% for a in ['sedentary','moderately_active','active'] %}<option value="{{ a }}" {% if activity==a %}selected{% endif %}>{{ a.replace('_',' ')|capitalize }}</option>{% endfor %}</select></label>
+  <button type="submit">Update targets</button>
+</form>
+{% for n in diet.targets.notes %}<p class="fine">{{ n }}</p>{% endfor %}
+<p class="fine">Protein target ≈ {{ diet.targets.protein_g }} g/day.</p>
+
+<div id="diet-builder" class="diet-grid">
+  {% for g in diet.groups %}
+  <section class="diet-group" data-group="{{ g.key }}" data-target="{{ diet.targets.groups[g.key] }}" data-unit="{{ g.unit }}">
+    <h2>{{ g.label }} <span class="fine">target {{ diet.targets.groups[g.key] }} {{ g.unit }}</span></h2>
+    <p class="fine">{{ g.tip }}</p>
+    {% for meal in diet.meals %}
+    <label class="diet-pick">{{ meal }}
+      <select class="pulse-select" name="{{ g.key }}-{{ loop.index }}">
+        <option value="0">—</option>
+        {% for f in diet.choices[g.key] %}
+        <option value="{{ f.amount }}" data-base="{{ f.name }}{% if f.match %} ★ fits your markers{% endif %}{% if f.avoid %} ⚠ flagged{% endif %}">{{ f.name }} · {{ f.amount }} {{ g.unit }}{% if f.match %} ★ fits your markers{% endif %}{% if f.avoid %} ⚠ flagged{% endif %}</option>
+        {% endfor %}
+      </select>
+    </label>
+    {% endfor %}
+    <div class="diet-progress"><progress max="{{ diet.targets.groups[g.key] }}" value="0"></progress>
+      <span class="diet-total">0</span> / {{ diet.targets.groups[g.key] }} {{ g.unit }}</div>
+  </section>
+  {% endfor %}
+</div>
+<p class="fine">Sources: {% for u in diet.sources %}<a href="{{ u }}">{{ u }}</a>{% if not loop.last %}, {% endif %}{% endfor %}. Educational, not medical advice.</p>
+<script>
+(function () {
+  document.querySelectorAll(".diet-group").forEach(function (box) {
+    var target = parseFloat(box.dataset.target), unit = box.dataset.unit;
+    var selects = box.querySelectorAll("select");
+    function refresh() {
+      var total = 0;
+      selects.forEach(function (s) { total += parseFloat(s.value) || 0; });
+      box.querySelector(".diet-total").textContent = Math.round(total * 10) / 10;
+      box.querySelector("progress").value = Math.min(total, target);
+      box.classList.toggle("over", total > target);
+      selects.forEach(function (s) {
+        var mine = parseFloat(s.value) || 0, room = target - (total - mine);
+        s.classList.toggle("chosen", mine > 0);
+        Array.prototype.forEach.call(s.options, function (o) {
+          var amt = parseFloat(o.value) || 0;
+          if (!amt) return;
+          var tooBig = amt > room + 0.001;
+          o.disabled = tooBig && o !== s.selectedOptions[0];
+          o.textContent = o.dataset.base.replace(/( ★| ⚠).*$/, "") + " · " + amt + " " + unit +
+            (o.dataset.base.match(/( ★.*| ⚠.*)$/) || [""])[0] + (tooBig ? " (over target)" : "");
+        });
+      });
+    }
+    selects.forEach(function (s) { s.addEventListener("change", refresh); });
+    refresh();
+  });
+})();
+</script>
+{% endblock %}
