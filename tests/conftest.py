@@ -20,13 +20,14 @@ def _reset_geo_watch():
 
 
 @pytest.fixture(autouse=True)
-def _no_stripe_env(monkeypatch):
+def _no_paypal_env(monkeypatch):
     """Checkout tests opt in by setting keys. A developer shell must not leak them."""
     for name in (
-        "STRIPE_SECRET_KEY",
-        "STRIPE_PUBLISHABLE_KEY",
-        "STRIPE_PRICE_ID",
-        "STRIPE_WEBHOOK_SECRET",
+        "PAYPAL_CLIENT_ID",
+        "PAYPAL_CLIENT_SECRET",
+        "PAYPAL_WEBHOOK_ID",
+        "PAYPAL_PLAN_ID",
+        "PAYPAL_ENV",
         "BILLING_ENABLED",
         "PUBLIC_BASE_URL",
     ):

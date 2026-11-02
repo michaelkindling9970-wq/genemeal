@@ -1,8 +1,8 @@
 """Monthly GeneMeal price.
 
 Amounts live here so checkout can stay in sync with the page. This module does
-not call Stripe and does not read API keys. `billing.py` reads the Stripe env
-vars and starts Checkout when they are set.
+not call PayPal and does not read API keys. `billing.py` reads the PayPal env
+vars and starts a subscription when they are set.
 """
 from __future__ import annotations
 

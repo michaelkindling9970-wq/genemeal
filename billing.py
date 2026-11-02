@@ -1,35 +1,89 @@
-"""Stripe Checkout for the GeneMeal monthly subscription.
+"""PayPal Subscriptions for the GeneMeal $13/month plan.
 
-Keys come from the environment only. Nothing in this file is a live credential.
-Checkout stays off until BILLING_ENABLED=1 and the Stripe vars are all set.
-Missing keys return a disabled control; they do not raise on page render.
+Credentials come from the environment only. Nothing in this file is a live
+credential. Checkout stays off until BILLING_ENABLED=1 (default) and the PayPal
+vars are all set. Missing vars return a disabled control; they never raise on
+page render.
+
+Flow:
+  1. scripts/create_paypal_plan.py creates the product + $13/month plan once
+     and prints the plan id for PAYPAL_PLAN_ID.
+  2. POST /billing/checkout creates a subscription and redirects the buyer to
+     PayPal's approval page.
+  3. PayPal calls POST /paypal/webhook. The signature is verified with
+     PayPal's verify-webhook-signature API before any status is recorded.
 """
 from __future__ import annotations
 
+import base64
+import json
 import os
 import re
-from typing import Any
+import urllib.error
+import urllib.request
+from typing import Any, Callable
 
+import pricing
 import storage
 
-API_VERSION = "2026-09-30.endive"
-# Stable label for the Checkout dashboard. Suffix is 8 letters.
-INTEGRATION_IDENTIFIER = "genemeal_monthly_kwmnpqrx"
+# Statement name GeneMeal asks for. It must name this business: never another
+# company's brand. PayPal Subscriptions do not accept a per-request descriptor;
+# recurring charges use the account's "credit card statement name" setting.
+SOFT_DESCRIPTOR = "GENEMEAL"
+BRAND_NAME = "GeneMeal"
 
-KEYS_MISSING_MESSAGE = "Add Stripe keys to enable checkout"
+API_BASES = {
+    "sandbox": "https://api-m.sandbox.paypal.com",
+    "live": "https://api-m.paypal.com",
+}
+
+KEYS_MISSING_MESSAGE = "Add PayPal credentials to enable checkout"
 BILLING_OFF_MESSAGE = "Set BILLING_ENABLED=1 to enable checkout"
 
-_SECRET_RE = re.compile(
-    r"(?:sk|rk|pk)_(?:test|live)_[A-Za-z0-9]+|whsec_[A-Za-z0-9]+"
-)
+HANDLED_EVENTS = {
+    "BILLING.SUBSCRIPTION.CREATED",
+    "BILLING.SUBSCRIPTION.ACTIVATED",
+    "BILLING.SUBSCRIPTION.UPDATED",
+    "BILLING.SUBSCRIPTION.RE-ACTIVATED",
+    "BILLING.SUBSCRIPTION.CANCELLED",
+    "BILLING.SUBSCRIPTION.SUSPENDED",
+    "BILLING.SUBSCRIPTION.EXPIRED",
+    "BILLING.SUBSCRIPTION.PAYMENT.FAILED",
+    "PAYMENT.SALE.COMPLETED",
+    "PAYMENT.SALE.REFUNDED",
+    "PAYMENT.SALE.REVERSED",
+}
 
-try:
-    import stripe
-    from stripe import SignatureVerificationError, StripeClient
-except ImportError:  # pragma: no cover - dependency is in requirements.txt
-    stripe = None  # type: ignore[assignment]
-    SignatureVerificationError = Exception  # type: ignore[misc, assignment]
-    StripeClient = None  # type: ignore[assignment]
+_STATUS_FOR_EVENT = {
+    "BILLING.SUBSCRIPTION.ACTIVATED": "active",
+    "BILLING.SUBSCRIPTION.RE-ACTIVATED": "active",
+    "BILLING.SUBSCRIPTION.CANCELLED": "canceled",
+    "BILLING.SUBSCRIPTION.SUSPENDED": "suspended",
+    "BILLING.SUBSCRIPTION.EXPIRED": "expired",
+    "BILLING.SUBSCRIPTION.PAYMENT.FAILED": "past_due",
+    "PAYMENT.SALE.COMPLETED": "active",
+    "PAYMENT.SALE.REFUNDED": "refunded",
+    "PAYMENT.SALE.REVERSED": "disputed",
+}
+
+_PAYPAL_STATUS = {
+    "APPROVAL_PENDING": "incomplete",
+    "APPROVED": "incomplete",
+    "ACTIVE": "active",
+    "SUSPENDED": "suspended",
+    "CANCELLED": "canceled",
+    "EXPIRED": "expired",
+}
+
+_SIG_HEADERS = {
+    "auth_algo": "PAYPAL-AUTH-ALGO",
+    "cert_url": "PAYPAL-CERT-URL",
+    "transmission_id": "PAYPAL-TRANSMISSION-ID",
+    "transmission_sig": "PAYPAL-TRANSMISSION-SIG",
+    "transmission_time": "PAYPAL-TRANSMISSION-TIME",
+}
+
+_SECRET_RE = re.compile(r"(?i)(bearer\s+)[A-Za-z0-9._\-]+|(basic\s+)[A-Za-z0-9+/=]+|access_token[\"':= ]+[A-Za-z0-9._\-]+")
 
 
 class CheckoutError(Exception):
@@ -48,39 +102,47 @@ def _clean(name: str) -> str:
     return os.environ.get(name, "").strip()
 
 
-def secret_key() -> str:
-    return _clean("STRIPE_SECRET_KEY")
+def client_id() -> str:
+    return _clean("PAYPAL_CLIENT_ID")
 
 
-def publishable_key() -> str:
-    return _clean("STRIPE_PUBLISHABLE_KEY")
+def client_secret() -> str:
+    return _clean("PAYPAL_CLIENT_SECRET")
 
 
-def price_id() -> str:
-    return _clean("STRIPE_PRICE_ID")
+def webhook_id() -> str:
+    return _clean("PAYPAL_WEBHOOK_ID")
 
 
-def webhook_secret() -> str:
-    return _clean("STRIPE_WEBHOOK_SECRET")
+def plan_id() -> str:
+    return _clean("PAYPAL_PLAN_ID")
+
+
+def paypal_env() -> str:
+    env = _clean("PAYPAL_ENV").lower() or "sandbox"
+    return env if env in API_BASES else "sandbox"
+
+
+def api_base() -> str:
+    return API_BASES[paypal_env()]
 
 
 def billing_enabled() -> bool:
-    """Default on. Checkout still requires the Stripe env vars."""
+    """Default on. Checkout still requires the PayPal env vars."""
     return os.environ.get("BILLING_ENABLED", "1") == "1"
 
 
 def keys_present() -> bool:
-    return bool(secret_key() and publishable_key() and price_id() and webhook_secret())
+    return bool(client_id() and client_secret() and webhook_id() and plan_id())
 
 
 def checkout_ready() -> bool:
-    return billing_enabled() and keys_present() and StripeClient is not None
+    return billing_enabled() and keys_present()
 
 
 def checkout_view(subscription_status: str | None = None) -> dict:
-    ready = checkout_ready()
     missing = not keys_present()
-    if missing or StripeClient is None:
+    if missing:
         message = KEYS_MISSING_MESSAGE
     elif not billing_enabled():
         message = BILLING_OFF_MESSAGE
@@ -88,7 +150,7 @@ def checkout_view(subscription_status: str | None = None) -> dict:
         message = ""
     return {
         "billing_enabled": billing_enabled(),
-        "checkout_ready": ready,
+        "checkout_ready": checkout_ready(),
         "keys_missing": missing,
         "checkout_message": message,
         "subscription_status": subscription_status or "",
@@ -96,27 +158,150 @@ def checkout_view(subscription_status: str | None = None) -> dict:
 
 
 def safe_error(exc: BaseException) -> str:
-    text = _SECRET_RE.sub("[redacted]", str(exc))
-    return text[:400]
+    text = str(exc)
+    for value in (client_secret(), client_id()):
+        if value:
+            text = text.replace(value, "[redacted]")
+    return _SECRET_RE.sub("[redacted]", text)[:400]
 
 
-def build_client():
-    """Live Stripe client. Tests set GENEMEAL_FORBID_NETWORK and inject a double."""
+# --------------------------------------------------------------------------
+# HTTP. Tests replace `build_client` with a fake that has `.request(...)`.
+# --------------------------------------------------------------------------
+
+
+class PayPalClient:
+    def __init__(self, cid: str, secret: str, base: str):
+        self._cid = cid
+        self._secret = secret
+        self.base = base.rstrip("/")
+        self._token: str | None = None
+
+    def _http(self, method: str, url: str, headers: dict, body: bytes | None) -> dict:
+        req = urllib.request.Request(url, data=body, method=method, headers=headers)
+        try:
+            with urllib.request.urlopen(req, timeout=20) as resp:
+                raw = resp.read()
+        except urllib.error.HTTPError as exc:
+            detail = exc.read()[:300].decode("utf-8", "ignore")
+            raise CheckoutError(f"PayPal HTTP {exc.code}: {detail}") from None
+        except urllib.error.URLError as exc:
+            raise CheckoutError(f"PayPal unreachable: {exc.reason}") from None
+        return json.loads(raw or b"{}")
+
+    def token(self) -> str:
+        if self._token:
+            return self._token
+        basic = base64.b64encode(f"{self._cid}:{self._secret}".encode()).decode()
+        data = self._http(
+            "POST",
+            self.base + "/v1/oauth2/token",
+            {
+                "Authorization": "Basic " + basic,
+                "Content-Type": "application/x-www-form-urlencoded",
+                "Accept": "application/json",
+            },
+            b"grant_type=client_credentials",
+        )
+        token = data.get("access_token")
+        if not isinstance(token, str) or not token:
+            raise CheckoutError("PayPal did not return an access token")
+        self._token = token
+        return token
+
+    def request(self, method: str, path: str, body: dict | None = None, *, request_id: str | None = None) -> dict:
+        headers = {
+            "Authorization": "Bearer " + self.token(),
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+            "Prefer": "return=representation",
+        }
+        if request_id:
+            headers["PayPal-Request-Id"] = request_id
+        payload = json.dumps(body).encode() if body is not None else None
+        return self._http(method, self.base + path, headers, payload)
+
+
+def build_client() -> PayPalClient:
+    """Live PayPal client. Tests set GENEMEAL_FORBID_NETWORK and inject a double."""
     if os.environ.get("GENEMEAL_FORBID_NETWORK") == "1":
-        raise CheckoutError("live Stripe calls are disabled")
-    if StripeClient is None:
-        raise CheckoutError("Stripe SDK is not installed")
-    key = secret_key()
-    if not key:
-        raise CheckoutError("STRIPE_SECRET_KEY is not set")
-    return StripeClient(key, stripe_version=API_VERSION)
+        raise CheckoutError("live PayPal calls are disabled")
+    if not (client_id() and client_secret()):
+        raise CheckoutError("PAYPAL_CLIENT_ID / PAYPAL_CLIENT_SECRET are not set")
+    return PayPalClient(client_id(), client_secret(), api_base())
 
 
-def _signature_client():
-    if StripeClient is None:
-        raise CheckoutError("Stripe SDK is not installed")
-    key = secret_key() or "rk_test_signature_only"
-    return StripeClient(key, stripe_version=API_VERSION)
+# --------------------------------------------------------------------------
+# Product + plan (used by scripts/create_paypal_plan.py)
+# --------------------------------------------------------------------------
+
+
+def product_body() -> dict:
+    return {
+        "name": "GeneMeal monthly plan",
+        "description": "Genotype-informed meal plans",
+        "type": "SERVICE",
+        "category": "SOFTWARE",
+    }
+
+
+def plan_body(product_id: str) -> dict:
+    total = f"{pricing.monthly_total():.2f}"
+    return {
+        "product_id": product_id,
+        "name": f"GeneMeal monthly ${total}",
+        "description": "Base fee + server usage + genome processing",
+        "status": "ACTIVE",
+        "billing_cycles": [
+            {
+                "frequency": {"interval_unit": "MONTH", "interval_count": 1},
+                "tenure_type": "REGULAR",
+                "sequence": 1,
+                "total_cycles": 0,
+                "pricing_scheme": {"fixed_price": {"value": total, "currency_code": "USD"}},
+            }
+        ],
+        "payment_preferences": {
+            "auto_bill_outstanding": True,
+            "setup_fee_failure_action": "CANCEL",
+            "payment_failure_threshold": 3,
+        },
+    }
+
+
+def create_product_and_plan(client: Any) -> dict:
+    product = client.request("POST", "/v1/catalogs/products", product_body(), request_id="genemeal-product-v1")
+    pid = product.get("id")
+    if not pid:
+        raise CheckoutError("PayPal did not return a product id")
+    plan = client.request("POST", "/v1/billing/plans", plan_body(pid), request_id="genemeal-plan-1300-v1")
+    if not plan.get("id"):
+        raise CheckoutError("PayPal did not return a plan id")
+    return {"product_id": pid, "plan_id": plan["id"], "env": paypal_env()}
+
+
+# --------------------------------------------------------------------------
+# Subscribe
+# --------------------------------------------------------------------------
+
+
+def subscription_body(user: dict, base_url: str) -> dict:
+    base = base_url.rstrip("/")
+    body: dict[str, Any] = {
+        "plan_id": plan_id(),
+        "custom_id": user["id"],
+        "application_context": {
+            "brand_name": BRAND_NAME,
+            "shipping_preference": "NO_SHIPPING",
+            "user_action": "SUBSCRIBE_NOW",
+            "return_url": base + "/billing/success",
+            "cancel_url": base + "/billing/cancel",
+        },
+    }
+    email = (user.get("email") or "").strip()
+    if email:
+        body["subscriber"] = {"email_address": email}
+    return body
 
 
 def start_checkout(user: dict, base_url: str) -> str:
@@ -125,286 +310,98 @@ def start_checkout(user: dict, base_url: str) -> str:
     if not billing_enabled():
         raise CheckoutError(BILLING_OFF_MESSAGE)
     client = build_client()
-    customer_id = user.get("stripe_customer_id") or _create_customer(client, user)
-    base = base_url.rstrip("/")
-    params = {
-        "mode": "subscription",
-        "customer": customer_id,
-        "client_reference_id": user["id"],
-        "line_items": [{"price": price_id(), "quantity": 1}],
-        "success_url": base + "/billing/success?session_id={CHECKOUT_SESSION_ID}",
-        "cancel_url": base + "/billing/cancel",
-        "integration_identifier": INTEGRATION_IDENTIFIER,
-    }
-    session = client.checkout.sessions.create(params=params)
-    url = getattr(session, "url", None) or ""
-    if not url:
-        raise CheckoutError("Stripe did not return a Checkout URL")
-    return url
+    sub = client.request("POST", "/v1/billing/subscriptions", subscription_body(user, base_url))
+    sub_id = sub.get("id") if isinstance(sub.get("id"), str) else ""
+    approve = ""
+    for link in sub.get("links") or []:
+        if isinstance(link, dict) and link.get("rel") == "approve":
+            approve = link.get("href") or ""
+    if not sub_id or not approve:
+        raise CheckoutError("PayPal did not return an approval link")
+    status = None
+    if user.get("subscription_status") not in {"active", "trialing"}:
+        status = "incomplete"
+    storage.set_billing(user["id"], subscription_id=sub_id, status=status)
+    return approve
 
 
-def _create_customer(client: Any, user: dict) -> str:
-    params: dict[str, Any] = {"metadata": {"genemeal_user_id": user["id"]}}
-    email = (user.get("email") or "").strip()
-    if email:
-        params["email"] = email
-    customer = client.customers.create(params=params)
-    customer_id = getattr(customer, "id", None)
-    if not customer_id:
-        raise CheckoutError("Stripe did not return a customer id")
-    storage.set_billing(user["id"], customer_id=customer_id)
-    user["stripe_customer_id"] = customer_id
-    return customer_id
+# --------------------------------------------------------------------------
+# Webhooks
+# --------------------------------------------------------------------------
 
 
-def construct_webhook_event(payload: bytes, signature: str, secret: str):
-    if stripe is None:
-        raise CheckoutError("Stripe SDK is not installed")
+def verify_webhook(headers: Any, payload: bytes, client: Any = None) -> dict:
+    """Verify with PayPal's verify-webhook-signature API. Returns the parsed event."""
     try:
-        return _signature_client().construct_event(payload, signature, secret)
-    except SignatureVerificationError as exc:
-        raise SignatureError(safe_error(exc)) from exc
+        event = json.loads(payload or b"")
+    except ValueError as exc:
+        raise SignatureError("invalid JSON") from exc
+    if not isinstance(event, dict):
+        raise SignatureError("invalid event")
+    body: dict[str, Any] = {}
+    for key, header in _SIG_HEADERS.items():
+        value = headers.get(header) or ""
+        if not value:
+            raise SignatureError(f"missing {header}")
+        body[key] = value
+    body["webhook_id"] = webhook_id()
+    body["webhook_event"] = event
+    client = client or build_client()
+    result = client.request("POST", "/v1/notifications/verify-webhook-signature", body)
+    if result.get("verification_status") != "SUCCESS":
+        raise SignatureError("PayPal verification failed")
+    return event
 
 
-def apply_event(event: Any, client: Any = None) -> None:
-    data = _event_dict(event)
-    event_id = data.get("id") if isinstance(data.get("id"), str) else ""
-    event_type = data.get("type") if isinstance(data.get("type"), str) else ""
+def apply_event(event: dict) -> None:
+    event_id = event.get("id") if isinstance(event.get("id"), str) else ""
+    event_type = event.get("event_type") if isinstance(event.get("event_type"), str) else ""
+    if event_type not in HANDLED_EVENTS:
+        return
     claimed = False
     if event_id:
-        claimed = storage.claim_stripe_event(event_id, event_type or "unknown")
+        claimed = storage.claim_paypal_event(event_id, event_type)
         if not claimed:
             return
     try:
-        obj = ((data.get("data") or {}) if isinstance(data.get("data"), dict) else {}).get("object") or {}
-        if not isinstance(obj, dict):
-            obj = _as_dict(obj)
-        result = _dispatch(event_type, obj, client)
-        if result is False:
-            raise UserNotFound(event_type or "stripe event")
+        resource = event.get("resource") if isinstance(event.get("resource"), dict) else {}
+        if _dispatch(event_type, resource) is False:
+            raise UserNotFound(event_type)
     except Exception:
-        if claimed and event_id:
-            storage.forget_stripe_event(event_id)
+        if claimed:
+            storage.forget_paypal_event(event_id)
         raise
 
 
-def _dispatch(event_type: str, obj: dict, client: Any) -> bool | None:
-    if event_type in {"checkout.session.completed", "checkout.session.async_payment_succeeded"}:
-        return _on_checkout_paid(obj)
-    if event_type == "checkout.session.async_payment_failed":
-        return _on_checkout_failed(obj)
-    if event_type in {
-        "customer.subscription.created",
-        "customer.subscription.updated",
-        "customer.subscription.deleted",
-        "customer.subscription.paused",
-        "customer.subscription.resumed",
-    }:
-        return _on_subscription(obj)
-    if event_type == "invoice.paid":
-        return _on_invoice(obj, paid=True)
-    if event_type == "invoice.payment_failed":
-        return _on_invoice(obj, paid=False)
-    if event_type == "charge.dispute.created":
-        return _on_risk(obj, client, status="disputed")
-    if event_type == "charge.refunded":
-        if obj.get("refunded") is not True:
-            return True
-        return _on_risk(obj, client, status="refunded")
-    if event_type == "radar.early_fraud_warning.created":
-        return _on_risk(obj, client, status="fraud_warning")
-    return None
-
-
-def _on_checkout_paid(obj: dict) -> bool:
-    user = _user_from_checkout(obj)
-    if user is None:
-        return False
-    unpaid = obj.get("payment_status") == "unpaid"
-    status = None
-    if unpaid:
-        if user.get("subscription_status") not in {"active", "trialing"}:
-            status = "incomplete"
+def _dispatch(event_type: str, resource: dict) -> bool:
+    if event_type.startswith("PAYMENT.SALE."):
+        sub_id = _str(resource.get("billing_agreement_id"))
+        if not sub_id:
+            return True  # one-off sale, not a GeneMeal subscription
+        user = _find_user(sub_id, _str(resource.get("custom")) or _str(resource.get("custom_id")))
     else:
-        status = "active"
-    _save_link(user, obj, status=status)
-    return True
-
-
-def _on_checkout_failed(obj: dict) -> bool:
-    user = _user_from_checkout(obj)
+        sub_id = _str(resource.get("id"))
+        user = _find_user(sub_id, _str(resource.get("custom_id")))
     if user is None:
         return False
-    status = "incomplete"
-    if user.get("subscription_status") in {"active", "trialing"}:
-        status = None
-    _save_link(user, obj, status=status)
+    status = _STATUS_FOR_EVENT.get(event_type)
+    if status is None:
+        status = _PAYPAL_STATUS.get(_str(resource.get("status")).upper())
+        if status == "incomplete" and user.get("subscription_status") in {"active", "trialing"}:
+            status = None
+    storage.set_billing(user["id"], subscription_id=sub_id or None, status=status)
     return True
 
 
-def _save_link(user: dict, obj: dict, *, status: str | None) -> None:
-    customer = _stripe_id(obj.get("customer")) or user.get("stripe_customer_id")
-    subscription = _stripe_id(obj.get("subscription")) or user.get("stripe_subscription_id")
-    storage.set_billing(
-        user["id"],
-        customer_id=customer,
-        subscription_id=subscription,
-        status=status,
-    )
-
-
-def _on_subscription(obj: dict) -> bool:
-    customer = _stripe_id(obj.get("customer"))
-    sub_id = _stripe_id(obj.get("id"))
-    user = _user_by_customer_or_subscription(customer, sub_id)
-    if user is None:
-        return True if customer else False
-    status = obj.get("status") if isinstance(obj.get("status"), str) else "canceled"
-    storage.set_billing(
-        user["id"],
-        customer_id=customer or user.get("stripe_customer_id"),
-        subscription_id=sub_id or user.get("stripe_subscription_id"),
-        status=status,
-    )
-    return True
-
-
-def _on_invoice(obj: dict, *, paid: bool) -> bool:
-    customer = _stripe_id(obj.get("customer"))
-    sub_id = _invoice_subscription_id(obj)
-    user = _user_by_customer_or_subscription(customer, sub_id)
-    if user is None:
-        return True if customer else False
-    if not sub_id and not user.get("stripe_subscription_id"):
-        return True
-    storage.set_billing(
-        user["id"],
-        customer_id=customer or user.get("stripe_customer_id"),
-        subscription_id=sub_id or user.get("stripe_subscription_id"),
-        status="active" if paid else "past_due",
-    )
-    return True
-
-
-def _on_risk(obj: dict, client: Any, *, status: str) -> bool:
-    customer = _stripe_id(obj.get("customer"))
-    if not customer:
-        customer = _customer_from_charge(obj.get("charge"), client)
-    if not customer:
-        customer = _customer_from_charge(obj.get("payment_intent"), client)
-    if not customer:
-        return False
-    user = storage.find_user_by_stripe_customer(customer)
-    if user is None:
-        return True
-    storage.set_billing(user["id"], status=status)
-    return True
-
-
-def _user_from_checkout(obj: dict) -> dict | None:
-    customer = _stripe_id(obj.get("customer"))
-    sub_id = _stripe_id(obj.get("subscription"))
-    user = _user_by_customer_or_subscription(customer, sub_id)
-    if user is not None:
-        return user
-    ref = obj.get("client_reference_id")
-    if isinstance(ref, str) and ref:
-        return storage.get_user(ref)
-    return None
-
-
-def _user_by_customer_or_subscription(customer: str | None, sub_id: str | None) -> dict | None:
-    if customer:
-        user = storage.find_user_by_stripe_customer(customer)
+def _find_user(sub_id: str, custom_id: str) -> dict | None:
+    if sub_id:
+        user = storage.find_user_by_paypal_subscription(sub_id)
         if user is not None:
             return user
-    if sub_id:
-        return storage.find_user_by_stripe_subscription(sub_id)
+    if custom_id:
+        return storage.get_user(custom_id)
     return None
 
 
-def _invoice_subscription_id(obj: dict) -> str | None:
-    parent = obj.get("parent")
-    if isinstance(parent, dict):
-        details = parent.get("subscription_details")
-        if isinstance(details, dict):
-            found = _stripe_id(details.get("subscription"))
-            if found:
-                return found
-    return _stripe_id(obj.get("subscription"))
-
-
-def _customer_from_charge(ref: Any, client: Any) -> str | None:
-    if isinstance(ref, dict):
-        found = _stripe_id(ref.get("customer"))
-        if found:
-            return found
-        ref = ref.get("id")
-    if not isinstance(ref, str) or not ref or client is None:
-        return None
-    if ref.startswith("ch_"):
-        try:
-            charge = client.charges.retrieve(ref)
-        except Exception:
-            return None
-        return _stripe_id(getattr(charge, "customer", None))
-    if ref.startswith("pi_") and hasattr(client, "payment_intents"):
-        try:
-            intent = client.payment_intents.retrieve(ref)
-        except Exception:
-            return None
-        return _stripe_id(getattr(intent, "customer", None))
-    return None
-
-
-def _stripe_id(value: Any) -> str | None:
-    if isinstance(value, str) and value:
-        return value
-    if isinstance(value, dict):
-        inner = value.get("id")
-        if isinstance(inner, str) and inner:
-            return inner
-    inner = getattr(value, "id", None)
-    if isinstance(inner, str) and inner:
-        return inner
-    return None
-
-
-def _event_dict(event: Any) -> dict:
-    if isinstance(event, dict):
-        return event
-    data_obj = getattr(getattr(event, "data", None), "object", None)
-    return {
-        "id": getattr(event, "id", None),
-        "type": getattr(event, "type", None),
-        "data": {"object": _plain(data_obj) if data_obj is not None else {}},
-    }
-
-
-def _plain(value: Any) -> Any:
-    if isinstance(value, (str, int, float, bool)) or value is None:
-        return value
-    if isinstance(value, dict):
-        return {str(key): _plain(item) for key, item in value.items()}
-    if isinstance(value, list):
-        return [_plain(item) for item in value]
-    as_dict = _as_dict(value)
-    if as_dict:
-        return {str(key): _plain(item) for key, item in as_dict.items()}
-    return _stripe_id(value)
-
-
-def _as_dict(value: Any) -> dict:
-    if isinstance(value, dict):
-        return value
-    if value is None:
-        return {}
-    to_dict = getattr(value, "to_dict", None)
-    if callable(to_dict):
-        try:
-            converted = to_dict()
-        except Exception:
-            converted = None
-        if isinstance(converted, dict):
-            return converted
-    return {}
+def _str(value: Any) -> str:
+    return value if isinstance(value, str) else ""
