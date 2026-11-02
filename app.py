@@ -51,11 +51,7 @@ def geo_block_gate():
         app.logger.info("geo_block deny state=%s path=%s", state, request.path)
     except Exception:
         pass
-    body = f"""<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
-<title>Not available in your area — GeneMeal</title>
-<style>body{{font-family:system-ui,sans-serif;background:#0b1220;color:#e8eef8;margin:0;display:grid;min-height:100vh;place-items:center;padding:2rem}}
-main{{max-width:32rem;line-height:1.5}}h1{{font-size:1.35rem;margin:0 0 .75rem}}p{{margin:0;color:#b7c4d8}}</style>
-<main><h1>Not available in your area</h1><p>{blocked_states.BLOCKED_FRIENDLY}</p></main>"""
+    body = blocked_states.render_unavailable_html(state)
     return Response(body, status=451, mimetype="text/html")
 
 
@@ -94,6 +90,15 @@ def _pricing_context() -> dict:
             status = user.get("subscription_status") or ""
     data = pricing.view()
     data.update(billing.checkout_view(status))
+    # Never offer checkout to visitors in blocked states (even if GEO_BLOCK_ENABLED is off).
+    charge_blocked, state = blocked_states.billing_blocked(request)
+    if charge_blocked:
+        info = blocked_states.alert_copy(state)
+        data["checkout_ready"] = False
+        data["geo_billing_blocked"] = True
+        data["checkout_message"] = info["billing_message"]
+    else:
+        data["geo_billing_blocked"] = False
     return data
 
 
@@ -158,6 +163,18 @@ def pricing_page():
 
 @app.post("/billing/checkout")
 def billing_checkout():
+    # Blocked-state visitors cannot be charged — independent of GEO_BLOCK_ENABLED.
+    charge_blocked, state = blocked_states.billing_blocked(request)
+    if charge_blocked:
+        try:
+            app.logger.info("billing_block deny state=%s", state)
+        except Exception:
+            pass
+        return Response(
+            blocked_states.render_unavailable_html(state),
+            status=451,
+            mimetype="text/html",
+        )
     user = _load()
     if not billing.keys_present() or billing.StripeClient is None:
         _notice(billing.KEYS_MISSING_MESSAGE, "error")
