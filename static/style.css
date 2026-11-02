@@ -348,3 +348,28 @@ footer p { max-width: 48rem; }
   .pay-buttons button { transition: none; }
   .pay-buttons button:hover:not(:disabled) { transform: none; }
 }
+
+/* ---- Shared polish across the flow (upload, markers, week, pricing, block page) ---- */
+body { background-image: linear-gradient(180deg, var(--paper) 0%, var(--paper-2) 100%); background-attachment: fixed; }
+.pricing, .empty, .toggles, .card, .upload, .diet-group, table {
+  background-image: linear-gradient(160deg, var(--card) 0%, #fbf3e6 100%);
+  border-radius: 14px;
+}
+button, .button { position: relative; border-radius: 999px; transition: transform 0.15s ease, opacity 0.15s ease; }
+button:not(:disabled):hover, .button:hover { transform: translateY(-1px); }
+button::after, .button::after {
+  content: ""; position: absolute; inset: -1px; border-radius: inherit;
+  box-shadow: 0 0 0 3px var(--green); opacity: 0; pointer-events: none;
+}
+button:not(:disabled):is(:hover, :focus-visible)::after, .button:is(:hover, :focus-visible)::after { animation: gm-pulse 2.4s ease-out infinite; }
+input[type="email"], input[type="number"], input[type="file"] { min-height: 44px; border-radius: 10px; }
+.toggles .check:has(input:checked) { color: var(--green-deep); }
+input[type="checkbox"] { accent-color: var(--green); width: 1.1rem; height: 1.1rem; }
+nav a { border-radius: 999px; padding: 0.2rem 0.55rem; transition: opacity 0.15s ease; }
+nav a:hover { background: var(--leaf); }
+@media (max-width: 480px) { button, .button { width: 100%; } .diet-inputs { flex-direction: column; align-items: stretch; } }
+@media (prefers-reduced-motion: reduce) {
+  button::after, .button::after { animation: none !important; }
+  button, .button, nav a { transition: none; }
+  button:not(:disabled):hover, .button:hover { transform: none; }
+}
