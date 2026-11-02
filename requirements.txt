@@ -4,3 +4,4 @@ snps
 cryptography
 pandas
 pytest
+stripe==16.0.0
