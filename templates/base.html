@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}GeneMeal{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,680&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="{{ url_for('home') }}">
+      <svg viewBox="0 0 40 40" aria-hidden="true" class="mark">
+        <rect x="1" y="1" width="38" height="38" rx="8" fill="#143d2e"/>
+        <path d="M20 8c-2 6-8 8-8 14a8 8 0 0 0 16 0c0-6-6-8-8-14z" fill="#e7f0e4"/>
+        <path d="M20 16v12M15 22h10" stroke="#1f6a4e" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span>
+        <span class="kicker">Local educational notebook</span>
+        <span class="word">GeneMeal</span>
+      </span>
+    </a>
+    <nav>
+      <a href="{{ url_for('home') }}">Guide</a>
+      <a href="{{ url_for('results') }}">Markers</a>
+      <a href="{{ url_for('plan') }}">Week</a>
+    </nav>
+  </header>
+  <div class="wrap">
+    {% if flash %}
+      <p class="banner {{ flash.category }}" role="status">{{ flash.message }}</p>
+    {% endif %}
+    {% block body %}{% endblock %}
+    <footer>
+      <p>{{ disclaimer }}</p>
+      <p class="fine">Have a lawyer review the privacy terms before any public launch. Geo-block stays off until <code>GEO_BLOCK_ENABLED=1</code>. Nothing here is sent to 23andMe — there is no third-party API.</p>
+    </footer>
+  </div>
+</body>
+</html>

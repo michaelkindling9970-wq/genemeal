@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block title %}{{ title }} — GeneMeal{% endblock %}
+{% block body %}
+<section class="intro">
+  <h1>{{ title }}</h1>
+  <p class="lede">{{ body }}</p>
+  <p><a class="button" href="{{ url_for('home') }}">Back to the guide</a></p>
+</section>
+{% endblock %}

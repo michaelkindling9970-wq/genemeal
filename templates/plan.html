@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% block title %}Week — GeneMeal{% endblock %}
+{% block body %}
+<section class="intro">
+  <h1>A week of food</h1>
+  <p class="lede">Two toggles change the calorie and protein placeholders. The foods come from USDA FoodData Central when a key is set, and from an approximate table when it is not.</p>
+</section>
+
+{% if user.status != 'parsed' %}
+  <section class="empty">
+    <h2>Confirm the parse first</h2>
+    <p>Generate stays closed until you have reviewed the marker screen and pressed Confirm. That step also deletes the raw zip.</p>
+    <p><a class="button" href="{{ url_for('results') }}">Review markers</a></p>
+  </section>
+{% else %}
+  <form method="post" action="{{ url_for('plan_generate') }}" class="toggles">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label class="check">
+      <input type="checkbox" name="weight_loss" {% if plan and plan.targets.weight_loss %}checked{% endif %}>
+      Weight loss
+      <span class="fine">Lower calorie placeholder, higher protein share.</span>
+    </label>
+    <label class="check">
+      <input type="checkbox" name="build_muscle" {% if plan and plan.targets.build_muscle %}checked{% endif %}>
+      Build muscle
+      <span class="fine">Higher calorie placeholder and more protein foods.</span>
+    </label>
+    <button type="submit">Generate</button>
+  </form>
+{% endif %}
+
+<p class="disclaimer" role="note">{{ disclaimer }}</p>
+
+{% if plan %}
+  <section class="targets">
+    <h2>Placeholders for this week</h2>
+    <p><strong>{{ "{:,}".format(plan.targets.calories) }} kcal</strong> · <strong>{{ plan.targets.protein_g }} g protein</strong></p>
+    <p>{{ plan.targets.note }}</p>
+    {% if plan.nutrition_source == 'fdc' %}
+      <p class="fine">Nutrition figures were read from USDA FoodData Central.</p>
+    {% elif plan.nutrition_source == 'mixed' %}
+      <p class="fine">Some foods came from FoodData Central and some from the offline approximate table.</p>
+    {% else %}
+      <p class="fine">FDC_API_KEY is not set, so portions use the offline approximate table. Not for clinical use.</p>
+    {% endif %}
+  </section>
+
+  {% if plan.trait_notes %}
+    <section>
+      <h2>Markers that tilted the menu</h2>
+      <ul class="plain">
+        {% for row in plan.trait_notes %}
+          <li>{{ row.gene }} {{ row.rsid }} · {{ row.label }} · <span class="badge {{ row.confidence }}">{{ row.confidence }}</span></li>
+        {% endfor %}
+      </ul>
+    </section>
+  {% endif %}
+
+  <section>
+    <h2>What changed</h2>
+    <ul class="plain">
+      {% for line in plan.adjustments %}
+        <li>{{ line }}</li>
+      {% endfor %}
+    </ul>
+  </section>
+
+  <section class="week" aria-label="Weekly view">
+    {% for day in plan.days %}
+      <article class="day">
+        <header>
+          <h3>{{ day.name }}</h3>
+          <p>{{ "{:,}".format(day.totals.kcal) }} kcal · {{ day.totals.protein_g }} g protein</p>
+        </header>
+        <div class="meals">
+          {% for meal in day.meals %}
+            <div class="meal">
+              <h4>{{ meal.name }}</h4>
+              {% if meal.foods %}
+                <ul>
+                  {% for food in meal.foods %}
+                    <li>
+                      <span class="food-name">{{ food.description }}</span>
+                      <span class="fine">{{ food.grams }} g · {{ food.kcal }} kcal · {{ food.protein_g }} g protein</span>
+                      {% if food.fdc_id %}<span class="fine">FDC {{ food.fdc_id }}</span>{% else %}<span class="fine">approximate</span>{% endif %}
+                    </li>
+                  {% endfor %}
+                </ul>
+              {% else %}
+                <p class="fine">Nothing in this slot.</p>
+              {% endif %}
+            </div>
+          {% endfor %}
+        </div>
+      </article>
+    {% endfor %}
+  </section>
+{% elif user.status == 'parsed' %}
+  <section class="empty">
+    <h2>No week yet</h2>
+    <p>Choose the toggles you want, then press Generate. An empty week is normal before the first run.</p>
+  </section>
+{% endif %}
+{% endblock %}

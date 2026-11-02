@@ -1,0 +1,6 @@
+flask
+gunicorn
+snps
+cryptography
+pandas
+pytest

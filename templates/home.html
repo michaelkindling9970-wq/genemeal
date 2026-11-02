@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+{% block title %}GeneMeal — download, wait, upload{% endblock %}
+{% block body %}
+<section class="intro">
+  <h1>Read a raw-data zip. Sketch a week of food.</h1>
+  <p class="lede">GeneMeal checks a short list of nutrition markers that show up in public research, then drafts a 7-day menu. You download the file yourself from 23andMe. This notebook never logs in for you.</p>
+  <p class="status">Status <strong>{{ user.status.replace('_', ' ') }}</strong>
+    {% if user.marker_count %} · {{ user.marker_count }} markers{% endif %}
+    {% if user.genome_build %} · build {{ user.genome_build }}{% endif %}
+  </p>
+</section>
+
+{% if user.status == 'failed' and user.error %}
+  <p class="banner error" role="alert">{{ user.error }}</p>
+{% endif %}
+
+<ol class="steps">
+  <li class="step">
+    <h2>Open the 23andMe download page</h2>
+    <p>23andMe does not offer an API for other apps. You request the file in your own account. This button opens their raw-data tool in a new tab.</p>
+    <p><a class="button" href="{{ download_url }}" target="_blank" rel="noopener noreferrer">Open 23andMe raw data</a></p>
+    <p class="fine">https://you.23andme.com/tools/data/</p>
+  </li>
+  <li class="step">
+    <h2>Request the file, then wait for their email</h2>
+    <p>On that page, confirm your date of birth, tick the checkbox, and submit. 23andMe emails you when the <strong>raw data download is ready</strong>. People often see that note in about a week. It can take up to 30 days.</p>
+    <form method="post" action="{{ url_for('mark_requested') }}" class="stack">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label for="email">Email for a local reminder <span class="fine">(optional)</span></label>
+      <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" value="{{ user.email or '' }}">
+      <p class="fine">Two times are stored: about 7 days from now and about 30 days from now. Mail is not sent unless <code>REMINDER_EMAIL_ENABLED=1</code>, and even then this build only logs a stub. It does not deliver email.</p>
+      <button type="submit">I requested my file</button>
+    </form>
+    <form method="post" action="{{ url_for('mark_waiting') }}" class="stack tight">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button type="submit" class="secondary">I'm waiting for the email</button>
+    </form>
+    {% if reminders %}
+      <ul class="reminders">
+        {% for row in reminders %}
+          <li>{{ row.kind }} reminder · {{ row.label }}{% if row.sent_at %} · recorded {{ row.channel or 'done' }}{% endif %}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+  </li>
+  <li class="step">
+    <h2>Drop the genome zip</h2>
+    <p>Use the zip from that email, usually named <code>genome_….zip</code>. The server unzips it, checks for <code>#</code> comment lines and the columns rsid, chromosome, position, and genotype, then counts markers. PDFs, screenshots, and other files are refused. Limit 50 MB.</p>
+    <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" id="upload-form">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <label class="drop" data-drop>
+        <input type="file" name="genome" accept=".zip,application/zip" required>
+        <span class="drop-title">Drag the zip here</span>
+        <span class="fine">or click to browse. Parsing runs after you submit.</span>
+        <span class="filename" data-filename>No file chosen</span>
+      </label>
+      <button type="submit">Upload and read</button>
+    </form>
+  </li>
+</ol>
+
+{% if user.status in ['uploaded', 'parsed'] %}
+  <p class="next">
+    {% if user.status == 'uploaded' %}
+      The file is read. <a href="{{ url_for('results') }}">Review markers and confirm</a>.
+    {% else %}
+      Notes are confirmed. <a href="{{ url_for('plan') }}">Open the week</a>.
+    {% endif %}
+  </p>
+{% endif %}
+
+<section class="danger-zone">
+  <h2>Delete my data</h2>
+  <p>This removes the encrypted upload, the trait notes, the menu, the reminders, and the session row on this server.</p>
+  <form method="post" action="{{ url_for('delete_data') }}">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+    <label class="check"><input type="checkbox" name="confirm" value="yes" required> Yes, delete the encrypted file and my records</label>
+    <button type="submit" class="danger">Delete my data</button>
+  </form>
+</section>
+
+<script>
+  const zone = document.querySelector("[data-drop]");
+  if (zone) {
+    const input = zone.querySelector("input[type=file]");
+    const label = zone.querySelector("[data-filename]");
+    const form = document.getElementById("upload-form");
+    const show = () => {
+      const file = input.files && input.files[0];
+      label.textContent = file ? file.name : "No file chosen";
+    };
+    input.addEventListener("change", show);
+    ["dragenter", "dragover"].forEach((name) => zone.addEventListener(name, (event) => {
+      event.preventDefault();
+      zone.classList.add("hot");
+    }));
+    ["dragleave", "drop"].forEach((name) => zone.addEventListener(name, () => zone.classList.remove("hot")));
+    zone.addEventListener("drop", (event) => {
+      event.preventDefault();
+      const file = event.dataTransfer && event.dataTransfer.files && event.dataTransfer.files[0];
+      if (!file || typeof DataTransfer === "undefined") return;
+      const bag = new DataTransfer();
+      bag.items.add(file);
+      input.files = bag.files;
+      show();
+      if (form.requestSubmit) form.requestSubmit();
+      else form.submit();
+    });
+  }
+</script>
+{% endblock %}
