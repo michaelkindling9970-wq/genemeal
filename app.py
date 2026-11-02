@@ -11,12 +11,13 @@ import re
 import secrets
 from datetime import datetime, timedelta
 
-from flask import Flask, Response, flash, jsonify, redirect, render_template, request, session, url_for
+from flask import Flask, Response, abort, flash, jsonify, redirect, render_template, request, session, url_for
 
 import billing
 import blocked_states
 import fdc
 import genome
+import dietplan
 import mealplan
 import pricing
 import reminders
@@ -78,7 +79,14 @@ def inject_globals():
         "download_url": DOWNLOAD_URL,
         "flash": session.pop("flash", None),
         "pricing": _pricing_context(),
+        "is_subscriber": _nav_subscriber(),
     }
+
+
+def _nav_subscriber() -> bool:
+    uid = session.get("uid")
+    user = storage.get_user(uid) if isinstance(uid, str) and uid else None
+    return _is_subscriber(user)
 
 
 def _pricing_context() -> dict:
@@ -260,6 +268,58 @@ def results():
 def plan():
     user = _load()
     return render_template("plan.html", user=user, plan=storage.get_plan(user["id"]), generated=False)
+
+
+ACTIVE_STATUSES = {"active"}
+
+
+def preview_mode() -> bool:
+    """Preview-only paid bypass. Needs PREVIEW_MODE=1 AND a PREVIEW_TOKEN; never set on Render."""
+    return os.environ.get("PREVIEW_MODE") == "1" and bool(os.environ.get("PREVIEW_TOKEN", "").strip())
+
+
+def _is_subscriber(user: dict | None) -> bool:
+    """Server-side paywall: stored subscription_status (written only by the verified webhook)."""
+    if user and (user.get("subscription_status") or "") in ACTIVE_STATUSES:
+        return True
+    return preview_mode() and session.get("preview_paid") is True
+
+
+@app.get("/preview-login")
+def preview_login():
+    if not preview_mode():
+        abort(404)
+    supplied = request.args.get("token", "")
+    if not hmac.compare_digest(supplied, os.environ.get("PREVIEW_TOKEN", "").strip()):
+        abort(404)
+    session["preview_paid"] = True
+    return redirect(url_for("diet_builder"))
+
+
+@app.get("/diet")
+def diet_builder():
+    """Choosable daily plan: MyPlate amounts + genetic flags, picked per meal."""
+    user = _load()
+    if not _is_subscriber(user):
+        _notice("The diet plan builder is part of the GeneMeal subscription.", "error")
+        return redirect(url_for("pricing_page"))
+    summary = storage.get_summary(user["id"])
+    form = request.args
+    try:
+        age = max(2, min(110, int(form.get("age") or 30)))
+    except ValueError:
+        age = 30
+    sex = form.get("sex") if form.get("sex") in ("male", "female") else "female"
+    activity = form.get("activity") if form.get("activity") in dietplan.ACTIVITY else "moderately_active"
+    kcal = dietplan.calorie_level(age, sex, activity)
+    try:
+        if form.get("calories"):
+            kcal = int(form["calories"])
+    except ValueError:
+        pass
+    view = dietplan.view(kcal, summary)
+    return render_template("diet.html", diet=view, age=age, sex=sex, activity=activity,
+                           levels=[int(k) for k in dietplan.data()["daily_amounts_by_calorie_level"]])
 
 
 @app.post("/plan")

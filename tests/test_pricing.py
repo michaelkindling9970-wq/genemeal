@@ -30,7 +30,7 @@ def test_home_and_pricing_page_show_fee_labels(client):
         assert "$13.00" in body
         assert billing.KEYS_MISSING_MESSAGE in body
         assert "disabled" in body
-        assert ">Subscribe</button>" in body
+        assert ">PayPal</button>" in body
 
 
 def test_billing_flag_off_keeps_fees(client, monkeypatch):
