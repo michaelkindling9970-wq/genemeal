@@ -46,6 +46,7 @@
   <li class="step">
     <h2>Drop the genome zip</h2>
     <p>Use the zip from that email, usually named <code>genome_….zip</code>. The server unzips it, checks for <code>#</code> comment lines and the columns rsid, chromosome, position, and genotype, then counts markers. PDFs, screenshots, and other files are refused. Limit 50 MB.</p>
+    {% include "_pricing.html" %}
     <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" id="upload-form">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
       <label class="drop" data-drop>

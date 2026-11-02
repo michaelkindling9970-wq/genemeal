@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Pricing — GeneMeal{% endblock %}
+{% block body %}
+<section class="intro">
+  <h1>Pricing</h1>
+  <p class="lede">GeneMeal Monthly is {{ pricing.total }} per month. That total is the base fee, the server usage fee, and the genome analysis / processing fee.</p>
+</section>
+{% include "_pricing.html" %}
+<p class="next"><a href="{{ url_for('home') }}">Back to the guide</a></p>
+{% endblock %}

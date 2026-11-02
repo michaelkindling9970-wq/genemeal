@@ -1,0 +1,21 @@
+<section class="pricing" id="pricing" aria-labelledby="pricing-heading">
+  <p class="price-heading" id="pricing-heading">{{ pricing.total }} per month</p>
+  <ul class="price-lines">
+    {% for item in pricing.lines %}
+      <li><span>{{ item.label }}</span><span>{{ item.amount }}/mo</span></li>
+    {% endfor %}
+  </ul>
+  <p class="price-total"><span>Monthly total</span><strong>{{ pricing.total }}</strong></p>
+  {% if pricing.subscription_status in ["active", "trialing"] %}
+    <p class="fine">Subscription active.</p>
+  {% elif pricing.checkout_ready %}
+    <form method="post" action="{{ url_for('billing_checkout') }}">
+      <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+      <button type="submit">Subscribe</button>
+    </form>
+    <p class="fine">Subscribe starts a monthly Stripe Checkout session for this {{ pricing.total }} plan.</p>
+  {% else %}
+    <p class="fine" id="checkout-waiting">{{ pricing.checkout_message }}</p>
+    <button type="button" class="secondary" disabled aria-disabled="true">Subscribe</button>
+  {% endif %}
+</section>

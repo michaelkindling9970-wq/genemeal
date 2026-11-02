@@ -10,6 +10,20 @@ sys.path.insert(0, str(ROOT))
 
 
 @pytest.fixture(autouse=True)
+def _no_stripe_env(monkeypatch):
+    """Checkout tests opt in by setting keys. A developer shell must not leak them."""
+    for name in (
+        "STRIPE_SECRET_KEY",
+        "STRIPE_PUBLISHABLE_KEY",
+        "STRIPE_PRICE_ID",
+        "STRIPE_WEBHOOK_SECRET",
+        "BILLING_ENABLED",
+        "PUBLIC_BASE_URL",
+    ):
+        monkeypatch.delenv(name, raising=False)
+
+
+@pytest.fixture(autouse=True)
 def _no_live_http(monkeypatch):
     """FoodData Central and any other HTTP stay off in the suite."""
     monkeypatch.setenv("GENEMEAL_FORBID_NETWORK", "1")

@@ -13,10 +13,12 @@ from datetime import datetime, timedelta
 
 from flask import Flask, Response, flash, jsonify, redirect, render_template, request, session, url_for
 
+import billing
 import blocked_states
 import fdc
 import genome
 import mealplan
+import pricing
 import reminders
 import storage
 import traits
@@ -59,6 +61,8 @@ main{{max-width:32rem;line-height:1.5}}h1{{font-size:1.35rem;margin:0 0 .75rem}}
 
 @app.before_request
 def csrf_gate():
+    if request.path.rstrip("/") == "/stripe/webhook":
+        return None
     if request.method == "GET":
         if "csrf" not in session:
             session["csrf"] = secrets.token_hex(16)
@@ -77,7 +81,29 @@ def inject_globals():
         "disclaimer": mealplan.DISCLAIMER,
         "download_url": DOWNLOAD_URL,
         "flash": session.pop("flash", None),
+        "pricing": _pricing_context(),
     }
+
+
+def _pricing_context() -> dict:
+    status = ""
+    uid = session.get("uid")
+    if isinstance(uid, str) and uid:
+        user = storage.get_user(uid)
+        if user:
+            status = user.get("subscription_status") or ""
+    data = pricing.view()
+    data.update(billing.checkout_view(status))
+    return data
+
+
+def _external_base() -> str:
+    configured = os.environ.get("PUBLIC_BASE_URL", "").strip().rstrip("/")
+    if configured:
+        return configured
+    proto = (request.headers.get("X-Forwarded-Proto") or request.scheme or "https").split(",")[0].strip()
+    host = (request.headers.get("X-Forwarded-Host") or request.host).split(",")[0].strip()
+    return f"{proto}://{host}"
 
 
 def _notice(message: str, category: str = "ok") -> None:
@@ -123,6 +149,81 @@ def _parse_reminders(rows: list[dict]) -> list[dict]:
             label = row["remind_at"]
         shown.append({**row, "label": label})
     return shown
+
+
+@app.get("/pricing")
+def pricing_page():
+    return render_template("pricing.html")
+
+
+@app.post("/billing/checkout")
+def billing_checkout():
+    user = _load()
+    if not billing.keys_present() or billing.StripeClient is None:
+        _notice(billing.KEYS_MISSING_MESSAGE, "error")
+        return redirect(url_for("home"))
+    if not billing.billing_enabled():
+        _notice(billing.BILLING_OFF_MESSAGE, "error")
+        return redirect(url_for("home"))
+    try:
+        url = billing.start_checkout(user, _external_base())
+    except Exception as exc:
+        app.logger.info("checkout start failed: %s", billing.safe_error(exc))
+        _notice("Checkout could not be started. Check the Stripe keys and price.", "error")
+        return redirect(url_for("home"))
+    return redirect(url, code=303)
+
+
+@app.get("/billing/success")
+def billing_success():
+    return render_template(
+        "message.html",
+        title="Checkout returned",
+        body=(
+            "Stripe Checkout returned to GeneMeal. The subscription is recorded "
+            "when Stripe sends the webhook. Upload stays available on the guide page."
+        ),
+    )
+
+
+@app.get("/billing/cancel")
+def billing_cancel():
+    _notice("Checkout was canceled.", "error")
+    return redirect(url_for("home"))
+
+
+@app.post("/stripe/webhook")
+def stripe_webhook():
+    secret = billing.webhook_secret()
+    if not secret:
+        return jsonify({"error": billing.KEYS_MISSING_MESSAGE}), 503
+    payload = request.get_data(cache=False) or b""
+    signature = request.headers.get("Stripe-Signature", "")
+    try:
+        event = billing.construct_webhook_event(payload, signature, secret)
+    except billing.SignatureError:
+        return jsonify({"error": "invalid signature"}), 400
+    except Exception as exc:
+        app.logger.info("stripe webhook rejected: %s", billing.safe_error(exc))
+        return jsonify({"error": "invalid payload"}), 400
+    event_id = getattr(event, "id", None)
+    event_type = getattr(event, "type", None)
+    app.logger.info("stripe webhook type=%s id=%s", event_type, event_id)
+    try:
+        client = None
+        if billing.secret_key() and os.environ.get("GENEMEAL_FORBID_NETWORK") != "1":
+            client = billing.build_client()
+        billing.apply_event(event, client=client)
+    except billing.UserNotFound:
+        app.logger.info("stripe webhook user not found type=%s id=%s", event_type, event_id)
+        return jsonify({"error": "user not found"}), 500
+    except billing.CheckoutError as exc:
+        app.logger.info("stripe webhook skipped: %s", billing.safe_error(exc))
+        return jsonify({"error": "webhook unavailable"}), 503
+    except Exception as exc:
+        app.logger.info("stripe webhook failed: %s", billing.safe_error(exc))
+        return jsonify({"error": "webhook failed"}), 500
+    return jsonify({"received": True})
 
 
 @app.get("/")
