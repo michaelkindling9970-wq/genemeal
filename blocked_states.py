@@ -326,6 +326,7 @@ EXEMPT_PATH_PREFIXES = (
     "/sitemap.xml",
     # PayPal delivers webhooks from its own network, not the visitor's state.
     "/paypal/webhook",
+    "/PayPal/webhook",
 )
 
 _cache: dict[str, tuple[float, Optional[str]]] = {}

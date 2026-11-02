@@ -57,7 +57,7 @@ def geo_block_gate():
 
 @app.before_request
 def csrf_gate():
-    if request.path.rstrip("/") == "/paypal/webhook":
+    if request.path.rstrip("/").lower() == "/paypal/webhook":
         return None
     if request.method == "GET":
         if "csrf" not in session:
@@ -215,6 +215,7 @@ def billing_cancel():
     return redirect(url_for("home"))
 
 
+@app.post("/PayPal/webhook")
 @app.post("/paypal/webhook")
 def paypal_webhook():
     if not billing.keys_present():
