@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+{% block title %}Stress, diet, and genetics — GeneMeal{% endblock %}
+{% block body %}
+<article class="research">
+  <header class="intro">
+    <p class="status">Educational research notes</p>
+    <h1>Stress, diet, and genetics</h1>
+    <p class="lede">What food patterns help with everyday stress and anxiety, what genetics may change, and how consumer genotype kits fit (or don’t). Not medical advice.</p>
+  </header>
+
+  <div class="tab-bar" role="tablist" aria-label="Research sections">
+    <button type="button" class="tab active" role="tab" aria-selected="true" data-tab="diet">Diet findings</button>
+    <button type="button" class="tab" role="tab" aria-selected="false" data-tab="genetics">Genetics</button>
+    <button type="button" class="tab" role="tab" aria-selected="false" data-tab="kit">23andMe</button>
+  </div>
+
+  <section class="step tab-panel" id="panel-diet" role="tabpanel">
+    <h2>Main takeaway</h2>
+    <p><strong>Mediterranean-style eating is the best-supported pattern.</strong> Reviews and trials most often link a Mediterranean-style diet (plants, olive oil, fish, nuts, whole grains; less ultra-processed food and excess sugar) with lower anxiety, stress, and depressive symptoms. Evidence is stronger for association than for large clinical effects in everyone.</p>
+    <h2>What tends to help</h2>
+    <ul>
+      <li>Mediterranean / Mediterranean-style pattern — strongest evidence for better mental-health scores, including stress and anxiety.</li>
+      <li>Overall diet quality — higher fruit/vegetable intake and better diet scores track with mood improvements in short education trials.</li>
+      <li>Omega-3 rich foods (or counseling plus fish oil) — often studied with Mediterranean advice; a 2024 GAD pilot improved anxiety but was small and combined high-dose EPA with counseling.</li>
+      <li>Magnesium and tryptophan in a food context — limited trial support; not a stand-alone prescription.</li>
+      <li>Less ultra-processed food and sugar swings — common advice; weaker isolated RCT proof for anxiety alone.</li>
+    </ul>
+    <h2>Practical plate (general population)</h2>
+    <ol>
+      <li>Build most meals around plants — vegetables, fruit, legumes, whole grains.</li>
+      <li>Use olive oil and nuts regularly — replace refined oils and snack junk when you can.</li>
+      <li>Eat fish a few times a week — especially fatty fish for EPA/DHA, unless advised otherwise.</li>
+      <li>Keep caffeine within what you tolerate — late or high caffeine can worsen sleep and anxiety.</li>
+      <li>Steady protein and fiber — helps blood-sugar stability and reduces crash-driven irritability.</li>
+    </ol>
+    <p class="fine">Diet alone is not treatment for anxiety disorders. Sleep, movement, therapy, and medical care matter more when stress is severe.</p>
+  </section>
+
+  <section class="step tab-panel hidden" id="panel-genetics" role="tabpanel" hidden>
+    <h2>Is there a genetic piece?</h2>
+    <p>Yes, partly — but it is small, polygenic, and entangled with life stress. Genetics can nudge how sensitive someone is to stress, how they eat under stress, and how they metabolize caffeine or fats. Genetics do not dictate a personal “anti-stress diet” the way a lab panel might.</p>
+    <h2>Variants researchers talk about</h2>
+    <div class="table-wrap">
+      <table class="research-table">
+        <thead>
+          <tr><th>Area</th><th>What studies suggest</th><th>Diet relevance</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>BDNF Val66Met (rs6265)</td><td>Met allele linked in some work to stronger stress–mood interactions</td><td>May modulate stress–calorie intake in specific clinical samples; not a general diet rule</td></tr>
+          <tr><td>COMT Val158Met</td><td>Dopamine clearance; Val carriers in one study preferred “unhealthy” foods more</td><td>Craving/preference nudge, not proven stress-diet therapy</td></tr>
+          <tr><td>Taste / fat preference genes (TAS2R38, CD36, etc.)</td><td>Affect bitter, sweet, fat liking</td><td>Indirect: what you find easy to stick with</td></tr>
+          <tr><td>Polygenic scores</td><td>Many tiny variants for anxiety or emotional eating</td><td>Statistical likelihood only; lifestyle still dominates</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Bottom line for diet × stress</h2>
+    <p><strong>Gene–diet stress interactions exist in research, but they are not clinical recipes.</strong> Someone’s day-to-day stress load and overall diet quality matter far more than any single SNP. Using genetics to “personalize” anti-stress meals beyond caffeine awareness and general Mediterranean guidance overclaims the science today.</p>
+  </section>
+
+  <section class="step tab-panel hidden" id="panel-kit" role="tabpanel" hidden>
+    <h2>What a typical consumer genotype kit covers here</h2>
+    <p>Public product materials for the major consumer DNA kit describe two paid likelihood-style reports that sit near this topic. One estimates genetic likelihood of anxiety that interferes with daily life, built from thousands of markers plus ancestry and birth sex. Another estimates genetic likelihood of frequent emotional eating. Both are statistical summaries for curiosity and lifestyle tips. Neither diagnoses a condition, measures cortisol, nor tells you how stressed you are today.</p>
+    <ul>
+      <li>Anxiety-likelihood report — polygenic estimate only; not a clinical anxiety diagnosis.</li>
+      <li>Emotional-eating likelihood report — about tendency to eat under emotion or stress; not a treatment plan.</li>
+      <li>Nearby wellness and trait notes — caffeine habits, saturated fat and weight, lactose, sleep patterns, and taste preferences can shape food routines, but they are not a stress-diet genetics package.</li>
+      <li>Fun fear-related traits (heights, public speaking) — entertainment, not nutrition guidance.</li>
+    </ul>
+    <h2>What is missing for stress × diet</h2>
+    <ul>
+      <li>No dedicated stress or cortisol genetics report</li>
+      <li>No validated meal plan that maps “your stress genes” to foods</li>
+      <li>Raw genotype files may contain markers researchers study (for example BDNF or COMT SNPs), but the consumer reports do not turn those into a stress-lowering diet prescription</li>
+      <li>Likelihood reports do not replace therapy, medical care, or a registered dietitian</li>
+    </ul>
+    <p>So the practical answer matches the hunch: consumer kit marketing is thin for “genes that change how diet reduces day-to-day stress.” The useful path for GeneMeal stays Mediterranean-style meal education plus a few nutrition-adjacent genotype notes (such as omega-3 conversion or caffeine metabolism), clearly labeled as educational — not as genetically personalized anti-anxiety treatment.</p>
+    <p class="banner" style="background: var(--amber-wash); color: var(--amber);"><strong>Product framing:</strong> Keep any stress-related GeneMeal copy as general diet education with optional trait footnotes and a not-medical-advice disclaimer. Do not claim the kit unlocks a personal anti-stress diet.</p>
+    <h2>Raw data file (for GeneMeal upload)</h2>
+    <p>If you already have an account with that kit, you can request and download your own raw genotype file from their data tools page, then upload the zip into GeneMeal. That download path is the only kit link used here.</p>
+    <p><a class="button" href="https://you.23andme.com/tools/data/" target="_blank" rel="noopener noreferrer">Download your raw genotype data file</a></p>
+  </section>
+</article>
+<script>
+(function () {
+  var tabs = document.querySelectorAll(".tab-bar .tab");
+  var panels = {
+    diet: document.getElementById("panel-diet"),
+    genetics: document.getElementById("panel-genetics"),
+    kit: document.getElementById("panel-kit")
+  };
+  tabs.forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var id = btn.getAttribute("data-tab");
+      tabs.forEach(function (t) {
+        t.classList.toggle("active", t === btn);
+        t.setAttribute("aria-selected", t === btn ? "true" : "false");
+      });
+      Object.keys(panels).forEach(function (key) {
+        var show = key === id;
+        panels[key].hidden = !show;
+        panels[key].classList.toggle("hidden", !show);
+      });
+    });
+  });
+})();
+</script>
+{% endblock %}

@@ -161,6 +161,12 @@ def pricing_page():
     return render_template("pricing.html")
 
 
+@app.get("/research/stress-diet")
+def research_stress():
+    """Educational notes on diet, stress, and consumer genotype kits."""
+    return render_template("research_stress.html")
+
+
 @app.post("/billing/checkout")
 def billing_checkout():
     # Blocked-state visitors cannot be charged — independent of GEO_BLOCK_ENABLED.
