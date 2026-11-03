@@ -86,6 +86,9 @@ RULES = [
     {"flag": "apoe", "gene": "APOE e4",
      "why": "portions with 3 g+ saturated fat and solid fats hidden (APOE e4 carrier); unsaturated, low-sat-fat choices starred",
      "hide": lambda o: o["sat_fat_g"] >= 3 or o["subgroup"].startswith("solid fat")},
+    {"flag": "no_alcohol", "gene": "ALDH2/ADH1B",
+     "why": "alcohol-containing items hidden (the menu has none today)",
+     "hide": lambda o: "alcohol" in o["tags"]},
     {"flag": "sodium", "gene": "AGT",
      "why": f"portions with {SODIUM_LIMIT_MG} mg+ sodium hidden (salt-sensitivity marker)",
      "hide": lambda o: o["sodium_mg"] >= SODIUM_LIMIT_MG},
@@ -101,6 +104,12 @@ NOTES = [
      "why": "milder vegetables starred; bitter greens (kale, arugula, Brussels sprouts...) are often easier roasted or seasoned"},
     {"flag": "sugar_pref", "gene": "SLC2A2",
      "why": "100% juice and dried fruit portions flagged ⚠; whole fruit starred"},
+    {"flag": "satiety", "gene": "MC4R/LEPR/GLP1R",
+     "why": "filling high-fiber (3 g+) and high-protein (10 g+) portions starred"},
+    {"flag": "unsat_fat", "gene": "PPARG",
+     "why": "unsaturated, low-saturated-fat choices starred"},
+    {"flag": "protein_note", "gene": "ACTN3",
+     "why": "higher-protein portions starred"},
     {"flag": "folate", "gene": "MTHFR",
      "why": "folate-rich leafy greens, legumes and fortified grains starred"},
     {"flag": "omega3", "gene": "FADS",
@@ -156,13 +165,15 @@ def _star(o: dict, flags: set[str]) -> bool:
     if o["fiber_g"] >= 3:
         tags.add("fiber")
     if o["sat_fat_g"] <= 1 and "solid fat" not in o["subgroup"]:
-        tags.update({"sat_fat", "apoe"})
+        tags.update({"sat_fat", "apoe", "unsat_fat"})
+    if o["fiber_g"] >= 3 or o["protein_g"] >= 10:
+        tags.add("satiety")
     if o["subgroup"] in ("dark green", "red & orange", "starchy", "other") and not o["food"].startswith(BITTER):
         tags.add("bitter_taster")
     if o["subgroup"] in ("whole", "canned", "frozen") and o.get("group") == "fruits":
         tags.add("sugar_pref")
     if o["protein_g"] >= 10:
-        tags.add("appetite")
+        tags.update({"appetite", "protein_note"})
     return bool(flags & tags)
 
 
@@ -186,6 +197,7 @@ def tailoring(summary: dict | None = None) -> dict:
     full = {g: len(v) for g, v in pool().items()}
     kept = {g: len(v) for g, v in choices(summary).items()}
     return {"rules": [{"gene": r["gene"], "why": r["why"]} for r in RULES if r["flag"] in flags],
+            "undetermined": ["GSTM1/GSTT1: these are whole-gene deletions that consumer SNP files cannot call, so they were not determined and no cruciferous-vegetable stars are applied for them."],
             "stars": [{"gene": r["gene"], "why": r["why"]} for r in NOTES if r["flag"] in flags],
             "hidden": sum(full.values()) - sum(kept.values()), "kept": kept}
 

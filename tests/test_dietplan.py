@@ -162,3 +162,12 @@ def test_taste_and_sugar_rules_star_or_flag_only():
     assert veg["Carrots"]["match"] and not veg["Kale, raw"]["match"]
     t = dietplan.tailoring({"highlights": [{"focus_tags": ["bitter_taster", "sugar_pref"]}]})
     assert {r["gene"] for r in t["stars"]} == {"TAS2R38", "SLC2A2"} and t["hidden"] == 0
+
+
+def test_satiety_pparg_actn3_star_only():
+    full = {g: len(v) for g, v in dietplan.pool().items()}
+    c = dietplan.choices(flags={"satiety", "unsat_fat", "protein_note"})
+    assert {g: len(v) for g, v in c.items()} == full
+    assert any(o["match"] for o in c["vegetables"] if o["food"].startswith("Lentils"))
+    t = dietplan.tailoring({"highlights": [{"focus_tags": ["no_alcohol"]}]})
+    assert any("ALDH2" in r["gene"] for r in t["rules"]) and t["undetermined"]

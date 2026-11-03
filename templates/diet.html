@@ -16,7 +16,7 @@
 </form>
 {% for n in diet.targets.notes %}<p class="fine">{{ n }}</p>{% endfor %}
 {% if diet.tailoring.rules or diet.tailoring.stars %}<div class="card tailored"><strong>Tailored to your genotype.</strong> {{ diet.tailoring.hidden }} portions hidden.
-  <ul>{% for r in diet.tailoring.rules %}<li>{{ r.gene }}: {{ r.why }}</li>{% endfor %}{% for r in diet.tailoring.stars %}<li>{{ r.gene }} (star only): {{ r.why }}</li>{% endfor %}</ul></div>{% endif %}
+  <ul>{% for r in diet.tailoring.rules %}<li>{{ r.gene }}: {{ r.why }}</li>{% endfor %}{% for r in diet.tailoring.stars %}<li>{{ r.gene }} (star only): {{ r.why }}</li>{% endfor %}{% for u in diet.tailoring.undetermined %}<li class="fine">{{ u }}</li>{% endfor %}</ul></div>{% endif %}
 <p class="fine">Protein target ≈ {{ diet.targets.protein_g }} g/day.</p>
 
 <div id="diet-builder" class="diet-grid">
