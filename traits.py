@@ -226,6 +226,33 @@ TRAITS: list[dict] = [
             "are starred."
         ),
     },
+    {
+        "rsid": "rs713598",
+        "gene": "TAS2R38",
+        "label": "Bitter taste (TAS2R38 PAV haplotype)",
+        "confidence": "low",
+        "when": ["CC"],
+        "focus_tags": ["bitter_taster"],
+        "note": (
+            "rs713598 is one of three TAS2R38 sites (with rs1726866 and rs10246939) that "
+            "define the PAV 'taster' haplotype; two PAV copies make many people find "
+            "bitter greens harsher. This app reads the rs713598 call only. When highlighted, "
+            "milder vegetables are starred; bitter greens may be easier roasted or seasoned."
+        ),
+    },
+    {
+        "rsid": "rs5400",
+        "gene": "SLC2A2",
+        "label": "Sugar preference (SLC2A2 Thr110Ile)",
+        "confidence": "low",
+        "when": ["AG", "AA"],
+        "focus_tags": ["sugar_pref"],
+        "note": (
+            "Carriers of the Ile110 allele reported higher habitual sugar intake in "
+            "several studies. When highlighted, 100% juice and dried fruit portions are "
+            "flagged and whole fruit is starred. Nothing is hidden."
+        ),
+    },
 ]
 
 

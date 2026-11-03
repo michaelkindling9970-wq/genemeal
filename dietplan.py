@@ -95,6 +95,21 @@ RULES = [
 ]
 
 
+# Star/flag-only rules: they never hide anything.
+NOTES = [
+    {"flag": "bitter_taster", "gene": "TAS2R38",
+     "why": "milder vegetables starred; bitter greens (kale, arugula, Brussels sprouts...) are often easier roasted or seasoned"},
+    {"flag": "sugar_pref", "gene": "SLC2A2",
+     "why": "100% juice and dried fruit portions flagged ⚠; whole fruit starred"},
+    {"flag": "folate", "gene": "MTHFR",
+     "why": "folate-rich leafy greens, legumes and fortified grains starred"},
+    {"flag": "omega3", "gene": "FADS",
+     "why": "omega-3-rich fish, walnuts, chia and flax starred"},
+]
+BITTER = ("Kale", "Arugula", "Brussels", "Broccoli rabe", "Mustard greens", "Turnip greens",
+          "Watercress", "Collard", "Cabbage", "Red cabbage", "Radishes", "Broccoli")
+
+
 def foods() -> dict:
     return json.loads((Path(__file__).parent / "reference" / "foods.json").read_text())
 
@@ -127,7 +142,7 @@ def pool() -> dict:
                 amt = round(food["eq"] * m, 2)
                 rows.append({
                     "name": f'{food["name"]} ({_serving(food["qty"] * m, food["unit"])})',
-                    "food": food["name"], "subgroup": food["subgroup"], "amount": amt,
+                    "food": food["name"], "group": g, "subgroup": food["subgroup"], "amount": amt,
                     "protein_g": round(food["protein_g"] * m, 1), "fiber_g": round(food["fiber_g"] * m, 1),
                     "sat_fat_g": round(food["sat_fat_g"] * m, 1), "sodium_mg": round(food["sodium_mg"] * m),
                     "tags": food["tags"],
@@ -142,6 +157,10 @@ def _star(o: dict, flags: set[str]) -> bool:
         tags.add("fiber")
     if o["sat_fat_g"] <= 1 and "solid fat" not in o["subgroup"]:
         tags.update({"sat_fat", "apoe"})
+    if o["subgroup"] in ("dark green", "red & orange", "starchy", "other") and not o["food"].startswith(BITTER):
+        tags.add("bitter_taster")
+    if o["subgroup"] in ("whole", "canned", "frozen") and o.get("group") == "fruits":
+        tags.add("sugar_pref")
     if o["protein_g"] >= 10:
         tags.add("appetite")
     return bool(flags & tags)
@@ -156,7 +175,8 @@ def choices(summary: dict | None = None, flags: set[str] | None = None) -> dict:
         for o in rows:
             if any(r["hide"](o) for r in active):
                 continue
-            keep.append({**o, "match": _star(o, flags), "avoid": False})
+            flag = "sugar_pref" in flags and o["subgroup"] in ("juice", "dried")
+            keep.append({**o, "match": _star(o, flags), "avoid": flag})
         out[g] = keep
     return out
 
@@ -166,6 +186,7 @@ def tailoring(summary: dict | None = None) -> dict:
     full = {g: len(v) for g, v in pool().items()}
     kept = {g: len(v) for g, v in choices(summary).items()}
     return {"rules": [{"gene": r["gene"], "why": r["why"]} for r in RULES if r["flag"] in flags],
+            "stars": [{"gene": r["gene"], "why": r["why"]} for r in NOTES if r["flag"] in flags],
             "hidden": sum(full.values()) - sum(kept.values()), "kept": kept}
 
 

@@ -4,7 +4,7 @@ from traits import EDUCATIONAL, TRAITS, summarize
 
 
 def test_catalog_is_small_and_labeled():
-    assert 5 <= len(TRAITS) <= 15
+    assert 5 <= len(TRAITS) <= 20
     rsids = [row["rsid"] for row in TRAITS]
     assert len(rsids) == len(set(rsids))
     assert "rs1801133" in rsids

@@ -150,3 +150,15 @@ def test_apoe_and_fads_traits_present():
     s = summarize({"genotypes": {"rs429358": "CT", "rs174537": "TT"}, "marker_count": 2})
     tags = {t for r in s["highlights"] for t in r["focus_tags"]}
     assert {"apoe", "omega3"} <= tags
+
+
+def test_taste_and_sugar_rules_star_or_flag_only():
+    full = {g: len(v) for g, v in dietplan.pool().items()}
+    c = dietplan.choices(flags={"bitter_taster", "sugar_pref"})
+    assert {g: len(v) for g, v in c.items()} == full
+    fr = {o["food"]: o for o in c["fruits"]}
+    assert fr["Raisins"]["avoid"] and fr["Orange juice, 100%"]["avoid"] and fr["Apple"]["match"]
+    veg = {o["food"]: o for o in c["vegetables"]}
+    assert veg["Carrots"]["match"] and not veg["Kale, raw"]["match"]
+    t = dietplan.tailoring({"highlights": [{"focus_tags": ["bitter_taster", "sugar_pref"]}]})
+    assert {r["gene"] for r in t["stars"]} == {"TAS2R38", "SLC2A2"} and t["hidden"] == 0
