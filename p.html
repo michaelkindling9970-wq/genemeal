@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pricing — GeneMeal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,680&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <header class="top">
+    <a class="brand" href="/">
+      <svg viewBox="0 0 40 40" aria-hidden="true" class="mark">
+        <rect x="1" y="1" width="38" height="38" rx="8" fill="#143d2e"/>
+        <path d="M20 8c-2 6-8 8-8 14a8 8 0 0 0 16 0c0-6-6-8-8-14z" fill="#e7f0e4"/>
+        <path d="M20 16v12M15 22h10" stroke="#1f6a4e" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+      <span>
+        <span class="kicker">Local educational notebook</span>
+        <span class="word">GeneMeal</span>
+      </span>
+    </a>
+    <nav>
+      <a href="/">Guide</a>
+      <a href="/results">Markers</a>
+      <a href="/plan">Week</a>
+      
+      <a href="/research/stress-diet">Diets4stress</a>
+      <a href="/pricing">Pricing</a>
+    </nav>
+  </header>
+  <div class="wrap">
+    
+    
+<section class="intro">
+  <h1>Pricing</h1>
+  <p class="lede">GeneMeal Monthly is $13.00 per month. That total is the base fee, the server usage fee, and the genome analysis / processing fee.</p>
+</section>
+<section class="pricing" id="pricing" aria-labelledby="pricing-heading">
+  <p class="price-heading" id="pricing-heading">$13.00 per month</p>
+  <ul class="price-lines">
+    
+      <li><span>Base fee</span><span>$10.00/mo</span></li>
+    
+      <li><span>Server usage fee</span><span>$2.00/mo</span></li>
+    
+      <li><span>Genome analysis / processing fee</span><span>$1.00/mo</span></li>
+    
+  </ul>
+  <p class="fine">Includes the MyPlate diet plan builder.</p>
+  <p class="price-total"><span>Monthly total</span><strong>$13.00</strong></p>
+  
+    <div class="pay-buttons pay-single">
+      <form method="post" action="/billing/checkout">
+        <input type="hidden" name="csrf_token" value="db61ee3a4e0dc6a1a893ff28c8acb781">
+        <button type="submit" id="pay-paypal">PayPal</button>
+      </form>
+    </div>
+    <p class="fine">Subscribe starts a monthly PayPal subscription for this $13.00 plan.</p>
+  
+</section>
+<p class="next"><a href="/">Back to the guide</a></p>
+
+    <footer>
+      <p>Not medical advice. This 7-day menu is an educational sketch built from a few public nutrition markers and generic calorie and protein placeholders. It does not diagnose, treat, or prevent any condition, and it is not a prescription for you. Genotype effects are usually small. Talk with a clinician or registered dietitian before changing how you eat, especially if you are pregnant, managing an illness, or considering supplements.</p>
+      <p class="fine">Nothing here is sent to 23andMe — there is no third-party API.</p>
+    </footer>
+  </div>
+</body>
+</html>

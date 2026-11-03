@@ -83,13 +83,40 @@ RULES = [
     {"flag": "sat_fat", "gene": "APOA2",
      "why": f"portions with {SAT_FAT_LIMIT_G} g+ saturated fat and solid fats hidden (saturated-fat-sensitivity marker)",
      "hide": lambda o: o["sat_fat_g"] >= SAT_FAT_LIMIT_G or o["subgroup"].startswith("solid fat")},
+    {"flag": "apoe", "gene": "APOE e4",
+     "why": "portions with 3 g+ saturated fat and solid fats hidden (APOE e4 carrier); unsaturated, low-sat-fat choices starred",
+     "hide": lambda o: o["sat_fat_g"] >= 3 or o["subgroup"].startswith("solid fat")},
+    {"flag": "no_alcohol", "gene": "ALDH2/ADH1B",
+     "why": "alcohol-containing items hidden (the menu has none today)",
+     "hide": lambda o: "alcohol" in o["tags"]},
     {"flag": "sodium", "gene": "AGT",
      "why": f"portions with {SODIUM_LIMIT_MG} mg+ sodium hidden (salt-sensitivity marker)",
      "hide": lambda o: o["sodium_mg"] >= SODIUM_LIMIT_MG},
     {"flag": "caffeine_note", "gene": "CYP1A2",
-     "why": "caffeine-containing choices (chocolate milk) hidden (slower caffeine-metabolism marker)",
+     "why": "coffee, tea, cola, energy drinks, lattes and chocolate milk hidden (slower caffeine-metabolism marker)",
      "hide": lambda o: "caffeine" in o["tags"]},
 ]
+
+
+# Star/flag-only rules: they never hide anything.
+NOTES = [
+    {"flag": "bitter_taster", "gene": "TAS2R38",
+     "why": "milder vegetables starred; bitter greens (kale, arugula, Brussels sprouts...) are often easier roasted or seasoned"},
+    {"flag": "sugar_pref", "gene": "SLC2A2",
+     "why": "100% juice and dried fruit portions flagged ⚠; whole fruit starred"},
+    {"flag": "satiety", "gene": "MC4R/LEPR/GLP1R",
+     "why": "filling high-fiber (3 g+) and high-protein (10 g+) portions starred"},
+    {"flag": "unsat_fat", "gene": "PPARG",
+     "why": "unsaturated, low-saturated-fat choices starred"},
+    {"flag": "protein_note", "gene": "ACTN3",
+     "why": "higher-protein portions starred"},
+    {"flag": "folate", "gene": "MTHFR",
+     "why": "folate-rich leafy greens, legumes and fortified grains starred"},
+    {"flag": "omega3", "gene": "FADS",
+     "why": "omega-3-rich fish, walnuts, chia and flax starred"},
+]
+BITTER = ("Kale", "Arugula", "Brussels", "Broccoli rabe", "Mustard greens", "Turnip greens",
+          "Watercress", "Collard", "Cabbage", "Red cabbage", "Radishes", "Broccoli")
 
 
 def foods() -> dict:
@@ -117,14 +144,14 @@ def pool() -> dict:
     """Every food x portion option, before genotype filtering."""
     f = foods()
     out = {}
-    for g in GROUP_ORDER:
+    for g in GROUP_ORDER + ["beverages"]:
         rows = []
         for food in f["foods"][g]:
             for m in f["portions"][g]:
                 amt = round(food["eq"] * m, 2)
                 rows.append({
                     "name": f'{food["name"]} ({_serving(food["qty"] * m, food["unit"])})',
-                    "food": food["name"], "subgroup": food["subgroup"], "amount": amt,
+                    "food": food["name"], "group": g, "subgroup": food["subgroup"], "amount": amt,
                     "protein_g": round(food["protein_g"] * m, 1), "fiber_g": round(food["fiber_g"] * m, 1),
                     "sat_fat_g": round(food["sat_fat_g"] * m, 1), "sodium_mg": round(food["sodium_mg"] * m),
                     "tags": food["tags"],
@@ -137,8 +164,16 @@ def _star(o: dict, flags: set[str]) -> bool:
     tags = set(o["tags"])
     if o["fiber_g"] >= 3:
         tags.add("fiber")
+    if o["sat_fat_g"] <= 1 and "solid fat" not in o["subgroup"]:
+        tags.update({"sat_fat", "apoe", "unsat_fat"})
+    if o["fiber_g"] >= 3 or o["protein_g"] >= 10:
+        tags.add("satiety")
+    if o["subgroup"] in ("dark green", "red & orange", "starchy", "other") and not o["food"].startswith(BITTER):
+        tags.add("bitter_taster")
+    if o["subgroup"] in ("whole", "canned", "frozen") and o.get("group") == "fruits":
+        tags.add("sugar_pref")
     if o["protein_g"] >= 10:
-        tags.add("appetite")
+        tags.update({"appetite", "protein_note"})
     return bool(flags & tags)
 
 
@@ -151,7 +186,8 @@ def choices(summary: dict | None = None, flags: set[str] | None = None) -> dict:
         for o in rows:
             if any(r["hide"](o) for r in active):
                 continue
-            keep.append({**o, "match": _star(o, flags), "avoid": False})
+            flag = "sugar_pref" in flags and o["subgroup"] in ("juice", "dried")
+            keep.append({**o, "match": _star(o, flags), "avoid": flag})
         out[g] = keep
     return out
 
@@ -161,6 +197,7 @@ def tailoring(summary: dict | None = None) -> dict:
     full = {g: len(v) for g, v in pool().items()}
     kept = {g: len(v) for g, v in choices(summary).items()}
     return {"rules": [{"gene": r["gene"], "why": r["why"]} for r in RULES if r["flag"] in flags],
+            "stars": [{"gene": r["gene"], "why": r["why"]} for r in NOTES if r["flag"] in flags],
             "hidden": sum(full.values()) - sum(kept.values()), "kept": kept}
 
 
@@ -173,5 +210,6 @@ def view(kcal: int, summary: dict | None = None) -> dict:
         "groups": [{"key": g, "label": LABELS[g], "unit": d["food_groups"][g]["unit"],
                     "tip": d["food_groups"][g]["tip"]} for g in GROUP_ORDER],
         "meals": MEALS,
+        "beverages": [o for o in choices(summary)["beverages"]],
         "sources": d["source"]["urls"] + [u for u in foods()["sources"] if u not in d["source"]["urls"]],
     }
