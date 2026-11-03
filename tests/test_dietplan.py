@@ -121,6 +121,8 @@ def test_filters_hide_what_they_promise():
     every = [o for rows in c.values() for o in rows]
     assert not any("gluten" in o["tags"] or "lactose" in o["tags"] or "caffeine" in o["tags"] for o in every)
     assert all(o["sodium_mg"] < dietplan.SODIUM_LIMIT_MG and o["sat_fat_g"] < dietplan.SAT_FAT_LIMIT_G for o in every)
+    assert all(o["sat_fat_g"] < 3 for o in every)
+    assert not any(o["subgroup"] == "caffeinated" for o in c["beverages"])
     assert any("Brown rice" in o["name"] for o in c["grains"])
     assert not any(o["food"] == "Whole-wheat bread" for o in c["grains"])
 
@@ -133,3 +135,54 @@ def test_paid_page_shows_tailoring_note(client):
     assert view["tailoring"]["rules"] and view["tailoring"]["hidden"] > 0
     html = client.get("/diet").get_data(as_text=True)
     assert "diet-options" in html and "Brown rice, cooked (1/2 cup)" in html
+
+
+def test_new_markers_star_without_hiding():
+    full = {g: len(v) for g, v in dietplan.pool().items()}
+    c = dietplan.choices(flags={"folate", "omega3"})
+    assert {g: len(v) for g, v in c.items()} == full
+    assert any(o["match"] for o in c["vegetables"] if o["food"].startswith("Spinach"))
+    assert any(o["match"] for o in c["protein_foods"] if o["food"].startswith("Salmon"))
+
+
+def test_apoe_and_fads_traits_present():
+    from traits import summarize
+    s = summarize({"genotypes": {"rs429358": "CT", "rs174537": "TT"}, "marker_count": 2})
+    tags = {t for r in s["highlights"] for t in r["focus_tags"]}
+    assert {"apoe", "omega3"} <= tags
+
+
+def test_taste_and_sugar_rules_star_or_flag_only():
+    full = {g: len(v) for g, v in dietplan.pool().items()}
+    c = dietplan.choices(flags={"bitter_taster", "sugar_pref"})
+    assert {g: len(v) for g, v in c.items()} == full
+    fr = {o["food"]: o for o in c["fruits"]}
+    assert fr["Raisins"]["avoid"] and fr["Orange juice, 100%"]["avoid"] and fr["Apple"]["match"]
+    veg = {o["food"]: o for o in c["vegetables"]}
+    assert veg["Carrots"]["match"] and not veg["Kale, raw"]["match"]
+    t = dietplan.tailoring({"highlights": [{"focus_tags": ["bitter_taster", "sugar_pref"]}]})
+    assert {r["gene"] for r in t["stars"]} == {"TAS2R38", "SLC2A2"} and t["hidden"] == 0
+
+
+def test_satiety_pparg_actn3_star_only():
+    full = {g: len(v) for g, v in dietplan.pool().items()}
+    c = dietplan.choices(flags={"satiety", "unsat_fat", "protein_note"})
+    assert {g: len(v) for g, v in c.items()} == full
+    assert any(o["match"] for o in c["vegetables"] if o["food"].startswith("Lentils"))
+    t = dietplan.tailoring({"highlights": [{"focus_tags": ["no_alcohol"]}]})
+    assert any("ALDH2" in r["gene"] for r in t["rules"])
+
+
+def test_hidden_markers_never_shown(client):
+    import traits
+    from tests.helpers import upload
+    from tests.samples import genome_zip
+    assert set(traits.NOT_DETERMINABLE) == {"GSTM1", "GSTT1"}
+    name, raw = genome_zip()  # sample includes GC rs2282679 GT (a highlighted call)
+    upload(client, name, raw)
+    results = client.get("/results").get_data(as_text=True)
+    _paid(client)
+    diet = client.get("/diet").get_data(as_text=True)
+    for page in (results, diet):
+        for bad in ("GSTM1", "GSTT1", "histamine", "Histamine", "vitamin D", "Vitamin D", ">GC<", "GC rs2282679", "rs2282679"):
+            assert bad not in page, bad

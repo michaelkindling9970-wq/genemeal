@@ -131,6 +131,7 @@ TRAITS: list[dict] = [
     {
         "rsid": "rs2282679",
         "gene": "GC",
+        "hidden": True,  # backend-only: never shown to users
         "label": "Vitamin D status tendency",
         "confidence": "medium",
         "when": ["GG", "GT"],
@@ -198,7 +199,131 @@ TRAITS: list[dict] = [
             "with 460 mg or more of sodium."
         ),
     },
+    {
+        "rsid": "rs429358",
+        "gene": "APOE",
+        "label": "APOE e4 carrier (rs429358 with rs7412)",
+        "confidence": "medium",
+        "when": ["CT", "CC"],
+        "focus_tags": ["apoe"],
+        "note": (
+            "A C at rs429358 (with the usual C at rs7412) marks the APOE e4 allele, which "
+            "is linked to higher LDL cholesterol response to saturated fat. Not a "
+            "diagnosis. When highlighted, the diet builder hides portions with 3 g or "
+            "more saturated fat and stars low-saturated-fat choices."
+        ),
+    },
+    {
+        "rsid": "rs174537",
+        "gene": "FADS1/FADS2",
+        "label": "Omega-3 conversion (FADS cluster)",
+        "confidence": "low",
+        "when": ["GT", "TT"],
+        "focus_tags": ["omega3"],
+        "note": (
+            "The T allele at rs174537 is linked in genome-wide studies to lower blood "
+            "levels of long-chain omega-3 and omega-6 fats, consistent with slower "
+            "conversion from plant oils. When highlighted, fish and other omega-3 foods "
+            "are starred."
+        ),
+    },
+    {
+        "rsid": "rs713598",
+        "gene": "TAS2R38",
+        "label": "Bitter taste (TAS2R38 PAV haplotype)",
+        "confidence": "low",
+        "when": ["CC"],
+        "focus_tags": ["bitter_taster"],
+        "note": (
+            "rs713598 is one of three TAS2R38 sites (with rs1726866 and rs10246939) that "
+            "define the PAV 'taster' haplotype; two PAV copies make many people find "
+            "bitter greens harsher. This app reads the rs713598 call only. When highlighted, "
+            "milder vegetables are starred; bitter greens may be easier roasted or seasoned."
+        ),
+    },
+    {
+        "rsid": "rs5400",
+        "gene": "SLC2A2",
+        "label": "Sugar preference (SLC2A2 Thr110Ile)",
+        "confidence": "low",
+        "when": ["AG", "AA"],
+        "focus_tags": ["sugar_pref"],
+        "note": (
+            "Carriers of the Ile110 allele reported higher habitual sugar intake in "
+            "several studies. When highlighted, 100% juice and dried fruit portions are "
+            "flagged and whole fruit is starred. Nothing is hidden."
+        ),
+    },
+    {
+        "rsid": "rs17782313",
+        "gene": "MC4R",
+        "label": "Appetite (MC4R)",
+        "confidence": "low",
+        "when": ['CT', 'CC'],
+        "focus_tags": ["satiety"],
+        "note": ("The C allele near MC4R is linked to higher BMI and appetite in genome-wide studies. When highlighted, filling high-fiber and high-protein foods are starred."),
+    },
+    {
+        "rsid": "rs1137101",
+        "gene": "LEPR",
+        "label": "Appetite (LEPR Gln223Arg)",
+        "confidence": "low",
+        "when": ['AG', 'GG'],
+        "focus_tags": ["satiety"],
+        "note": ("LEPR Gln223Arg is studied for leptin signaling and satiety; findings are mixed. When highlighted, filling high-fiber and high-protein foods are starred."),
+    },
+    {
+        "rsid": "rs6923761",
+        "gene": "GLP1R",
+        "label": "Satiety (GLP1R Gly168Ser)",
+        "confidence": "low",
+        "when": ['AG', 'AA'],
+        "focus_tags": ["satiety"],
+        "note": ("GLP1R Gly168Ser is studied for satiety-hormone response. When highlighted, filling high-fiber foods are starred."),
+    },
+    {
+        "rsid": "rs671",
+        "gene": "ALDH2",
+        "label": "Alcohol flush (ALDH2*2)",
+        "confidence": "low",
+        "when": ['AG', 'AA'],
+        "focus_tags": ["no_alcohol"],
+        "note": ("The A allele (ALDH2*2) causes alcohol flush and slower acetaldehyde clearance. Any alcohol-containing items would be hidden; the menu currently has none."),
+    },
+    {
+        "rsid": "rs1229984",
+        "gene": "ADH1B",
+        "label": "Alcohol metabolism (ADH1B*2)",
+        "confidence": "low",
+        "when": ['AG', 'AA'],
+        "focus_tags": ["no_alcohol"],
+        "note": ("ADH1B*2 (A allele) speeds alcohol-to-acetaldehyde conversion. Any alcohol-containing items would be hidden; the menu currently has none."),
+    },
+    {
+        "rsid": "rs1801282",
+        "gene": "PPARG",
+        "label": "Fat type response (PPARG Pro12Ala)",
+        "confidence": "low",
+        "when": ['CG', 'GG'],
+        "focus_tags": ["unsat_fat"],
+        "note": ("Ala12 carriers showed better responses to unsaturated fat in some studies. When highlighted, unsaturated, low-saturated-fat choices are starred."),
+    },
+    {
+        "rsid": "rs1815739",
+        "gene": "ACTN3",
+        "label": "Muscle fiber type (ACTN3 R577X)",
+        "confidence": "low",
+        "when": ['TT'],
+        "focus_tags": ["protein_note"],
+        "note": ("The XX (TT) genotype lacks alpha-actinin-3 in fast muscle fibers. Educational only; when highlighted, higher-protein portions are starred."),
+    },
 ]
+
+
+# Backend-only: whole-gene deletions that consumer SNP files cannot call.
+# Not shown to users and not used for stars.
+NOT_DETERMINABLE = {"GSTM1": "gene deletion, not callable from SNP arrays",
+                    "GSTT1": "gene deletion, not callable from SNP arrays"}
 
 
 def _alleles(genotype: str) -> str:
@@ -228,6 +353,8 @@ def summarize(parsed: dict) -> dict:
     seen = []
     absent = []
     for entry in TRAITS:
+        if entry.get("hidden"):
+            continue
         raw = genotypes.get(entry["rsid"])
         if raw is None or _alleles(raw) == "":
             absent.append(entry["rsid"])
