@@ -118,7 +118,7 @@ Get a key from the USDA FoodData Central API docs when you want live foods. Unti
 
 ## Trait map
 
-`traits.py` is a starter set of 11 markers (MTHFR, FTO, APOA2, TCF7L2, MCM6/LCT, FADS1, CYP1A2, GC, BCMO1). Confidence is only low or medium. Genotypes are the plus-strand letters in a 23andMe file, which do not always match the letters in older papers. The notes in that file say what is and is not being claimed. Extend the list only with markers you can cite, and keep the medical disclaimer.
+`traits.py` is a starter set of markers (MTHFR, FTO, APOA2, TCF7L2, MCM6/LCT, FADS1, BCMO1 and others). Confidence is only low or medium. Genotypes are the plus-strand letters in a 23andMe file, which do not always match the letters in older papers. The notes in that file say what is and is not being claimed. Extend the list only with markers you can cite, and keep the medical disclaimer.
 
 ## Tests
 

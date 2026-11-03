@@ -41,13 +41,6 @@
   </section>
   {% endfor %}
 </div>
-<section class="diet-group"><h2>Beverages <span class="fine">no MyPlate target; water first</span></h2>
-  <p class="fine">{{ diet.beverages|length }} choices</p>
-  {% for meal in diet.meals %}<label class="diet-pick">{{ meal }}
-    <select class="pulse-select bev" onchange="this.classList.toggle('chosen', this.value!='')"><option value="">—</option>
-    {% for sub, opts in diet.beverages|groupby("subgroup") %}<optgroup label="{{ sub|capitalize }}">{% for f in opts %}<option>{{ f.name }}</option>{% endfor %}</optgroup>{% endfor %}
-    </select></label>{% endfor %}
-</section>
 <p class="fine">Sources: {% for u in diet.sources %}<a href="{{ u }}">{{ u }}</a>{% if not loop.last %}, {% endif %}{% endfor %}. Educational, not medical advice.</p>
 <script>
 (function () {

@@ -21,7 +21,7 @@ def test_maps_calls_from_synthetic_file():
     summary = summarize(parsed)
     highlighted = {row["rsid"]: row for row in summary["highlights"]}
     assert summary["educational"] == EDUCATIONAL
-    assert summary["marker_count"] == 12
+    assert summary["marker_count"] == 11
     assert summary["build"] == 37
     assert highlighted["rs1801133"]["confidence"] == "medium"
     assert highlighted["rs1801133"]["genotype"] == "CT"

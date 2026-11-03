@@ -119,10 +119,9 @@ def test_every_trait_combo_keeps_50_per_list():
 def test_filters_hide_what_they_promise():
     c = dietplan.choices(flags=set(FILTER_FLAGS))
     every = [o for rows in c.values() for o in rows]
-    assert not any("gluten" in o["tags"] or "lactose" in o["tags"] or "caffeine" in o["tags"] for o in every)
+    assert not any("gluten" in o["tags"] or "lactose" in o["tags"] for o in every)
     assert all(o["sodium_mg"] < dietplan.SODIUM_LIMIT_MG and o["sat_fat_g"] < dietplan.SAT_FAT_LIMIT_G for o in every)
     assert all(o["sat_fat_g"] < 3 for o in every)
-    assert not any(o["subgroup"] == "caffeinated" for o in c["beverages"])
     assert any("Brown rice" in o["name"] for o in c["grains"])
     assert not any(o["food"] == "Whole-wheat bread" for o in c["grains"])
 
@@ -186,3 +185,18 @@ def test_hidden_markers_never_shown(client):
     for page in (results, diet):
         for bad in ("GSTM1", "GSTT1", "histamine", "Histamine", "vitamin D", "Vitamin D", ">GC<", "GC rs2282679", "rs2282679"):
             assert bad not in page, bad
+
+
+def test_no_caffeine_anywhere(client):
+    from tests.helpers import upload
+    from tests.samples import genome_zip
+    home = client.get("/").get_data(as_text=True)
+    name, raw = genome_zip()
+    upload(client, name, raw)
+    results = client.get("/results").get_data(as_text=True)
+    _paid(client)
+    diet = client.get("/diet").get_data(as_text=True)
+    for page in (home, results, diet):
+        low = page.lower()
+        for bad in ("caffeine", "cyp1a2", "coffee", "energy drink"):
+            assert bad not in low, bad

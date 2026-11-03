@@ -6,7 +6,7 @@ Serving sizes follow the MyPlate food-group pages ("what counts as" tables);
 nutrients are rounded from USDA FoodData Central (SR Legacy / FNDDS) for that
 serving. Values are approximate and educational. Re-run after editing:
     python scripts/build_foods.py
-Tags: gluten, lactose, caffeine (used to filter by genotype) and
+Tags: gluten, lactose (used to filter by genotype) and
 omega3, vitamin_d, folate, carotenoid (used to star matches).
 """
 import json
@@ -24,7 +24,7 @@ SOURCES = [
 ]
 
 PORTIONS = {"fruits": [0.5, 1, 1.5], "vegetables": [0.5, 1, 1.5], "grains": [1, 2, 3],
-            "protein_foods": [1, 2, 3, 4], "dairy": [0.5, 0.75, 1, 1.5, 2], "oils": [1, 2, 3], "beverages": [8, 12, 16]}
+            "protein_foods": [1, 2, 3, 4], "dairy": [0.5, 0.75, 1, 1.5, 2], "oils": [1, 2, 3]}
 
 RAW = {
 "fruits": """
@@ -329,7 +329,7 @@ Fat-free milk|1|cup|milk|8.3|0|0.1|103|lactose vitamin_d
 Low-fat milk|1|cup|milk|8.2|0|1.5|107|lactose vitamin_d
 Reduced-fat (2%) milk|1|cup|milk|8|0|3.1|115|lactose vitamin_d
 Whole milk|1|cup|milk|7.7|0|4.6|105|lactose vitamin_d
-Low-fat chocolate milk|1|cup|milk|8|1|1.5|150|lactose vitamin_d caffeine
+Low-fat chocolate milk|1|cup|milk|8|1|1.5|150|lactose vitamin_d
 Buttermilk, low-fat|1|cup|milk|8|0|1.3|260|lactose
 Fat-free plain yogurt|1|cup|yogurt|14|0|0.3|190|lactose
 Low-fat plain yogurt|1|cup|yogurt|13|0|2.3|170|lactose
@@ -346,7 +346,7 @@ Feta|1.5|oz|cheese|6|0|6.3|470|lactose
 Lactose-free fat-free milk|1|cup|lactose-free|8.3|0|0.1|125|lactose_free vitamin_d
 Lactose-free low-fat milk|1|cup|lactose-free|8.2|0|1.5|125|lactose_free vitamin_d
 Lactose-free reduced-fat milk|1|cup|lactose-free|8|0|3|125|lactose_free vitamin_d
-Lactose-free low-fat chocolate milk|1|cup|lactose-free|8|1|1.5|160|lactose_free vitamin_d caffeine
+Lactose-free low-fat chocolate milk|1|cup|lactose-free|8|1|1.5|160|lactose_free vitamin_d
 Lactose-free fat-free plain yogurt|1|cup|lactose-free|12|0|0.2|160|lactose_free
 Lactose-free low-fat vanilla yogurt|1|cup|lactose-free|10|0|1.8|140|lactose_free
 Lactose-free nonfat Greek yogurt|1|cup|lactose-free|22|0|0.3|90|lactose_free
@@ -394,42 +394,6 @@ Balsamic vinaigrette|2|tsp|oil-rich food|0|0|0.5|90|
 Avocado, sliced|0.125|fruit|oil-rich food|0.5|1.7|0.5|2|folate
 Olives, black|8|large|oil-rich food|0.3|1|0.6|280|
 Pesto|1.5|tsp|oil-rich food|0.5|0.1|0.6|60|lactose
-""",
-"beverages": """
-Water|1|fl oz|water|0|0|0|0|
-Sparkling water, unflavored|1|fl oz|water|0|0|0|1|
-Sparkling water, lemon|1|fl oz|water|0|0|0|1|
-Mineral water|1|fl oz|water|0|0|0|2|
-Cucumber-mint infused water|1|fl oz|water|0|0|0|0|
-Coconut water|1|fl oz|water|0.1|0|0|30|
-Peppermint tea|1|fl oz|caffeine-free tea|0|0|0|0|
-Chamomile tea|1|fl oz|caffeine-free tea|0|0|0|0|
-Rooibos tea|1|fl oz|caffeine-free tea|0|0|0|0|
-Hibiscus tea|1|fl oz|caffeine-free tea|0|0|0|0|
-Ginger tea|1|fl oz|caffeine-free tea|0|0|0|0|
-Lemon balm tea|1|fl oz|caffeine-free tea|0|0|0|0|
-Fruit herbal tea|1|fl oz|caffeine-free tea|0|0|0|0|
-Decaf coffee, black|1|fl oz|decaf|0|0|0|0|
-Decaf espresso|1|fl oz|decaf|0.1|0|0|1|
-Decaf black tea|1|fl oz|decaf|0|0|0|0|
-Decaf green tea|1|fl oz|decaf|0|0|0|0|
-Decaf iced tea, unsweetened|1|fl oz|decaf|0|0|0|1|
-Barley-free chicory "coffee"|1|fl oz|decaf|0|0|0|1|
-Decaf soy latte (fortified soy milk)|1|fl oz|decaf|0.8|0.1|0.1|12|lactose_free
-Golden milk, fortified soy|1|fl oz|decaf|0.8|0.1|0.1|12|lactose_free
-Tomato juice, low sodium (drink)|1|fl oz|other|0.2|0.1|0|3|
-Kombucha, decaf|1|fl oz|other|0|0|0|1|
-Coffee, brewed|1|fl oz|caffeinated|0|0|0|1|caffeine
-Espresso|1|fl oz|caffeinated|0.1|0|0|4|caffeine
-Cold brew coffee|1|fl oz|caffeinated|0|0|0|1|caffeine
-Black tea|1|fl oz|caffeinated|0|0|0|0|caffeine
-Green tea|1|fl oz|caffeinated|0|0|0|0|caffeine
-Matcha|1|fl oz|caffeinated|0.1|0|0|0|caffeine
-Yerba mate|1|fl oz|caffeinated|0|0|0|0|caffeine
-Iced tea, unsweetened|1|fl oz|caffeinated|0|0|0|1|caffeine
-Cola|1|fl oz|caffeinated|0|0|0|1|caffeine
-Energy drink|1|fl oz|caffeinated|0|0|0|25|caffeine
-Latte (dairy milk)|1|fl oz|caffeinated|0.8|0|0.3|12|caffeine lactose
 """,
 }
 

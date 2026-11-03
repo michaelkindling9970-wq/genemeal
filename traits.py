@@ -115,20 +115,6 @@ TRAITS: list[dict] = [
         ),
     },
     {
-        "rsid": "rs762551",
-        "gene": "CYP1A2",
-        "label": "Caffeine metabolism",
-        "confidence": "medium",
-        "when": ["AC", "CC"],
-        "focus_tags": ["caffeine_note"],
-        "note": (
-            "The A allele is widely described as the faster caffeine-metabolizer call "
-            "and C as slower. Studies that connect this marker to coffee and heart risk "
-            "do not agree. A highlighted call adds a moderation note. It does not add or "
-            "remove a meal."
-        ),
-    },
-    {
         "rsid": "rs2282679",
         "gene": "GC",
         "hidden": True,  # backend-only: never shown to users

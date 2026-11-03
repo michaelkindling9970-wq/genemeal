@@ -12,14 +12,14 @@ def test_accepts_synthetic_genome_zip(client):
     assert response.status_code == 302
     assert response.headers["Location"].endswith("/results")
     page = client.get("/results").get_data(as_text=True)
-    assert "12" in page
+    assert "11" in page
     assert "GRCh37" in page
     assert "23andMe" in page
     assert "Folate metabolism" in page
     assert "Confirm" in page
     status = client.get("/account/status").get_json()
     assert status["status"] == "uploaded"
-    assert status["marker_count"] == 12
+    assert status["marker_count"] == 11
     assert status["genome_build"] == 37
     assert status["source"] == "23andMe"
     assert status["has_raw_file"] is True
