@@ -170,4 +170,12 @@ def test_satiety_pparg_actn3_star_only():
     assert {g: len(v) for g, v in c.items()} == full
     assert any(o["match"] for o in c["vegetables"] if o["food"].startswith("Lentils"))
     t = dietplan.tailoring({"highlights": [{"focus_tags": ["no_alcohol"]}]})
-    assert any("ALDH2" in r["gene"] for r in t["rules"]) and t["undetermined"]
+    assert any("ALDH2" in r["gene"] for r in t["rules"])
+
+
+def test_gst_genes_never_shown(client):
+    import traits
+    assert set(traits.NOT_DETERMINABLE) == {"GSTM1", "GSTT1"}
+    _paid(client)
+    html = client.get("/diet").get_data(as_text=True)
+    assert "GSTM1" not in html and "GSTT1" not in html

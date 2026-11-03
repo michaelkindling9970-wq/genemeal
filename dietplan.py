@@ -197,7 +197,6 @@ def tailoring(summary: dict | None = None) -> dict:
     full = {g: len(v) for g, v in pool().items()}
     kept = {g: len(v) for g, v in choices(summary).items()}
     return {"rules": [{"gene": r["gene"], "why": r["why"]} for r in RULES if r["flag"] in flags],
-            "undetermined": ["GSTM1/GSTT1: these are whole-gene deletions that consumer SNP files cannot call, so they were not determined and no cruciferous-vegetable stars are applied for them."],
             "stars": [{"gene": r["gene"], "why": r["why"]} for r in NOTES if r["flag"] in flags],
             "hidden": sum(full.values()) - sum(kept.values()), "kept": kept}
 

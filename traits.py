@@ -319,6 +319,12 @@ TRAITS: list[dict] = [
 ]
 
 
+# Backend-only: whole-gene deletions that consumer SNP files cannot call.
+# Not shown to users and not used for stars.
+NOT_DETERMINABLE = {"GSTM1": "gene deletion, not callable from SNP arrays",
+                    "GSTT1": "gene deletion, not callable from SNP arrays"}
+
+
 def _alleles(genotype: str) -> str:
     text = (genotype or "").strip().upper().replace(" ", "")
     letters = [ch for ch in text if ch in "ACGT"]
