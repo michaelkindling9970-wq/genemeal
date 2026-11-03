@@ -83,11 +83,14 @@ RULES = [
     {"flag": "sat_fat", "gene": "APOA2",
      "why": f"portions with {SAT_FAT_LIMIT_G} g+ saturated fat and solid fats hidden (saturated-fat-sensitivity marker)",
      "hide": lambda o: o["sat_fat_g"] >= SAT_FAT_LIMIT_G or o["subgroup"].startswith("solid fat")},
+    {"flag": "apoe", "gene": "APOE e4",
+     "why": "portions with 3 g+ saturated fat and solid fats hidden (APOE e4 carrier); unsaturated, low-sat-fat choices starred",
+     "hide": lambda o: o["sat_fat_g"] >= 3 or o["subgroup"].startswith("solid fat")},
     {"flag": "sodium", "gene": "AGT",
      "why": f"portions with {SODIUM_LIMIT_MG} mg+ sodium hidden (salt-sensitivity marker)",
      "hide": lambda o: o["sodium_mg"] >= SODIUM_LIMIT_MG},
     {"flag": "caffeine_note", "gene": "CYP1A2",
-     "why": "caffeine-containing choices (chocolate milk) hidden (slower caffeine-metabolism marker)",
+     "why": "coffee, tea, cola, energy drinks, lattes and chocolate milk hidden (slower caffeine-metabolism marker)",
      "hide": lambda o: "caffeine" in o["tags"]},
 ]
 
@@ -117,7 +120,7 @@ def pool() -> dict:
     """Every food x portion option, before genotype filtering."""
     f = foods()
     out = {}
-    for g in GROUP_ORDER:
+    for g in GROUP_ORDER + ["beverages"]:
         rows = []
         for food in f["foods"][g]:
             for m in f["portions"][g]:
@@ -137,6 +140,8 @@ def _star(o: dict, flags: set[str]) -> bool:
     tags = set(o["tags"])
     if o["fiber_g"] >= 3:
         tags.add("fiber")
+    if o["sat_fat_g"] <= 1 and "solid fat" not in o["subgroup"]:
+        tags.update({"sat_fat", "apoe"})
     if o["protein_g"] >= 10:
         tags.add("appetite")
     return bool(flags & tags)
@@ -173,5 +178,6 @@ def view(kcal: int, summary: dict | None = None) -> dict:
         "groups": [{"key": g, "label": LABELS[g], "unit": d["food_groups"][g]["unit"],
                     "tip": d["food_groups"][g]["tip"]} for g in GROUP_ORDER],
         "meals": MEALS,
+        "beverages": [o for o in choices(summary)["beverages"]],
         "sources": d["source"]["urls"] + [u for u in foods()["sources"] if u not in d["source"]["urls"]],
     }

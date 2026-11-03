@@ -198,6 +198,34 @@ TRAITS: list[dict] = [
             "with 460 mg or more of sodium."
         ),
     },
+    {
+        "rsid": "rs429358",
+        "gene": "APOE",
+        "label": "APOE e4 carrier (rs429358 with rs7412)",
+        "confidence": "medium",
+        "when": ["CT", "CC"],
+        "focus_tags": ["apoe"],
+        "note": (
+            "A C at rs429358 (with the usual C at rs7412) marks the APOE e4 allele, which "
+            "is linked to higher LDL cholesterol response to saturated fat. Not a "
+            "diagnosis. When highlighted, the diet builder hides portions with 3 g or "
+            "more saturated fat and stars low-saturated-fat choices."
+        ),
+    },
+    {
+        "rsid": "rs174537",
+        "gene": "FADS1/FADS2",
+        "label": "Omega-3 conversion (FADS cluster)",
+        "confidence": "low",
+        "when": ["GT", "TT"],
+        "focus_tags": ["omega3"],
+        "note": (
+            "The T allele at rs174537 is linked in genome-wide studies to lower blood "
+            "levels of long-chain omega-3 and omega-6 fats, consistent with slower "
+            "conversion from plant oils. When highlighted, fish and other omega-3 foods "
+            "are starred."
+        ),
+    },
 ]
 
 

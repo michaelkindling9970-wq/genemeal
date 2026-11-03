@@ -121,6 +121,8 @@ def test_filters_hide_what_they_promise():
     every = [o for rows in c.values() for o in rows]
     assert not any("gluten" in o["tags"] or "lactose" in o["tags"] or "caffeine" in o["tags"] for o in every)
     assert all(o["sodium_mg"] < dietplan.SODIUM_LIMIT_MG and o["sat_fat_g"] < dietplan.SAT_FAT_LIMIT_G for o in every)
+    assert all(o["sat_fat_g"] < 3 for o in every)
+    assert not any(o["subgroup"] == "caffeinated" for o in c["beverages"])
     assert any("Brown rice" in o["name"] for o in c["grains"])
     assert not any(o["food"] == "Whole-wheat bread" for o in c["grains"])
 
@@ -133,3 +135,18 @@ def test_paid_page_shows_tailoring_note(client):
     assert view["tailoring"]["rules"] and view["tailoring"]["hidden"] > 0
     html = client.get("/diet").get_data(as_text=True)
     assert "diet-options" in html and "Brown rice, cooked (1/2 cup)" in html
+
+
+def test_new_markers_star_without_hiding():
+    full = {g: len(v) for g, v in dietplan.pool().items()}
+    c = dietplan.choices(flags={"folate", "omega3"})
+    assert {g: len(v) for g, v in c.items()} == full
+    assert any(o["match"] for o in c["vegetables"] if o["food"].startswith("Spinach"))
+    assert any(o["match"] for o in c["protein_foods"] if o["food"].startswith("Salmon"))
+
+
+def test_apoe_and_fads_traits_present():
+    from traits import summarize
+    s = summarize({"genotypes": {"rs429358": "CT", "rs174537": "TT"}, "marker_count": 2})
+    tags = {t for r in s["highlights"] for t in r["focus_tags"]}
+    assert {"apoe", "omega3"} <= tags
