@@ -491,7 +491,20 @@ def delete_data():
 
 @app.get("/robots.txt")
 def robots():
-    return Response("User-agent: *\nDisallow: /\n", mimetype="text/plain")
+    lines = ["User-agent: *", "Allow: /$", "Allow: /pricing", "Allow: /research/"]
+    for path in ("/results", "/diet", "/plan", "/account/", "/upload", "/parse/",
+                 "/billing/", "/preview-login", "/PayPal/", "/paypal/", "/health"):
+        lines.append(f"Disallow: {path}")
+    lines.append(f"Sitemap: {_external_base().rstrip('/')}/sitemap.xml")
+    return Response("\n".join(lines) + "\n", mimetype="text/plain")
+
+
+@app.get("/sitemap.xml")
+def sitemap():
+    base = _external_base().rstrip("/")
+    urls = "".join(f"<url><loc>{base}{p}</loc></url>" for p in ("/", "/pricing", "/research/stress-diet"))
+    xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + urls + "</urlset>"
+    return Response(xml, mimetype="application/xml")
 
 
 @app.get("/favicon.ico")
