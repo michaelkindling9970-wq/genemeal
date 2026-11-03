@@ -10,6 +10,33 @@
   </p>
 </section>
 
+<section class="card dna-explainer" id="how-it-works">
+  <h2>How your DNA shapes your plan</h2>
+  <p>GeneMeal reads a short list of specific DNA markers from the file you upload, nothing more, and uses them to build a diet plan that fits you.</p>
+  <ol class="steps">
+    <li><strong>Upload.</strong> Add the raw DNA file from your testing service.</li>
+    <li><strong>We read your markers.</strong> We look only at the markers linked to how people handle certain foods.</li>
+    <li><strong>Your plan.</strong> You get daily food-group targets and menus you can build with tap-to-choose lists.</li>
+  </ol>
+  <h3>What your markers change</h3>
+  <ul>
+    <li><strong>Daily targets:</strong> how much from each food group (grains, vegetables, fruits, dairy, protein, oils) you aim for each day.</li>
+    <li><strong>Shown or hidden foods:</strong> foods that don't suit your markers are left out, so every choice on your list works for you.</li>
+    <li><strong>Starred picks:</strong> foods that are an especially good match get a ★.</li>
+    <li><strong>Portion sizes:</strong> each food comes in a few portion sizes, and ones that would push you past a target are greyed out.</li>
+  </ul>
+  <h3>A few examples</h3>
+  <ul>
+    <li><strong>Lactose:</strong> if your markers suggest milk may not sit well, regular dairy is swapped for lactose-free milk, yogurt and fortified soy.</li>
+    <li><strong>Caffeine:</strong> if you likely process caffeine slowly, coffee, tea and energy drinks drop off your drinks list.</li>
+    <li><strong>Saturated fat:</strong> if your markers point to fat sensitivity, richer portions are hidden and lean, unsaturated picks are starred.</li>
+    <li><strong>Gluten / celiac risk:</strong> if you carry the gene type most linked to celiac disease, wheat, barley and rye are hidden and gluten-free grains stay.</li>
+    <li><strong>Omega-3:</strong> if your body may make less omega-3 on its own, fish, walnuts, chia and flax get a star.</li>
+    <li><strong>Appetite and fullness:</strong> if your markers link to a bigger appetite, filling high-fiber and high-protein foods are starred.</li>
+  </ul>
+  <p class="fine">GeneMeal gives general nutrition guidance. It is not medical advice or a diagnosis. Talk to your doctor before making big changes to your diet.</p>
+</section>
+
 {% if user.status == 'failed' and user.error %}
   <p class="banner error" role="alert">{{ user.error }}</p>
 {% endif %}
