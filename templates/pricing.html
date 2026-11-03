@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% block title %}Pricing — GeneMeal{% endblock %}
+{% block description %}GeneMeal pricing: one monthly plan for nutrigenomics meal plans, a gene-based diet builder and personalized nutrition targets from your raw DNA file.{% endblock %}
+{% block og_title %}Pricing — Nutrigenomics Meal Plans | GeneMeal{% endblock %}
 {% block body %}
 <section class="intro">
   <h1>Pricing</h1>
-  <p class="lede">GeneMeal Monthly is {{ pricing.total }} per month. That total is the base fee, the server usage fee, and the genome analysis / processing fee.</p>
+  <p class="lede">GeneMeal Monthly is {{ pricing.total }} per month for nutrigenomics-based personalized nutrition: your gene-based diet builder and weekly DNA diet plan. That total is the base fee, the server usage fee, and the genome analysis / processing fee.</p>
 </section>
 {% include "_pricing.html" %}
 <p class="next"><a href="{{ url_for('home') }}">Back to the guide</a></p>

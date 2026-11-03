@@ -3,7 +3,24 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}GeneMeal{% endblock %}</title>
+  <title>{% block title %}Nutrigenomics Meal Plans from Your DNA | GeneMeal{% endblock %}</title>
+  {% set _desc %}{% block description %}Nutrigenomics meal plans from your DNA: GeneMeal turns the raw DNA file from your DNA testing service into a gene-based diet with personalized nutrition targets. Educational, not medical advice.{% endblock %}{% endset %}
+  <meta name="description" content="{{ _desc|trim }}">
+  <meta name="keywords" content="nutrigenomics, DNA diet, personalized nutrition, gene-based diet, ancestry meal plan">
+  <link rel="canonical" href="{{ request.base_url }}">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="GeneMeal">
+  <meta property="og:title" content="{% block og_title %}Nutrigenomics Meal Plans from Your DNA | GeneMeal{% endblock %}">
+  <meta property="og:description" content="{{ _desc|trim }}">
+  <meta property="og:url" content="{{ request.base_url }}">
+  <script type="application/ld+json">
+  {"@context": "https://schema.org", "@graph": [
+    {"@type": "Organization", "name": "GeneMeal", "url": "{{ request.url_root }}"},
+    {"@type": "WebSite", "name": "GeneMeal", "url": "{{ request.url_root }}",
+     "description": "Nutrigenomics meal plans: a DNA diet and personalized nutrition guide built from your raw DNA file."}
+  ]}
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,560;9..144,680&family=Outfit:wght@400;500;600&display=swap" rel="stylesheet">
