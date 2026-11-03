@@ -59,7 +59,7 @@ def targets(kcal: int, summary: dict | None = None) -> dict:
     if "fiber" in flags:
         notes.append("Pick whole grains for all grain servings (TCF7L2 marker flagged).")
     if "lactose_free" in flags:
-        notes.append("Dairy choices that contain lactose are flagged (lactase marker).")
+        notes.append("Dairy choices that contain lactose are hidden (lactase marker).")
     return {
         "calories": level,
         "groups": {g: amounts[g] for g in GROUP_ORDER},
@@ -69,16 +69,99 @@ def targets(kcal: int, summary: dict | None = None) -> dict:
     }
 
 
-def choices(summary: dict | None = None) -> dict:
-    flags = _flags(summary)
+# Genotype filter rules. A highlighted marker (traits.py focus tag) hides
+# every food portion that breaks the rule; nothing is hidden without one.
+SODIUM_LIMIT_MG = 460   # FDA "high" = 20% DV per serving
+SAT_FAT_LIMIT_G = 4     # per portion
+RULES = [
+    {"flag": "lactose_free", "gene": "MCM6/LCT",
+     "why": "regular dairy hidden (lactase-persistence marker); lactose-free and fortified soy kept",
+     "hide": lambda o: "lactose" in o["tags"]},
+    {"flag": "gluten_free", "gene": "HLA-DQ2.5",
+     "why": "wheat, barley and rye foods hidden (celiac-associated HLA marker); gluten-free grains kept",
+     "hide": lambda o: "gluten" in o["tags"]},
+    {"flag": "sat_fat", "gene": "APOA2",
+     "why": f"portions with {SAT_FAT_LIMIT_G} g+ saturated fat and solid fats hidden (saturated-fat-sensitivity marker)",
+     "hide": lambda o: o["sat_fat_g"] >= SAT_FAT_LIMIT_G or o["subgroup"].startswith("solid fat")},
+    {"flag": "sodium", "gene": "AGT",
+     "why": f"portions with {SODIUM_LIMIT_MG} mg+ sodium hidden (salt-sensitivity marker)",
+     "hide": lambda o: o["sodium_mg"] >= SODIUM_LIMIT_MG},
+    {"flag": "caffeine_note", "gene": "CYP1A2",
+     "why": "caffeine-containing choices (chocolate milk) hidden (slower caffeine-metabolism marker)",
+     "hide": lambda o: "caffeine" in o["tags"]},
+]
+
+
+def foods() -> dict:
+    return json.loads((Path(__file__).parent / "reference" / "foods.json").read_text())
+
+
+def _amount(x: float) -> str:
+    whole, frac = int(x), round(x - int(x), 3)
+    part = {0: "", 0.125: "1/8", 0.25: "1/4", 0.333: "1/3", 0.375: "3/8", 0.5: "1/2",
+            0.666: "2/3", 0.667: "2/3", 0.75: "3/4", 0.999: "1"}.get(frac)
+    if part is None:
+        return f"{x:g}"
+    if part == "1":
+        return str(whole + 1)
+    return f"{whole} {part}".strip() if whole else (part or "0")
+
+
+def _serving(qty: float, unit: str) -> str:
+    if unit in ("cup", "cups"):
+        unit = "cups" if qty > 1 else "cup"
+    return f"{_amount(qty)} {unit}"
+
+
+def pool() -> dict:
+    """Every food x portion option, before genotype filtering."""
+    f = foods()
     out = {}
     for g in GROUP_ORDER:
         rows = []
-        for name, amount, tags in data()["foods"][g]:
-            avoid = "lactose_free" in flags and g == "dairy" and "lactose_free" not in tags
-            rows.append({"name": name, "amount": amount, "match": bool(flags & set(tags)), "avoid": bool(avoid)})
+        for food in f["foods"][g]:
+            for m in f["portions"][g]:
+                amt = round(food["eq"] * m, 2)
+                rows.append({
+                    "name": f'{food["name"]} ({_serving(food["qty"] * m, food["unit"])})',
+                    "food": food["name"], "subgroup": food["subgroup"], "amount": amt,
+                    "protein_g": round(food["protein_g"] * m, 1), "fiber_g": round(food["fiber_g"] * m, 1),
+                    "sat_fat_g": round(food["sat_fat_g"] * m, 1), "sodium_mg": round(food["sodium_mg"] * m),
+                    "tags": food["tags"],
+                })
         out[g] = rows
     return out
+
+
+def _star(o: dict, flags: set[str]) -> bool:
+    tags = set(o["tags"])
+    if o["fiber_g"] >= 3:
+        tags.add("fiber")
+    if o["protein_g"] >= 10:
+        tags.add("appetite")
+    return bool(flags & tags)
+
+
+def choices(summary: dict | None = None, flags: set[str] | None = None) -> dict:
+    flags = _flags(summary) if flags is None else set(flags)
+    active = [r for r in RULES if r["flag"] in flags]
+    out = {}
+    for g, rows in pool().items():
+        keep = []
+        for o in rows:
+            if any(r["hide"](o) for r in active):
+                continue
+            keep.append({**o, "match": _star(o, flags), "avoid": False})
+        out[g] = keep
+    return out
+
+
+def tailoring(summary: dict | None = None) -> dict:
+    flags = _flags(summary)
+    full = {g: len(v) for g, v in pool().items()}
+    kept = {g: len(v) for g, v in choices(summary).items()}
+    return {"rules": [{"gene": r["gene"], "why": r["why"]} for r in RULES if r["flag"] in flags],
+            "hidden": sum(full.values()) - sum(kept.values()), "kept": kept}
 
 
 def view(kcal: int, summary: dict | None = None) -> dict:
@@ -86,8 +169,9 @@ def view(kcal: int, summary: dict | None = None) -> dict:
     return {
         "targets": targets(kcal, summary),
         "choices": choices(summary),
+        "tailoring": tailoring(summary),
         "groups": [{"key": g, "label": LABELS[g], "unit": d["food_groups"][g]["unit"],
                     "tip": d["food_groups"][g]["tip"]} for g in GROUP_ORDER],
         "meals": MEALS,
-        "sources": d["source"]["urls"],
+        "sources": d["source"]["urls"] + [u for u in foods()["sources"] if u not in d["source"]["urls"]],
     }
