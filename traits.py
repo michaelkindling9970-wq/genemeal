@@ -131,6 +131,7 @@ TRAITS: list[dict] = [
     {
         "rsid": "rs2282679",
         "gene": "GC",
+        "hidden": True,  # backend-only: never shown to users
         "label": "Vitamin D status tendency",
         "confidence": "medium",
         "when": ["GG", "GT"],
@@ -352,6 +353,8 @@ def summarize(parsed: dict) -> dict:
     seen = []
     absent = []
     for entry in TRAITS:
+        if entry.get("hidden"):
+            continue
         raw = genotypes.get(entry["rsid"])
         if raw is None or _alleles(raw) == "":
             absent.append(entry["rsid"])

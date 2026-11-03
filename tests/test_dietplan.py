@@ -173,9 +173,16 @@ def test_satiety_pparg_actn3_star_only():
     assert any("ALDH2" in r["gene"] for r in t["rules"])
 
 
-def test_gst_genes_never_shown(client):
+def test_hidden_markers_never_shown(client):
     import traits
+    from tests.helpers import upload
+    from tests.samples import genome_zip
     assert set(traits.NOT_DETERMINABLE) == {"GSTM1", "GSTT1"}
+    name, raw = genome_zip()  # sample includes GC rs2282679 GT (a highlighted call)
+    upload(client, name, raw)
+    results = client.get("/results").get_data(as_text=True)
     _paid(client)
-    html = client.get("/diet").get_data(as_text=True)
-    assert "GSTM1" not in html and "GSTT1" not in html
+    diet = client.get("/diet").get_data(as_text=True)
+    for page in (results, diet):
+        for bad in ("GSTM1", "GSTT1", "histamine", "Histamine", "vitamin D", "Vitamin D", ">GC<", "GC rs2282679", "rs2282679"):
+            assert bad not in page, bad
