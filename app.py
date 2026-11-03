@@ -261,12 +261,40 @@ def home():
 def results():
     user = _load()
     summary = storage.get_summary(user["id"])
+    if summary and not _is_subscriber(user):
+        summary = _free_summary(summary)
     return render_template("results.html", user=user, summary=summary)
+
+
+SUBSCRIBER_GENES = {"ACTN3"}  # muscle-building content is subscriber-only
+SUBSCRIBER_RSIDS = {e["rsid"] for e in traits.TRAITS if e["gene"] in SUBSCRIBER_GENES}
+# Free users see only which markers were found: no notes, focus tags or advice.
+FREE_ROW_FIELDS = {"rsid", "gene", "genotype", "label", "confidence"}
+
+
+def _free_summary(summary: dict) -> dict:
+    out = dict(summary)
+    for key in ("highlights", "seen", "absent"):
+        if isinstance(out.get(key), list):
+            out[key] = [
+                {k: v for k, v in r.items() if k in FREE_ROW_FIELDS} if isinstance(r, dict) else r
+                for r in out[key]
+                if not (isinstance(r, dict) and r.get("gene") in SUBSCRIBER_GENES) and not (isinstance(r, str) and r in SUBSCRIBER_RSIDS)
+            ]
+    out["locked"] = True
+    return out
+
+
+def _plan_gate():
+    _notice("The weekly meal plan is part of the GeneMeal subscription.", "error")
+    return redirect(url_for("pricing_page"))
 
 
 @app.get("/plan")
 def plan():
     user = _load()
+    if not _is_subscriber(user):
+        return _plan_gate()
     return render_template("plan.html", user=user, plan=storage.get_plan(user["id"]), generated=False)
 
 
@@ -325,6 +353,8 @@ def diet_builder():
 @app.post("/plan")
 def plan_generate():
     user = _load()
+    if not _is_subscriber(user):
+        return _plan_gate()
     if user["status"] != "parsed" or storage.get_summary(user["id"]) is None:
         _notice("Confirm the parsed file before generating a week.", "error")
         return redirect(url_for("plan"))
@@ -381,8 +411,11 @@ def confirm_parse():
         _notice("There is no parsed file waiting to confirm.", "error")
         return redirect(url_for("results"))
     storage.mark_parsed(user["id"])
-    _notice("Notes saved. The raw file was removed from disk. You can generate a week.", "ok")
-    return redirect(url_for("plan"))
+    if _is_subscriber(user):
+        _notice("Notes saved. The raw file was removed from disk. You can generate a week.", "ok")
+        return redirect(url_for("plan"))
+    _notice("Notes saved. The raw file was removed from disk.", "ok")
+    return redirect(url_for("results"))
 
 
 @app.post("/account/requested")

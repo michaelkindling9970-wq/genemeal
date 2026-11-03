@@ -91,7 +91,7 @@
     {% if user.status == 'uploaded' %}
       The file is read. <a href="{{ url_for('results') }}">Review markers and confirm</a>.
     {% else %}
-      Notes are confirmed. <a href="{{ url_for('plan') }}">Open the week</a>.
+      Notes are confirmed. {% if is_subscriber %}<a href="{{ url_for('plan') }}">Open the week</a>{% else %}<a href="{{ url_for('pricing_page') }}">Subscribe to get your week</a>{% endif %}.
     {% endif %}
   </p>
 {% endif %}

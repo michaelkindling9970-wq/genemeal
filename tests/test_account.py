@@ -133,6 +133,8 @@ def test_bad_reupload_keeps_a_confirmed_file(client):
 
 
 def test_plan_page_after_confirm(client):
+    from tests.test_dietplan import _paid
+    _paid(client)
     assert "Confirm the parse first" in client.get("/plan").get_data(as_text=True)
     name, raw = genome_zip()
     upload(client, name, raw)
