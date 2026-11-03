@@ -1,9 +1,9 @@
 {% extends "base.html" %}
-{% block title %}GeneMeal — download, wait, upload{% endblock %}
+{% block title %}Nutrigenomics Meal Plans from Your DNA | GeneMeal{% endblock %}
 {% block body %}
 <section class="intro">
-  <h1>Read a raw-data zip. Sketch a week of food.</h1>
-  <p class="lede">GeneMeal checks a short list of nutrition markers that show up in public research, then drafts a 7-day menu. You download the file yourself from 23andMe. This notebook never logs in for you.</p>
+  <h1>Nutrigenomics meal plans from your raw DNA file.</h1>
+  <p class="lede">GeneMeal is a nutrigenomics notebook: it checks a short list of nutrition markers that show up in public research, then drafts a DNA diet: a 7-day menu with personalized nutrition targets. You download the file yourself from 23andMe. This notebook never logs in for you.</p>
   <p class="status">Status <strong>{{ user.status.replace('_', ' ') }}</strong>
     {% if user.marker_count %} · {{ user.marker_count }} markers{% endif %}
     {% if user.genome_build %} · build {{ user.genome_build }}{% endif %}
@@ -12,7 +12,7 @@
 
 <section class="card dna-explainer" id="how-it-works">
   <h2>How your DNA shapes your plan</h2>
-  <p>GeneMeal reads a short list of specific DNA markers from the file you upload, nothing more, and uses them to build a diet plan that fits you.</p>
+  <p>GeneMeal reads a short list of specific DNA markers from the file you upload, nothing more, and uses them to build a gene-based diet plan that fits you. Already took a DNA test for ancestry? The raw DNA file from ancestry or DNA testing services is all you need for an ancestry meal plan. GeneMeal does not analyze ancestry; it only reads nutrition markers.</p>
   <ol class="steps">
     <li><strong>Upload.</strong> Add the raw DNA file from your testing service.</li>
     <li><strong>We read your markers.</strong> We look only at the markers linked to how people handle certain foods.</li>
