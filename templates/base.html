@@ -25,7 +25,7 @@
     <nav>
       <a href="{{ url_for('home') }}">Guide</a>
       <a href="{{ url_for('results') }}">Markers</a>
-      <a href="{{ url_for('plan') }}">Week</a>
+      <a href="{{ url_for('plan') if is_subscriber else url_for('pricing_page') }}">Week</a>
       {% if is_subscriber %}<a href="{{ url_for('diet_builder') }}">Diet plan</a>{% endif %}
       <a href="{{ url_for('research_stress') }}">Diets4stress</a>
       <a href="{{ url_for('pricing_page') }}">Pricing</a>

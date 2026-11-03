@@ -23,7 +23,7 @@
       <div class="table-wrap">
         <table>
           <thead>
-            <tr><th>Gene</th><th>rsID</th><th>Call</th><th>Label</th><th>Confidence</th><th>Note</th></tr>
+            <tr><th>Gene</th><th>rsID</th><th>Call</th><th>Label</th><th>Confidence</th>{% if not summary.locked %}<th>Note</th>{% endif %}</tr>
           </thead>
           <tbody>
             {% for row in summary.highlights %}
@@ -33,14 +33,15 @@
                 <td>{{ row.genotype }}</td>
                 <td>{{ row.label }}</td>
                 <td><span class="badge {{ row.confidence }}">{{ row.confidence }}</span></td>
-                <td>{{ row.note }}</td>
+                {% if not summary.locked %}<td>{{ row.note }}</td>{% endif %}
               </tr>
             {% endfor %}
           </tbody>
         </table>
       </div>
+      {% if summary.locked %}<p class="next"><a class="button" href="{{ url_for('pricing_page') }}">Unlock your personalized diet suggestions</a></p>{% endif %}
     {% else %}
-      <p>None of the starter markers were in the highlighted genotype group. The file can still be used for a plain menu.</p>
+      <p>None of the starter markers were in the highlighted genotype group.</p>
     {% endif %}
   </section>
 
@@ -72,7 +73,7 @@
       <button type="submit">Confirm</button>
     </form>
   {% elif user.status == 'parsed' %}
-    <p class="next">These notes are confirmed. <a href="{{ url_for('plan') }}">Generate a week</a>.</p>
+    <p class="next">These notes are confirmed. {% if is_subscriber %}<a href="{{ url_for('plan') }}">Generate a week</a>{% else %}<a href="{{ url_for('pricing_page') }}">Subscribe to generate a week</a>{% endif %}.</p>
   {% endif %}
 {% endif %}
 {% endblock %}
