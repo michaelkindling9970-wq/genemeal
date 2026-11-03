@@ -168,11 +168,6 @@ def _adjustments(flags: set[str]) -> list[str]:
         notes.append("Sweet potato and dark greens are in the week because a beta-carotene marker was flagged.")
     if "appetite" in flags:
         notes.append("Portions lean toward protein and vegetables because the FTO marker was flagged.")
-    if "caffeine_note" in flags:
-        notes.append(
-            "Caffeine note: a slower-metabolizer call was flagged. This menu does not include coffee. "
-            "If you drink it, public guidance is usually to keep it moderate — that is not a personal limit from this app."
-        )
     if not notes:
         notes.append("No mapped marker was in a highlighted group. The week is a plain balanced sketch.")
     return notes

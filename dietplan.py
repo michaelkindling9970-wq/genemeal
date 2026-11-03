@@ -92,9 +92,6 @@ RULES = [
     {"flag": "sodium", "gene": "AGT",
      "why": f"portions with {SODIUM_LIMIT_MG} mg+ sodium hidden (salt-sensitivity marker)",
      "hide": lambda o: o["sodium_mg"] >= SODIUM_LIMIT_MG},
-    {"flag": "caffeine_note", "gene": "CYP1A2",
-     "why": "coffee, tea, cola, energy drinks, lattes and chocolate milk hidden (slower caffeine-metabolism marker)",
-     "hide": lambda o: "caffeine" in o["tags"]},
 ]
 
 
@@ -144,7 +141,7 @@ def pool() -> dict:
     """Every food x portion option, before genotype filtering."""
     f = foods()
     out = {}
-    for g in GROUP_ORDER + ["beverages"]:
+    for g in GROUP_ORDER:
         rows = []
         for food in f["foods"][g]:
             for m in f["portions"][g]:
@@ -210,6 +207,5 @@ def view(kcal: int, summary: dict | None = None) -> dict:
         "groups": [{"key": g, "label": LABELS[g], "unit": d["food_groups"][g]["unit"],
                     "tip": d["food_groups"][g]["tip"]} for g in GROUP_ORDER],
         "meals": MEALS,
-        "beverages": [o for o in choices(summary)["beverages"]],
         "sources": d["source"]["urls"] + [u for u in foods()["sources"] if u not in d["source"]["urls"]],
     }
