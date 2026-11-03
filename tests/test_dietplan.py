@@ -24,8 +24,9 @@ def test_trait_flags_adjust_targets_and_choices():
     t = dietplan.targets(2000, summary)
     assert t["groups"]["protein_foods"] == 6.5
     dairy = {c["name"]: c for c in dietplan.choices(summary)["dairy"]}
-    assert dairy["Low-fat milk (1 cup)"]["avoid"]
+    assert "Low-fat milk (1 cup)" not in dairy
     assert dairy["Fortified soy milk (1 cup)"]["match"]
+    assert "Low-fat milk (1 cup)" in {c["name"] for c in dietplan.pool()["dairy"]}
 
 
 def _paid(client):
@@ -91,3 +92,44 @@ def test_pulse_css_respects_reduced_motion():
     css = (Path(__file__).resolve().parents[1] / "static" / "style.css").read_text()
     assert "@keyframes gm-pulse" in css
     assert "prefers-reduced-motion: reduce" in css
+
+
+import itertools
+
+FILTER_FLAGS = [r["flag"] for r in dietplan.RULES]
+
+
+def test_full_pool_is_comprehensive_and_sourced():
+    f = dietplan.foods()
+    assert any("myplate.gov" in u for u in f["sources"]) and any("fdc.nal.usda.gov" in u for u in f["sources"])
+    for g in dietplan.GROUP_ORDER:
+        assert len(f["foods"][g]) >= 30
+        assert len(dietplan.pool()[g]) >= 90
+    subs = {x["subgroup"] for x in f["foods"]["vegetables"]}
+    assert {"dark green", "red & orange", "beans, peas, lentils", "starchy", "other"} <= subs
+
+
+def test_every_trait_combo_keeps_50_per_list():
+    for n in range(len(FILTER_FLAGS) + 1):
+        for combo in itertools.combinations(FILTER_FLAGS, n):
+            for g, rows in dietplan.choices(flags=set(combo) | {"appetite", "fiber"}).items():
+                assert len(rows) >= 50, (combo, g, len(rows))
+
+
+def test_filters_hide_what_they_promise():
+    c = dietplan.choices(flags=set(FILTER_FLAGS))
+    every = [o for rows in c.values() for o in rows]
+    assert not any("gluten" in o["tags"] or "lactose" in o["tags"] or "caffeine" in o["tags"] for o in every)
+    assert all(o["sodium_mg"] < dietplan.SODIUM_LIMIT_MG and o["sat_fat_g"] < dietplan.SAT_FAT_LIMIT_G for o in every)
+    assert any("Brown rice" in o["name"] for o in c["grains"])
+    assert not any(o["food"] == "Whole-wheat bread" for o in c["grains"])
+
+
+def test_paid_page_shows_tailoring_note(client):
+    import storage
+    uid = _paid(client)
+    storage_summary = {"highlights": [{"gene": "HLA-DQ2.5", "focus_tags": ["gluten_free"]}]}
+    view = dietplan.view(2000, storage_summary)
+    assert view["tailoring"]["rules"] and view["tailoring"]["hidden"] > 0
+    html = client.get("/diet").get_data(as_text=True)
+    assert "diet-options" in html and "Brown rice, cooked (1/2 cup)" in html

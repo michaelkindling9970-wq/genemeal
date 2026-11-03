@@ -1,0 +1,4792 @@
+{
+ "note": "One row = one MyPlate equivalent (oils: grams in the listed serving). Serving sizes from the MyPlate 'what counts as' pages; nutrients rounded from USDA FoodData Central. Approximate and educational; the build box could not fetch myplate.gov on 2026-11-02, so values were transcribed from the published USDA tables.",
+ "sources": [
+  "https://www.myplate.gov/eat-healthy/fruits",
+  "https://www.myplate.gov/eat-healthy/vegetables",
+  "https://www.myplate.gov/eat-healthy/grains",
+  "https://www.myplate.gov/eat-healthy/protein-foods",
+  "https://www.myplate.gov/eat-healthy/dairy",
+  "https://www.myplate.gov/eat-healthy/oils",
+  "https://fdc.nal.usda.gov/",
+  "https://www.dietaryguidelines.gov/sites/default/files/2020-12/Dietary_Guidelines_for_Americans_2020-2025.pdf"
+ ],
+ "portions": {
+  "fruits": [
+   0.5,
+   1,
+   1.5
+  ],
+  "vegetables": [
+   0.5,
+   1,
+   1.5
+  ],
+  "grains": [
+   1,
+   2,
+   3
+  ],
+  "protein_foods": [
+   1,
+   2,
+   3,
+   4
+  ],
+  "dairy": [
+   0.5,
+   0.75,
+   1,
+   1.5,
+   2
+  ],
+  "oils": [
+   1,
+   2,
+   3
+  ]
+ },
+ "foods": {
+  "fruits": [
+   {
+    "name": "Apple",
+    "qty": 1.0,
+    "unit": "small",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 0.4,
+    "fiber_g": 3.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Banana",
+    "qty": 1.0,
+    "unit": "large",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 3.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Orange",
+    "qty": 1.0,
+    "unit": "large",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.7,
+    "fiber_g": 4.4,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 0.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Grapefruit",
+    "qty": 1.0,
+    "unit": "medium",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 3.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 0.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Pear",
+    "qty": 1.0,
+    "unit": "medium",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 0.6,
+    "fiber_g": 5.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Peach",
+    "qty": 1.0,
+    "unit": "large",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.4,
+    "fiber_g": 2.3,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 0.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Nectarine",
+    "qty": 1.0,
+    "unit": "large",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 2.4,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 0.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Plums",
+    "qty": 3.0,
+    "unit": "medium",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.4,
+    "fiber_g": 2.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Kiwifruit",
+    "qty": 2.0,
+    "unit": "medium",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.6,
+    "fiber_g": 4.2,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 4.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Mango, sliced",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.4,
+    "fiber_g": 2.6,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 2.0,
+    "tags": [
+     "carotenoid",
+     "folate"
+    ]
+   },
+   {
+    "name": "Papaya, cubed",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 0.7,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 11.0,
+    "tags": [
+     "carotenoid",
+     "folate"
+    ]
+   },
+   {
+    "name": "Pineapple chunks",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 0.9,
+    "fiber_g": 2.3,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Cantaloupe, cubed",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.3,
+    "fiber_g": 1.4,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 26.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Honeydew, cubed",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 0.9,
+    "fiber_g": 1.4,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 31.0,
+    "tags": []
+   },
+   {
+    "name": "Watermelon, diced",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 0.9,
+    "fiber_g": 0.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Strawberries",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Blueberries",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.1,
+    "fiber_g": 3.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Raspberries",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 8.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Blackberries",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 7.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Cherries, sweet",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Grapes",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.1,
+    "fiber_g": 1.4,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 3.0,
+    "tags": []
+   },
+   {
+    "name": "Apricots",
+    "qty": 4.0,
+    "unit": "medium",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 2.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Tangerines",
+    "qty": 2.0,
+    "unit": "small",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 3.2,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 4.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Clementines",
+    "qty": 2.0,
+    "unit": "medium",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.3,
+    "fiber_g": 2.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Pomegranate arils",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.9,
+    "fiber_g": 7.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 5.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Figs, fresh",
+    "qty": 2.0,
+    "unit": "large",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 3.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Guava",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 4.2,
+    "fiber_g": 8.9,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 3.0,
+    "tags": [
+     "carotenoid",
+     "folate"
+    ]
+   },
+   {
+    "name": "Persimmon",
+    "qty": 1.0,
+    "unit": "medium",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 6.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Plantain, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.2,
+    "fiber_g": 3.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 8.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Starfruit, sliced",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.1,
+    "fiber_g": 3.1,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Lychee",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.6,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Mixed fruit, canned in juice",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "canned",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Peaches, canned in juice",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "canned",
+    "eq": 1,
+    "protein_g": 1.1,
+    "fiber_g": 3.2,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Pears, canned in juice",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "canned",
+    "eq": 1,
+    "protein_g": 0.8,
+    "fiber_g": 4.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Mandarin oranges, canned in juice",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "canned",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 1.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 12.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Applesauce, unsweetened",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "canned",
+    "eq": 1,
+    "protein_g": 0.4,
+    "fiber_g": 2.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 5.0,
+    "tags": []
+   },
+   {
+    "name": "Pineapple, canned in juice",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "canned",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Frozen mixed berries",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "frozen",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 5.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Frozen mango chunks",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "frozen",
+    "eq": 1,
+    "protein_g": 1.3,
+    "fiber_g": 2.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Frozen cherries, unsweetened",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "frozen",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Raisins",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "dried",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 3.3,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 9.0,
+    "tags": []
+   },
+   {
+    "name": "Dried apricots",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "dried",
+    "eq": 1,
+    "protein_g": 2.2,
+    "fiber_g": 4.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 6.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Prunes",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "dried",
+    "eq": 1,
+    "protein_g": 1.9,
+    "fiber_g": 6.2,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Dates, chopped",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "dried",
+    "eq": 1,
+    "protein_g": 1.8,
+    "fiber_g": 6.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Dried cranberries",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "dried",
+    "eq": 1,
+    "protein_g": 0.1,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 3.0,
+    "tags": []
+   },
+   {
+    "name": "Dried figs",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "dried",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 7.3,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 8.0,
+    "tags": []
+   },
+   {
+    "name": "Dried mango",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "dried",
+    "eq": 1,
+    "protein_g": 1.2,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 80.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Orange juice, 100%",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "juice",
+    "eq": 1,
+    "protein_g": 1.7,
+    "fiber_g": 0.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Apple juice, 100%",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "juice",
+    "eq": 1,
+    "protein_g": 0.2,
+    "fiber_g": 0.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Grape juice, 100%",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "juice",
+    "eq": 1,
+    "protein_g": 0.9,
+    "fiber_g": 0.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Grapefruit juice, 100%",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "juice",
+    "eq": 1,
+    "protein_g": 1.2,
+    "fiber_g": 0.2,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Pineapple juice, 100%",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "juice",
+    "eq": 1,
+    "protein_g": 0.9,
+    "fiber_g": 0.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 5.0,
+    "tags": []
+   },
+   {
+    "name": "Tart cherry juice, 100%",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "juice",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Pomegranate juice, 100%",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "juice",
+    "eq": 1,
+    "protein_g": 0.4,
+    "fiber_g": 0.3,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 22.0,
+    "tags": []
+   }
+  ],
+  "vegetables": [
+   {
+    "name": "Spinach, raw",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 1.7,
+    "fiber_g": 1.3,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 47.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Spinach, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 5.3,
+    "fiber_g": 4.3,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 126.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Kale, raw",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 2.6,
+    "fiber_g": 1.8,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 30.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Kale, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 3.5,
+    "fiber_g": 4.7,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 30.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Broccoli",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 3.7,
+    "fiber_g": 5.1,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 64.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Romaine lettuce",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 1.2,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 8.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Collard greens, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 5.0,
+    "fiber_g": 7.6,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 30.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Swiss chard, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 3.3,
+    "fiber_g": 3.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 313.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Bok choy, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 2.7,
+    "fiber_g": 1.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 58.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Arugula",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 0.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 11.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Mustard greens, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 3.5,
+    "fiber_g": 2.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 22.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Turnip greens, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 1.6,
+    "fiber_g": 5.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 42.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Watercress",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 1.6,
+    "fiber_g": 0.4,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 28.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Mesclun / spring mix",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 1.8,
+    "fiber_g": 1.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 30.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Broccoli rabe, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "dark green",
+    "eq": 1,
+    "protein_g": 4.5,
+    "fiber_g": 3.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 56.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Carrots",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 1.2,
+    "fiber_g": 3.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 88.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Baby carrots",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 0.9,
+    "fiber_g": 4.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 102.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Sweet potato, baked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 6.6,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 72.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Tomatoes",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 1.6,
+    "fiber_g": 2.2,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 9.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Cherry tomatoes",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 1.3,
+    "fiber_g": 1.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 7.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Red bell pepper",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 3.1,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 6.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Butternut squash, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 1.8,
+    "fiber_g": 6.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 8.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Pumpkin, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 1.8,
+    "fiber_g": 2.7,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 2.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Acorn squash, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 2.3,
+    "fiber_g": 9.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 8.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Tomato juice, low sodium",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 1.9,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 24.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Tomato sauce, no salt added",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 3.2,
+    "fiber_g": 3.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 26.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Salsa, fresh",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 430.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Roasted red peppers",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "red & orange",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 380.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Black beans, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 15.0,
+    "fiber_g": 15.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 2.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Kidney beans, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 15.0,
+    "fiber_g": 13.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 4.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Pinto beans, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 15.0,
+    "fiber_g": 15.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 2.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Chickpeas, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 14.5,
+    "fiber_g": 12.5,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 11.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Lentils, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 18.0,
+    "fiber_g": 15.6,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 4.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Split peas, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 16.0,
+    "fiber_g": 16.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 4.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Navy beans, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 15.0,
+    "fiber_g": 19.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 2.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Great northern beans, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 15.0,
+    "fiber_g": 12.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 4.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Lima beans, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 12.0,
+    "fiber_g": 9.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 4.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Black-eyed peas, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 13.0,
+    "fiber_g": 11.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 7.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Edamame",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 18.0,
+    "fiber_g": 8.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 9.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Pigeon peas, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 11.0,
+    "fiber_g": 11.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 8.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Refried beans, canned",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 13.0,
+    "fiber_g": 11.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 1000.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Canned black beans, rinsed",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "beans, peas, lentils",
+    "eq": 1,
+    "protein_g": 14.0,
+    "fiber_g": 15.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 300.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Potato, baked with skin",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Corn kernels",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 4.7,
+    "fiber_g": 3.3,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 2.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Green peas",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 8.6,
+    "fiber_g": 8.8,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 5.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Parsnips, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 6.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 16.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Yuca / cassava, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 1.9,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 19.0,
+    "tags": []
+   },
+   {
+    "name": "Taro, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 0.7,
+    "fiber_g": 6.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 20.0,
+    "tags": []
+   },
+   {
+    "name": "Green banana, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 1.6,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 4.0,
+    "tags": []
+   },
+   {
+    "name": "Water chestnuts",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 1.4,
+    "fiber_g": 3.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 11.0,
+    "tags": []
+   },
+   {
+    "name": "Red potatoes, roasted",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 2.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 15.0,
+    "tags": []
+   },
+   {
+    "name": "Hash browns, homemade",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 3.0,
+    "sat_fat_g": 2.0,
+    "sodium_mg": 30.0,
+    "tags": []
+   },
+   {
+    "name": "Mashed potatoes, with milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "starchy",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.7,
+    "sodium_mg": 630.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Cauliflower",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 30.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Green beans",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 4.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 1.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Zucchini",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.4,
+    "fiber_g": 1.2,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 10.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Yellow squash",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.4,
+    "fiber_g": 1.2,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Cucumber",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 0.7,
+    "fiber_g": 0.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Celery",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 0.7,
+    "fiber_g": 1.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 81.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Onions",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.8,
+    "fiber_g": 2.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 6.0,
+    "tags": []
+   },
+   {
+    "name": "Mushrooms",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.2,
+    "fiber_g": 0.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 4.0,
+    "tags": [
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Mushrooms, UV-exposed",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.2,
+    "fiber_g": 0.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 4.0,
+    "tags": [
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Asparagus",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 3.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Brussels sprouts",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 4.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 26.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Cabbage, shredded",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 0.9,
+    "fiber_g": 1.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 13.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Red cabbage, shredded",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 1.9,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 24.0,
+    "tags": []
+   },
+   {
+    "name": "Eggplant, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 0.8,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Green bell pepper",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.3,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 4.0,
+    "tags": []
+   },
+   {
+    "name": "Beets, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.9,
+    "fiber_g": 3.4,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 131.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Okra, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 4.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 10.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Artichoke hearts",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 9.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 120.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Snow peas / snap peas",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.8,
+    "fiber_g": 2.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 4.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Bean sprouts",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 1.9,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 6.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Iceberg lettuce",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 1.4,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 14.0,
+    "tags": []
+   },
+   {
+    "name": "Radishes",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 0.8,
+    "fiber_g": 1.9,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 45.0,
+    "tags": []
+   },
+   {
+    "name": "Jicama",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 6.4,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 5.0,
+    "tags": []
+   },
+   {
+    "name": "Turnips, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.1,
+    "fiber_g": 3.1,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 25.0,
+    "tags": []
+   },
+   {
+    "name": "Fennel bulb",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.1,
+    "fiber_g": 2.7,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 45.0,
+    "tags": []
+   },
+   {
+    "name": "Leeks, cooked",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 0.8,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Kohlrabi",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.3,
+    "fiber_g": 4.9,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 27.0,
+    "tags": []
+   },
+   {
+    "name": "Avocado, cubed",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 10.0,
+    "sat_fat_g": 3.2,
+    "sodium_mg": 10.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Sauerkraut",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.3,
+    "fiber_g": 4.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 940.0,
+    "tags": []
+   },
+   {
+    "name": "Vegetable soup, low sodium",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 200.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Mixed frozen vegetables",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 5.0,
+    "fiber_g": 7.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 64.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Stir-fry vegetable blend",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 40.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Vegetable juice, low sodium",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 1.9,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 140.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Kimchi",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "other",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 2.4,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 750.0,
+    "tags": []
+   }
+  ],
+  "grains": [
+   {
+    "name": "Brown rice, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 1.8,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 5.0,
+    "tags": []
+   },
+   {
+    "name": "Wild rice, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.3,
+    "fiber_g": 1.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 3.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Black rice, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 1.5,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 5.0,
+    "tags": []
+   },
+   {
+    "name": "Red rice, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 1.6,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 5.0,
+    "tags": []
+   },
+   {
+    "name": "Quinoa, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 2.6,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 7.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Millet, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 1.1,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Sorghum, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.5,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Buckwheat groats (kasha), cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.8,
+    "fiber_g": 2.3,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 3.0,
+    "tags": []
+   },
+   {
+    "name": "Amaranth, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 4.7,
+    "fiber_g": 2.6,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 7.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Teff, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 4.9,
+    "fiber_g": 3.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Oatmeal, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 5.0,
+    "tags": []
+   },
+   {
+    "name": "Steel-cut oats, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Oat bran, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.5,
+    "fiber_g": 2.9,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Rolled oats, dry",
+    "qty": 0.333,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.5,
+    "fiber_g": 2.7,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Popcorn, air-popped",
+    "qty": 3.0,
+    "unit": "cups",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 3.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Corn tortilla",
+    "qty": 1.0,
+    "unit": "6-inch",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 1.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Whole-grain cornmeal / polenta, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 1.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 5.0,
+    "tags": []
+   },
+   {
+    "name": "Brown rice cakes",
+    "qty": 2.0,
+    "unit": "cakes",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.4,
+    "fiber_g": 0.8,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Brown rice pasta, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 1.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Brown rice noodles, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Fonio, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Gluten-free whole-grain bread",
+    "qty": 1.0,
+    "unit": "slice",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 140.0,
+    "tags": []
+   },
+   {
+    "name": "Puffed brown rice cereal",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 0.8,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Oat-based O's cereal",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 2.8,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 140.0,
+    "tags": []
+   },
+   {
+    "name": "Corn grits, whole-grain, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.8,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 3.0,
+    "tags": []
+   },
+   {
+    "name": "Whole-wheat bread",
+    "qty": 1.0,
+    "unit": "slice",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.6,
+    "fiber_g": 1.9,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 130.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Whole-wheat pita",
+    "qty": 1.0,
+    "unit": "small",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.5,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 170.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Whole-wheat tortilla",
+    "qty": 1.0,
+    "unit": "small",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 200.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Whole-wheat pasta, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.7,
+    "fiber_g": 3.2,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 2.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Bulgur, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.8,
+    "fiber_g": 4.1,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 5.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Farro, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.5,
+    "fiber_g": 2.5,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 5.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Barley, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 1.8,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 2.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Whole-wheat couscous, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 3.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 5.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Freekeh, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 4.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 5.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Whole-wheat English muffin",
+    "qty": 0.5,
+    "unit": "muffin",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 2.2,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 210.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Whole-grain crackers",
+    "qty": 5.0,
+    "unit": "crackers",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 150.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Shredded wheat cereal",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 5.0,
+    "fiber_g": 6.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 0.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Bran flakes",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 3.5,
+    "fiber_g": 7.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 230.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Rye bread, whole-grain",
+    "qty": 1.0,
+    "unit": "slice",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.7,
+    "fiber_g": 1.9,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 190.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Whole-wheat bagel",
+    "qty": 0.25,
+    "unit": "bagel",
+    "subgroup": "whole",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 1.7,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 110.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "White rice, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.1,
+    "fiber_g": 0.3,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 1.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Jasmine rice, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 0.3,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Basmati rice, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.2,
+    "fiber_g": 0.4,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Rice noodles, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 0.8,
+    "fiber_g": 0.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 17.0,
+    "tags": []
+   },
+   {
+    "name": "Plain rice cakes",
+    "qty": 2.0,
+    "unit": "cakes",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 1.4,
+    "fiber_g": 0.4,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Cream of rice, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 1.0,
+    "fiber_g": 0.1,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Corn flakes, gluten-free",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 1.6,
+    "fiber_g": 0.7,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 200.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Crispy rice cereal, gluten-free",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 0.2,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 170.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Polenta / degermed cornmeal, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 0.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Corn arepa",
+    "qty": 0.5,
+    "unit": "arepa",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 1.8,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 120.0,
+    "tags": []
+   },
+   {
+    "name": "Gluten-free white bread",
+    "qty": 1.0,
+    "unit": "slice",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 1.5,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 160.0,
+    "tags": []
+   },
+   {
+    "name": "Rice vermicelli, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 0.9,
+    "fiber_g": 0.5,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Hominy, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 1.2,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 170.0,
+    "tags": []
+   },
+   {
+    "name": "White bread",
+    "qty": 1.0,
+    "unit": "slice",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.3,
+    "fiber_g": 0.7,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 140.0,
+    "tags": [
+     "gluten",
+     "folate"
+    ]
+   },
+   {
+    "name": "White pasta, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 3.6,
+    "fiber_g": 1.2,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 1.0,
+    "tags": [
+     "gluten",
+     "folate"
+    ]
+   },
+   {
+    "name": "Flour tortilla",
+    "qty": 1.0,
+    "unit": "small",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 0.7,
+    "sat_fat_g": 0.9,
+    "sodium_mg": 260.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Bagel, plain",
+    "qty": 0.25,
+    "unit": "bagel",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 0.6,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 110.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "English muffin",
+    "qty": 0.5,
+    "unit": "muffin",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.2,
+    "fiber_g": 0.8,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 120.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Pita, white",
+    "qty": 1.0,
+    "unit": "small",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 0.7,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 160.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Couscous, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 1.1,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 4.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Egg noodles, cooked",
+    "qty": 0.5,
+    "unit": "cup",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 3.6,
+    "fiber_g": 1.2,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 4.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Saltine crackers",
+    "qty": 7.0,
+    "unit": "crackers",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 0.6,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 280.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Pretzels",
+    "qty": 0.75,
+    "unit": "oz",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 0.6,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 380.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Pancake, plain",
+    "qty": 1.0,
+    "unit": "4-inch",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.4,
+    "fiber_g": 0.5,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 240.0,
+    "tags": [
+     "gluten",
+     "lactose"
+    ]
+   },
+   {
+    "name": "Waffle, frozen",
+    "qty": 1.0,
+    "unit": "4-inch",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 0.7,
+    "sat_fat_g": 0.7,
+    "sodium_mg": 250.0,
+    "tags": [
+     "gluten",
+     "lactose"
+    ]
+   },
+   {
+    "name": "Biscuit",
+    "qty": 1.0,
+    "unit": "small",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 0.5,
+    "sat_fat_g": 2.6,
+    "sodium_mg": 350.0,
+    "tags": [
+     "gluten",
+     "lactose"
+    ]
+   },
+   {
+    "name": "Dinner roll",
+    "qty": 1.0,
+    "unit": "small",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 2.4,
+    "fiber_g": 0.8,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 140.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Croissant",
+    "qty": 1.0,
+    "unit": "small",
+    "subgroup": "refined",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 1.4,
+    "sat_fat_g": 6.0,
+    "sodium_mg": 210.0,
+    "tags": [
+     "gluten",
+     "lactose"
+    ]
+   }
+  ],
+  "protein_foods": [
+   {
+    "name": "Chicken breast, skinless",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 8.8,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 21.0,
+    "tags": []
+   },
+   {
+    "name": "Chicken thigh, skinless",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 7.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.7,
+    "sodium_mg": 30.0,
+    "tags": []
+   },
+   {
+    "name": "Turkey breast, roasted",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 8.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 20.0,
+    "tags": []
+   },
+   {
+    "name": "Ground turkey, 93% lean",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 7.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.8,
+    "sodium_mg": 25.0,
+    "tags": []
+   },
+   {
+    "name": "Lean beef sirloin",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 8.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.8,
+    "sodium_mg": 18.0,
+    "tags": []
+   },
+   {
+    "name": "Lean ground beef, 93%",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 7.3,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.1,
+    "sodium_mg": 22.0,
+    "tags": []
+   },
+   {
+    "name": "Beef tenderloin",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.1,
+    "sodium_mg": 17.0,
+    "tags": []
+   },
+   {
+    "name": "Ribeye steak",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 6.8,
+    "fiber_g": 0.0,
+    "sat_fat_g": 2.6,
+    "sodium_mg": 17.0,
+    "tags": []
+   },
+   {
+    "name": "Ground beef, 80%",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 7.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 2.4,
+    "sodium_mg": 25.0,
+    "tags": []
+   },
+   {
+    "name": "Pork tenderloin",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 7.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 18.0,
+    "tags": []
+   },
+   {
+    "name": "Pork loin chop",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.8,
+    "sodium_mg": 18.0,
+    "tags": []
+   },
+   {
+    "name": "Lamb, lean leg",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.0,
+    "sodium_mg": 22.0,
+    "tags": []
+   },
+   {
+    "name": "Bison, ground",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 7.2,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.0,
+    "sodium_mg": 23.0,
+    "tags": []
+   },
+   {
+    "name": "Venison",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 8.6,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 19.0,
+    "tags": []
+   },
+   {
+    "name": "Egg, whole",
+    "qty": 1.0,
+    "unit": "large",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 6.3,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.6,
+    "sodium_mg": 71.0,
+    "tags": [
+     "vitamin_d",
+     "folate"
+    ]
+   },
+   {
+    "name": "Egg whites",
+    "qty": 2.0,
+    "unit": "large",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 7.2,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 110.0,
+    "tags": []
+   },
+   {
+    "name": "Ham, deli",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 5.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 370.0,
+    "tags": []
+   },
+   {
+    "name": "Turkey, deli",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 5.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 300.0,
+    "tags": []
+   },
+   {
+    "name": "Bacon",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 10.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 3.9,
+    "sodium_mg": 520.0,
+    "tags": []
+   },
+   {
+    "name": "Pork sausage",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 5.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 2.6,
+    "sodium_mg": 230.0,
+    "tags": []
+   },
+   {
+    "name": "Chicken liver",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "meats, poultry, eggs",
+    "eq": 1,
+    "protein_g": 7.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 22.0,
+    "tags": [
+     "folate",
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Salmon, Atlantic",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 7.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 17.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Sockeye salmon",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 7.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 25.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Canned salmon",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 100.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Sardines, canned",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 7.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 86.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Mackerel, Atlantic",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.7,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.0,
+    "sodium_mg": 26.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Rainbow trout",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 7.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 20.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Herring",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.8,
+    "sodium_mg": 33.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Anchovies, fresh",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 5.8,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 29.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Tuna, canned light in water",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 7.2,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 70.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Tuna steak",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 8.4,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 14.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Cod",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 22.0,
+    "tags": []
+   },
+   {
+    "name": "Tilapia",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 7.4,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 16.0,
+    "tags": []
+   },
+   {
+    "name": "Halibut",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.4,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 23.0,
+    "tags": [
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Pollock",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.9,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 30.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Catfish",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 5.3,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 20.0,
+    "tags": [
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Haddock",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 7.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 74.0,
+    "tags": []
+   },
+   {
+    "name": "Flounder / sole",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 4.4,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 102.0,
+    "tags": []
+   },
+   {
+    "name": "Mahi-mahi",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.7,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 32.0,
+    "tags": []
+   },
+   {
+    "name": "Shrimp",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.8,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 60.0,
+    "tags": []
+   },
+   {
+    "name": "Scallops",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 5.8,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 190.0,
+    "tags": []
+   },
+   {
+    "name": "Mussels",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 6.7,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 105.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Oysters",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 5.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 120.0,
+    "tags": [
+     "omega3",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Clams",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 7.2,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 170.0,
+    "tags": []
+   },
+   {
+    "name": "Crab",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 5.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 110.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Lobster",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "seafood",
+    "eq": 1,
+    "protein_g": 5.4,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 135.0,
+    "tags": []
+   },
+   {
+    "name": "Black beans",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 3.8,
+    "fiber_g": 3.8,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 1.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Chickpeas",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 3.6,
+    "fiber_g": 3.1,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 3.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Lentils",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 4.5,
+    "fiber_g": 3.9,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Kidney beans",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 3.8,
+    "fiber_g": 3.3,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Pinto beans",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 3.8,
+    "fiber_g": 3.8,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "White beans",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 4.3,
+    "fiber_g": 3.2,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 3.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Split peas",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 4.0,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 1.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Hummus",
+    "qty": 2.0,
+    "unit": "Tbsp",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.4,
+    "fiber_g": 1.8,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 130.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Tofu, firm",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 5.5,
+    "fiber_g": 0.7,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 10.0,
+    "tags": []
+   },
+   {
+    "name": "Tempeh",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 5.5,
+    "fiber_g": 1.6,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 3.0,
+    "tags": []
+   },
+   {
+    "name": "Edamame, shelled",
+    "qty": 0.25,
+    "unit": "cup",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 4.6,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 2.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Soy nuts",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 5.7,
+    "fiber_g": 1.2,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Seitan",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 7.0,
+    "fiber_g": 0.2,
+    "sat_fat_g": 0.0,
+    "sodium_mg": 120.0,
+    "tags": [
+     "gluten"
+    ]
+   },
+   {
+    "name": "Veggie burger, soy-based",
+    "qty": 1.0,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 4.0,
+    "fiber_g": 1.2,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 130.0,
+    "tags": []
+   },
+   {
+    "name": "Almonds",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 3.0,
+    "fiber_g": 1.8,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Walnuts",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.2,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.9,
+    "sodium_mg": 0.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Pecans",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 1.3,
+    "fiber_g": 1.4,
+    "sat_fat_g": 0.9,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Pistachios",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.9,
+    "fiber_g": 1.5,
+    "sat_fat_g": 0.8,
+    "sodium_mg": 0.0,
+    "tags": [
+     "carotenoid"
+    ]
+   },
+   {
+    "name": "Cashews",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.6,
+    "fiber_g": 0.5,
+    "sat_fat_g": 1.1,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Peanuts",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 3.7,
+    "fiber_g": 1.2,
+    "sat_fat_g": 0.9,
+    "sodium_mg": 3.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Hazelnuts",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.1,
+    "fiber_g": 1.4,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 0.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Macadamia nuts",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 1.1,
+    "fiber_g": 1.2,
+    "sat_fat_g": 1.7,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Brazil nuts",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 2.1,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Pine nuts",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 1.9,
+    "fiber_g": 0.5,
+    "sat_fat_g": 0.7,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Sunflower seeds",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.9,
+    "fiber_g": 1.2,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 1.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Pumpkin seeds",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 4.2,
+    "fiber_g": 0.8,
+    "sat_fat_g": 1.2,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Chia seeds",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.3,
+    "fiber_g": 4.9,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 2.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Ground flaxseed",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.6,
+    "fiber_g": 3.9,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 4.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Hemp seeds",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 4.7,
+    "fiber_g": 0.6,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 1.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Sesame seeds",
+    "qty": 0.5,
+    "unit": "oz",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.5,
+    "fiber_g": 1.7,
+    "sat_fat_g": 0.9,
+    "sodium_mg": 2.0,
+    "tags": []
+   },
+   {
+    "name": "Peanut butter",
+    "qty": 1.0,
+    "unit": "Tbsp",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 3.6,
+    "fiber_g": 1.0,
+    "sat_fat_g": 1.6,
+    "sodium_mg": 70.0,
+    "tags": []
+   },
+   {
+    "name": "Almond butter",
+    "qty": 1.0,
+    "unit": "Tbsp",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 3.4,
+    "fiber_g": 1.6,
+    "sat_fat_g": 0.7,
+    "sodium_mg": 1.0,
+    "tags": []
+   },
+   {
+    "name": "Sunflower seed butter",
+    "qty": 1.0,
+    "unit": "Tbsp",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.8,
+    "fiber_g": 0.9,
+    "sat_fat_g": 0.7,
+    "sodium_mg": 50.0,
+    "tags": []
+   },
+   {
+    "name": "Tahini",
+    "qty": 1.0,
+    "unit": "Tbsp",
+    "subgroup": "nuts, seeds, soy",
+    "eq": 1,
+    "protein_g": 2.6,
+    "fiber_g": 1.4,
+    "sat_fat_g": 1.0,
+    "sodium_mg": 5.0,
+    "tags": []
+   }
+  ],
+  "dairy": [
+   {
+    "name": "Fat-free milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "milk",
+    "eq": 1,
+    "protein_g": 8.3,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 103.0,
+    "tags": [
+     "lactose",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Low-fat milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "milk",
+    "eq": 1,
+    "protein_g": 8.2,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.5,
+    "sodium_mg": 107.0,
+    "tags": [
+     "lactose",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Reduced-fat (2%) milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "milk",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 3.1,
+    "sodium_mg": 115.0,
+    "tags": [
+     "lactose",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Whole milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "milk",
+    "eq": 1,
+    "protein_g": 7.7,
+    "fiber_g": 0.0,
+    "sat_fat_g": 4.6,
+    "sodium_mg": 105.0,
+    "tags": [
+     "lactose",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Low-fat chocolate milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "milk",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 1.5,
+    "sodium_mg": 150.0,
+    "tags": [
+     "lactose",
+     "vitamin_d",
+     "caffeine"
+    ]
+   },
+   {
+    "name": "Buttermilk, low-fat",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "milk",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.3,
+    "sodium_mg": 260.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Fat-free plain yogurt",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "yogurt",
+    "eq": 1,
+    "protein_g": 14.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 190.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Low-fat plain yogurt",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "yogurt",
+    "eq": 1,
+    "protein_g": 13.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 2.3,
+    "sodium_mg": 170.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Nonfat Greek yogurt",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "yogurt",
+    "eq": 1,
+    "protein_g": 23.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 85.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Low-fat fruit yogurt",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "yogurt",
+    "eq": 1,
+    "protein_g": 10.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.8,
+    "sodium_mg": 140.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Kefir, low-fat",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "yogurt",
+    "eq": 1,
+    "protein_g": 9.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.5,
+    "sodium_mg": 125.0,
+    "tags": [
+     "lactose",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Cheddar cheese",
+    "qty": 1.5,
+    "unit": "oz",
+    "subgroup": "cheese",
+    "eq": 1,
+    "protein_g": 10.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 8.0,
+    "sodium_mg": 270.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Part-skim mozzarella",
+    "qty": 1.5,
+    "unit": "oz",
+    "subgroup": "cheese",
+    "eq": 1,
+    "protein_g": 10.3,
+    "fiber_g": 0.0,
+    "sat_fat_g": 4.3,
+    "sodium_mg": 260.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Swiss cheese",
+    "qty": 1.5,
+    "unit": "oz",
+    "subgroup": "cheese",
+    "eq": 1,
+    "protein_g": 11.5,
+    "fiber_g": 0.0,
+    "sat_fat_g": 7.5,
+    "sodium_mg": 80.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Provolone",
+    "qty": 1.5,
+    "unit": "oz",
+    "subgroup": "cheese",
+    "eq": 1,
+    "protein_g": 10.8,
+    "fiber_g": 0.0,
+    "sat_fat_g": 7.0,
+    "sodium_mg": 370.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Low-fat cottage cheese",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "cheese",
+    "eq": 1,
+    "protein_g": 28.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 2.9,
+    "sodium_mg": 1840.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Part-skim ricotta",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "cheese",
+    "eq": 1,
+    "protein_g": 28.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 12.0,
+    "sodium_mg": 300.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Feta",
+    "qty": 1.5,
+    "unit": "oz",
+    "subgroup": "cheese",
+    "eq": 1,
+    "protein_g": 6.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 6.3,
+    "sodium_mg": 470.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Lactose-free fat-free milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 8.3,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.1,
+    "sodium_mg": 125.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Lactose-free low-fat milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 8.2,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.5,
+    "sodium_mg": 125.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Lactose-free reduced-fat milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 3.0,
+    "sodium_mg": 125.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Lactose-free low-fat chocolate milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 1.5,
+    "sodium_mg": 160.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d",
+     "caffeine"
+    ]
+   },
+   {
+    "name": "Lactose-free fat-free plain yogurt",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 12.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.2,
+    "sodium_mg": 160.0,
+    "tags": [
+     "lactose_free"
+    ]
+   },
+   {
+    "name": "Lactose-free low-fat vanilla yogurt",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 10.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.8,
+    "sodium_mg": 140.0,
+    "tags": [
+     "lactose_free"
+    ]
+   },
+   {
+    "name": "Lactose-free nonfat Greek yogurt",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 22.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 90.0,
+    "tags": [
+     "lactose_free"
+    ]
+   },
+   {
+    "name": "Lactose-free low-fat kefir",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 10.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.5,
+    "sodium_mg": 130.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Lactose-free low-fat cottage cheese",
+    "qty": 2.0,
+    "unit": "cups",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 26.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 3.0,
+    "sodium_mg": 1500.0,
+    "tags": [
+     "lactose_free"
+    ]
+   },
+   {
+    "name": "Parmesan, grated (naturally ~lactose-free)",
+    "qty": 0.333,
+    "unit": "cup",
+    "subgroup": "lactose-free",
+    "eq": 1,
+    "protein_g": 10.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 5.0,
+    "sodium_mg": 510.0,
+    "tags": [
+     "lactose_free"
+    ]
+   },
+   {
+    "name": "Fortified soy milk",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "fortified soy",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 90.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Fortified soy milk, unsweetened",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "fortified soy",
+    "eq": 1,
+    "protein_g": 7.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 85.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Fortified soy milk, vanilla",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "fortified soy",
+    "eq": 1,
+    "protein_g": 6.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 95.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Fortified soy milk, light",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "fortified soy",
+    "eq": 1,
+    "protein_g": 6.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 110.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Fortified soy milk, chocolate",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "fortified soy",
+    "eq": 1,
+    "protein_g": 6.0,
+    "fiber_g": 2.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 150.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Fortified soy yogurt, plain",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "fortified soy",
+    "eq": 1,
+    "protein_g": 9.0,
+    "fiber_g": 1.5,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 30.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Fortified soy yogurt, vanilla",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "fortified soy",
+    "eq": 1,
+    "protein_g": 8.0,
+    "fiber_g": 1.5,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 40.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   },
+   {
+    "name": "Fortified soy Greek-style yogurt",
+    "qty": 1.0,
+    "unit": "cup",
+    "subgroup": "fortified soy",
+    "eq": 1,
+    "protein_g": 20.0,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 60.0,
+    "tags": [
+     "lactose_free",
+     "vitamin_d"
+    ]
+   }
+  ],
+  "oils": [
+   {
+    "name": "Olive oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Extra-virgin olive oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Canola oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 0.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Soybean oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.7,
+    "sodium_mg": 0.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Corn oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Sunflower oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "High-oleic sunflower oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Safflower oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "High-oleic safflower oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Peanut oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.8,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Sesame oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Toasted sesame oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Avocado oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Grapeseed oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Walnut oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 0.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Flaxseed oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 0.0,
+    "tags": [
+     "omega3"
+    ]
+   },
+   {
+    "name": "Almond oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Rice bran oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.9,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Hazelnut oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.3,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Cottonseed oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 1.2,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Coconut oil",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "solid fat (not an oil)",
+    "eq": 4.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 3.9,
+    "sodium_mg": 0.0,
+    "tags": []
+   },
+   {
+    "name": "Butter",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "solid fat (not an oil)",
+    "eq": 4,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 2.4,
+    "sodium_mg": 30.0,
+    "tags": [
+     "lactose"
+    ]
+   },
+   {
+    "name": "Soft tub margarine, trans-fat-free",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil-rich food",
+    "eq": 3.5,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 35.0,
+    "tags": []
+   },
+   {
+    "name": "Mayonnaise",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil-rich food",
+    "eq": 4,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 30.0,
+    "tags": []
+   },
+   {
+    "name": "Light mayonnaise",
+    "qty": 2.0,
+    "unit": "tsp",
+    "subgroup": "oil-rich food",
+    "eq": 4,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 80.0,
+    "tags": []
+   },
+   {
+    "name": "Olive oil mayonnaise",
+    "qty": 1.0,
+    "unit": "tsp",
+    "subgroup": "oil-rich food",
+    "eq": 4,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.4,
+    "sodium_mg": 35.0,
+    "tags": []
+   },
+   {
+    "name": "Italian dressing",
+    "qty": 2.0,
+    "unit": "tsp",
+    "subgroup": "oil-rich food",
+    "eq": 4,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 160.0,
+    "tags": []
+   },
+   {
+    "name": "Balsamic vinaigrette",
+    "qty": 2.0,
+    "unit": "tsp",
+    "subgroup": "oil-rich food",
+    "eq": 4,
+    "protein_g": 0.0,
+    "fiber_g": 0.0,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 90.0,
+    "tags": []
+   },
+   {
+    "name": "Avocado, sliced",
+    "qty": 0.125,
+    "unit": "fruit",
+    "subgroup": "oil-rich food",
+    "eq": 5,
+    "protein_g": 0.5,
+    "fiber_g": 1.7,
+    "sat_fat_g": 0.5,
+    "sodium_mg": 2.0,
+    "tags": [
+     "folate"
+    ]
+   },
+   {
+    "name": "Olives, black",
+    "qty": 8.0,
+    "unit": "large",
+    "subgroup": "oil-rich food",
+    "eq": 4,
+    "protein_g": 0.3,
+    "fiber_g": 1.0,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 280.0,
+    "tags": []
+   },
+   {
+    "name": "Pesto",
+    "qty": 1.5,
+    "unit": "tsp",
+    "subgroup": "oil-rich food",
+    "eq": 4,
+    "protein_g": 0.5,
+    "fiber_g": 0.1,
+    "sat_fat_g": 0.6,
+    "sodium_mg": 60.0,
+    "tags": [
+     "lactose"
+    ]
+   }
+  ]
+ }
+}

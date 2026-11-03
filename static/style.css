@@ -374,3 +374,6 @@ nav a:hover { background: var(--leaf); }
   button:not(:disabled):hover, .button:hover { transform: none; }
 }
 .pay-buttons.pay-single { grid-template-columns: minmax(0, 22rem); }
+
+.tailored ul { margin: .4rem 0 0 1.1rem; padding: 0; font-size: .9rem; }
+.diet-pick optgroup { font-weight: 600; }

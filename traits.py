@@ -170,6 +170,34 @@ TRAITS: list[dict] = [
             "start vitamin A supplements."
         ),
     },
+    {
+        "rsid": "rs2187668",
+        "gene": "HLA-DQ2.5",
+        "label": "Celiac-associated HLA type (tag SNP)",
+        "confidence": "medium",
+        "when": ["CT", "TT"],
+        "focus_tags": ["gluten_free"],
+        "note": (
+            "rs2187668 tags the HLA-DQ2.5 haplotype, which most people with celiac "
+            "disease carry. Many carriers never develop celiac disease, and this is not "
+            "a diagnosis; testing is done by a clinician. When highlighted, the diet "
+            "builder hides wheat, barley and rye foods and keeps gluten-free grains."
+        ),
+    },
+    {
+        "rsid": "rs699",
+        "gene": "AGT",
+        "label": "Salt sensitivity (AGT M235T)",
+        "confidence": "low",
+        "when": ["GG"],
+        "focus_tags": ["sodium"],
+        "note": (
+            "AGT M235T (G allele on the plus strand) is linked in some studies to "
+            "higher angiotensinogen levels and blood-pressure response to salt. "
+            "Findings are mixed. When highlighted, the diet builder hides portions "
+            "with 460 mg or more of sodium."
+        ),
+    },
 ]
 
 
