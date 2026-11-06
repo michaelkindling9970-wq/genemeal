@@ -73,7 +73,12 @@ def _connect() -> sqlite3.Connection:
 
 def _migrate(conn: sqlite3.Connection) -> None:
     have = {row[1] for row in conn.execute("PRAGMA table_info(users)")}
-    for name in ("paypal_subscription_id", "subscription_status"):
+    for name in (
+        "paypal_subscription_id",
+        "subscription_status",
+        "stripe_customer_id",
+        "stripe_subscription_id",
+    ):
         if name not in have:
             conn.execute(f"ALTER TABLE users ADD COLUMN {name} TEXT")
     conn.execute(
@@ -88,6 +93,17 @@ def _migrate(conn: sqlite3.Connection) -> None:
     conn.execute(
         "CREATE INDEX IF NOT EXISTS idx_users_paypal_subscription ON users(paypal_subscription_id)"
     )
+    conn.execute(
+        """
+        CREATE TABLE IF NOT EXISTS stripe_events (
+            id TEXT PRIMARY KEY,
+            event_type TEXT NOT NULL,
+            received_at TEXT NOT NULL
+        )
+        """
+    )
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_users_stripe_customer ON users(stripe_customer_id)")
+    conn.execute("CREATE INDEX IF NOT EXISTS idx_users_stripe_subscription ON users(stripe_subscription_id)")
 
 
 def fernet() -> Fernet:
@@ -196,6 +212,58 @@ def claim_paypal_event(event_id: str, event_type: str) -> bool:
 def forget_paypal_event(event_id: str) -> None:
     with _connect() as conn:
         conn.execute("DELETE FROM paypal_events WHERE id = ?", (event_id,))
+
+
+def set_stripe_billing(
+    uid: str,
+    *,
+    customer_id: str | None = None,
+    subscription_id: str | None = None,
+    status: str | None = None,
+) -> None:
+    """Stripe ids get their own columns; paypal_subscription_id is never touched."""
+    assignments = ["updated_at = ?"]
+    values: list = [now_iso()]
+    for column, value in (
+        ("stripe_customer_id", customer_id),
+        ("stripe_subscription_id", subscription_id),
+        ("subscription_status", status),
+    ):
+        if value is not None:
+            assignments.append(f"{column} = ?")
+            values.append(value)
+    values.append(uid)
+    with _connect() as conn:
+        conn.execute(f"UPDATE users SET {', '.join(assignments)} WHERE id = ?", values)
+
+
+def find_user_by_stripe_customer(customer_id: str) -> dict | None:
+    with _connect() as conn:
+        row = conn.execute("SELECT * FROM users WHERE stripe_customer_id = ?", (customer_id,)).fetchone()
+    return _public_user(row)
+
+
+def find_user_by_stripe_subscription(subscription_id: str) -> dict | None:
+    with _connect() as conn:
+        row = conn.execute("SELECT * FROM users WHERE stripe_subscription_id = ?", (subscription_id,)).fetchone()
+    return _public_user(row)
+
+
+def claim_stripe_event(event_id: str, event_type: str) -> bool:
+    try:
+        with _connect() as conn:
+            conn.execute(
+                "INSERT INTO stripe_events (id, event_type, received_at) VALUES (?, ?, ?)",
+                (event_id, event_type, now_iso()),
+            )
+    except sqlite3.IntegrityError:
+        return False
+    return True
+
+
+def forget_stripe_event(event_id: str) -> None:
+    with _connect() as conn:
+        conn.execute("DELETE FROM stripe_events WHERE id = ?", (event_id,))
 
 
 def set_email(uid: str, email: str | None) -> None:
