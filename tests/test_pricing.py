@@ -13,11 +13,11 @@ def _myplate_billing_sentence() -> str:
 def test_fees_sum_to_thirteen():
     assert pricing.BASE_FEE == Decimal("10.00")
     assert pricing.SERVER_USAGE_FEE == Decimal("2.00")
-    assert pricing.GENOME_PROCESSING_FEE == Decimal("1.00")
-    assert pricing.monthly_total() == Decimal("13.00")
+    assert pricing.GENOME_PROCESSING_FEE == Decimal("0.97")
+    assert pricing.monthly_total() == Decimal("12.97")
     assert (
         pricing.BASE_FEE + pricing.SERVER_USAGE_FEE + pricing.GENOME_PROCESSING_FEE
-        == Decimal("13.00")
+        == Decimal("12.97")
     )
 
 
@@ -32,8 +32,8 @@ def test_home_and_pricing_page_show_fee_labels(client):
         assert "Monthly total" in body
         assert "$10.00" in body
         assert "$2.00" in body
-        assert "$1.00" in body
-        assert "$13.00" in body
+        assert "$0.97" in body
+        assert "$12.97" in body
         assert billing.KEYS_MISSING_MESSAGE in body
         assert stripe_billing.COMING_SOON_MESSAGE in body
         assert "disabled" in body
@@ -55,7 +55,7 @@ def test_billing_flag_off_keeps_fees(client, monkeypatch):
     monkeypatch.setenv("BILLING_ENABLED", "0")
     body = client.get("/").get_data(as_text=True)
     assert "Base fee" in body
-    assert "$13.00" in body
+    assert "$12.97" in body
     assert billing.KEYS_MISSING_MESSAGE in body
     assert client.get("/pricing").status_code == 200
 

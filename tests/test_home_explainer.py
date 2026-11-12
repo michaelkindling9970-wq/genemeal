@@ -1,3 +1,8 @@
+def test_home_links_ancestry_raw_data(client):
+    html = client.get("/").get_data(as_text=True)
+    assert "https://help.ancestry.com/hc/en-us/articles/53933317283603-Downloading-DNA-Data" in html
+
+
 def test_home_has_no_download_banner(client):
     html = client.get("/").get_data(as_text=True)
     assert "23andMe, Ancestry." not in html

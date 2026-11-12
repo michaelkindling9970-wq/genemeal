@@ -135,7 +135,7 @@ def test_plan_is_13_usd_monthly():
     assert plan["product_id"] == "PROD-1"
     cycle = plan["billing_cycles"][0]
     assert cycle["frequency"] == {"interval_unit": "MONTH", "interval_count": 1}
-    assert cycle["pricing_scheme"]["fixed_price"] == {"value": "13.00", "currency_code": "USD"}
+    assert cycle["pricing_scheme"]["fixed_price"] == {"value": "12.97", "currency_code": "USD"}
 
 
 def test_webhook_activated_then_sale_then_cancelled(client, monkeypatch):
