@@ -17,6 +17,11 @@ def test_home_has_no_download_banner(client):
     assert "23andMe, Ancestry." not in html
 
 
+def test_home_footer_says_nothing_sent_to_23andme_or_ancestry(client):
+    html = client.get("/").get_data(as_text=True)
+    assert "Nothing here is sent to 23andMe / Ancestry — there is no third-party API." in html
+
+
 def test_home_has_dna_explainer_without_excluded_topics(client):
     html = client.get("/").get_data(as_text=True)
     assert "How your DNA shapes your plan" in html and "not medical advice" in html
