@@ -12,6 +12,8 @@ import urllib.request
 from pathlib import Path
 from typing import Optional
 
+import site_meta
+
 # USPS codes — states with consumer genetic privacy / health-data genetic rules (research Nov 2026).
 BLOCKED_STATES = frozenset({
     "AL",  # Alabama Genetic Data Privacy Act
@@ -417,7 +419,12 @@ def billing_blocked(request, *, fetch=None, bill_fetch=None) -> tuple[bool, Opti
 
 
 def render_unavailable_html(state: Optional[str]) -> str:
-    """Clean 451 page naming the state and statute, with a link to the full text."""
+    """Clean 451 page naming the state and statute, with a link to the full text.
+
+    The visible body stays state-specific. The <head> uses the same default title
+    and description as templates/base.html so link previews do not show the
+    "Not available in <State>" headline. base.html has no twitter card or og:image.
+    """
     info = alert_copy(state)
     # Escape via simple replace for attributes/text we control from our catalog.
     def esc(s: str) -> str:
@@ -433,12 +440,22 @@ def render_unavailable_html(state: Optional[str]) -> str:
     statute = esc(info["statute"])
     name = esc(info["state_name"])
     url = esc(info["url"])
+    # Preview tags mirror templates/base.html defaults. og:url is the canonical home.
+    preview_title = esc(site_meta.SITE_TITLE)
+    preview_description = esc(site_meta.SITE_DESCRIPTION)
+    preview_url = esc(site_meta.SITE_HOME_URL)
     return f"""<!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{headline} — GeneMeal</title>
+<title>{preview_title}</title>
+<meta name="description" content="{preview_description}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="GeneMeal">
+<meta property="og:title" content="{preview_title}">
+<meta property="og:description" content="{preview_description}">
+<meta property="og:url" content="{preview_url}">
 <style>
   :root {{ color-scheme: light; }}
   * {{ box-sizing: border-box; }}

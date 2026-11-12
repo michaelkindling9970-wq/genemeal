@@ -3,15 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %}Nutrigenomics Meal Plans from Your DNA | GeneMeal{% endblock %}</title>
-  {% set _desc %}{% block description %}Nutrigenomics meal plans from your DNA: GeneMeal turns the raw DNA file from your DNA testing service into a gene-based diet with personalized nutrition targets. Educational, not medical advice.{% endblock %}{% endset %}
+  <title>{% block title %}{{ site_title }}{% endblock %}</title>
+  {% set _desc %}{% block description %}{{ site_description }}{% endblock %}{% endset %}
   <meta name="description" content="{{ _desc|trim }}">
   <meta name="keywords" content="nutrigenomics, DNA diet, personalized nutrition, gene-based diet, ancestry meal plan">
   <link rel="canonical" href="{{ request.base_url }}">
   <meta name="robots" content="index, follow">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="GeneMeal">
-  <meta property="og:title" content="{% block og_title %}Nutrigenomics Meal Plans from Your DNA | GeneMeal{% endblock %}">
+  <meta property="og:title" content="{% block og_title %}{{ site_title }}{% endblock %}">
   <meta property="og:description" content="{{ _desc|trim }}">
   <meta property="og:url" content="{{ request.base_url }}">
   <script type="application/ld+json">

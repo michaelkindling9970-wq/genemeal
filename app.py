@@ -22,10 +22,16 @@ import dietplan
 import mealplan
 import pricing
 import reminders
+import site_meta
 import storage
 import traits
 
 app = Flask(__name__)
+# Same defaults templates/base.html renders for <title>, meta description, and og:title.
+app.jinja_env.globals.update(
+    site_title=site_meta.SITE_TITLE,
+    site_description=site_meta.SITE_DESCRIPTION,
+)
 app.config.update(
     SECRET_KEY=os.environ.get("SECRET_KEY") or os.urandom(32).hex(),
     SESSION_COOKIE_HTTPONLY=True,

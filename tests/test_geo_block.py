@@ -8,7 +8,14 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
 import blocked_states as B
+import site_meta
 import app as A
+
+SITE_TITLE = "Nutrigenomics Meal Plans from Your DNA | GeneMeal"
+SITE_DESCRIPTION = (
+    "Nutrigenomics meal plans from your DNA: GeneMeal turns the raw DNA file from your DNA testing service "
+    "into a gene-based diet with personalized nutrition targets. Educational, not medical advice."
+)
 
 
 @pytest.fixture
@@ -110,6 +117,33 @@ def test_allows_pa_while_pending(client, monkeypatch):
         lambda watch, fetch=None, now=None: False,
     )
     assert client.get("/").status_code == 200
+
+def test_va_block_page_preview_uses_site_defaults(client, monkeypatch):
+    """Crawlers geolocated into Virginia still see GeneMeal's normal link preview."""
+    assert site_meta.SITE_TITLE == SITE_TITLE
+    assert site_meta.SITE_DESCRIPTION == SITE_DESCRIPTION
+    monkeypatch.setenv("GEO_BLOCK_ENABLED", "1")
+    monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "VA")
+    r = client.get("/")
+    assert r.status_code == 451
+    page = r.get_data(as_text=True)
+    head, _, body = page.partition("</head>")
+    assert f"<title>{SITE_TITLE}</title>" in head
+    assert f'<meta name="description" content="{SITE_DESCRIPTION}">' in head
+    assert '<meta property="og:type" content="website">' in head
+    assert '<meta property="og:site_name" content="GeneMeal">' in head
+    assert f'<meta property="og:title" content="{SITE_TITLE}">' in head
+    assert f'<meta property="og:description" content="{SITE_DESCRIPTION}">' in head
+    assert '<meta property="og:url" content="https://genemeal.onrender.com/">' in head
+    assert "twitter:" not in head
+    assert "og:image" not in head
+    assert "<h1>Not available in Virginia</h1>" in body
+    assert "Virginia state statute Genetic privacy protections prevents you from using this service." in body
+    assert ">Genetic privacy protections</span>" in body
+    assert "Read the full statute text" in body
+    assert "https://law.lis.virginia.gov/" in body
+    assert "try again without a VPN" in body
+
 
 def test_block_page_names_state_and_statute(client, monkeypatch):
     monkeypatch.setenv("GEO_BLOCK_ENABLED", "1")
