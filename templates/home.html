@@ -3,7 +3,7 @@
 {% block body %}
 <section class="intro">
   <h1>Nutrigenomics meal plans from your raw DNA file.</h1>
-  <p class="lede">GeneMeal is a nutrigenomics notebook: it checks a short list of nutrition markers that show up in public research, then drafts a DNA diet: a 7-day menu with personalized nutrition targets. You download the file yourself from 23andMe. This notebook never logs in for you.</p>
+  <p class="lede">GeneMeal is a nutrigenomics notebook: it checks a short list of nutrition markers that show up in public research, then drafts a DNA diet: a 7-day menu with personalized nutrition targets. You download the file yourself from 23andMe / Ancestry. This notebook never logs in for you.</p>
   <p class="status">Status <strong>{{ user.status.replace('_', ' ') }}</strong>
     {% if user.marker_count %} · {{ user.marker_count }} markers{% endif %}
     {% if user.genome_build %} · build {{ user.genome_build }}{% endif %}
