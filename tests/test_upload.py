@@ -1,6 +1,6 @@
 from tests.helpers import post, upload
-from tests.samples import genome_text, genome_zip, make_zip
-from genome import Rejected, screen_upload
+from tests.samples import ANCESTRY_TRAIT_ROWS, ancestry_text, ancestry_zip, genome_text, genome_zip, make_zip
+from genome import Rejected, parse_genotype_bytes, screen_upload
 
 PDF = b"%PDF-1.4\n1 0 obj\n<<>>\nendobj\ntrailer\n<<>>\n%%EOF\n"
 PNG = b"\x89PNG\r\n\x1a\n" + b"\x00" * 32
@@ -23,6 +23,54 @@ def test_accepts_synthetic_genome_zip(client):
     assert status["genome_build"] == 37
     assert status["source"] == "23andMe"
     assert status["has_raw_file"] is True
+
+
+def test_ancestry_zip_screens_and_parses_trait_genotypes():
+    name, raw = ancestry_zip()
+    text = screen_upload(name, raw)
+    parsed = parse_genotype_bytes(text)
+    assert parsed["source"] == "AncestryDNA"
+    assert parsed["build"] == 37
+    assert parsed["marker_count"] == 73
+    expected = {row[0]: row[3] + row[4] for row in ANCESTRY_TRAIT_ROWS}
+    assert {rsid: parsed["genotypes"][rsid] for rsid in expected} == expected
+
+
+def test_accepts_synthetic_ancestry_zip(client):
+    name, raw = ancestry_zip()
+    response = upload(client, name, raw)
+    assert response.status_code == 302
+    assert response.headers["Location"].endswith("/results")
+    page = client.get("/results").get_data(as_text=True)
+    assert "73" in page
+    assert "GRCh37" in page
+    assert "AncestryDNA" in page
+    assert "Confirm" in page
+    status = client.get("/account/status").get_json()
+    assert status["status"] == "uploaded"
+    assert status["marker_count"] == 73
+    assert status["genome_build"] == 37
+    assert status["source"] == "AncestryDNA"
+    assert status["has_raw_file"] is True
+
+
+def test_ancestry_nocall_and_preferred_member():
+    nocall = (
+        "#AncestryDNA raw data download\n"
+        "# of the SNP using human reference build 37.1 coordinates.\n"
+        "rsid\tchromosome\tposition\tallele1\tallele2\n"
+        "rs1801133\t1\t100000\t0\t0\n"
+        "rs9939609\t1\t100002\tA\tT\n"
+    )
+    screened = screen_upload(*make_zip({"AncestryDNA.txt": nocall}, filename_hint="dna-data-2026-11-12.zip"))
+    assert b"\t0\t0" in screened
+    both = screen_upload(
+        *make_zip(
+            {"genome_other.txt": genome_text(), "AncestryDNA.txt": ancestry_text()},
+            filename_hint="dna-data-2026-11-12.zip",
+        )
+    )
+    assert both.startswith(b"#AncestryDNA")
 
 
 def test_rejects_pdf(client):

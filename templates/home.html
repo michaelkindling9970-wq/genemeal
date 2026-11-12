@@ -3,7 +3,7 @@
 {% block body %}
 <section class="intro">
   <h1>Nutrigenomics meal plans from your raw DNA file.</h1>
-  <p class="lede">GeneMeal is a nutrigenomics notebook: it checks a short list of nutrition markers that show up in public research, then drafts a DNA diet: a 7-day menu with personalized nutrition targets. You download the file yourself from 23andMe. This notebook never logs in for you.</p>
+  <p class="lede">GeneMeal is a nutrigenomics notebook: it checks a short list of nutrition markers that show up in public research, then drafts a DNA diet: a 7-day menu with personalized nutrition targets. You download the file yourself from 23andMe / Ancestry. This notebook never logs in for you.</p>
   <p class="status">Status <strong>{{ user.status.replace('_', ' ') }}</strong>
     {% if user.marker_count %} · {{ user.marker_count }} markers{% endif %}
     {% if user.genome_build %} · build {{ user.genome_build }}{% endif %}
@@ -42,9 +42,10 @@
 
 <ol class="steps">
   <li class="step">
-    <h2>Open the 23andMe download page</h2>
+    <h2>Open the 23andMe/ancestry download page</h2>
     <p>23andMe does not offer an API for other apps. You request the file in your own account. This button opens their raw-data tool in a new tab.</p>
     <p><a class="button" href="{{ download_url }}" target="_blank" rel="noopener noreferrer">Open 23andMe raw data</a></p>
+    <p><a class="button" href="https://help.ancestry.com/hc/en-us/articles/53933317283603-Downloading-DNA-Data" target="_blank" rel="noopener noreferrer">Open Ancestry raw data</a></p>
     <p class="fine">https://you.23andme.com/tools/data/</p>
   </li>
   <li class="step">

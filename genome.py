@@ -1,4 +1,4 @@
-"""Validate a 23andMe genome zip and parse it with the snps library.
+"""Validate a 23andMe or Ancestry raw-data zip and parse it with the snps library.
 
 Plaintext raw data stays in memory for the request. Callers encrypt whatever
 they keep. The full marker table is not returned — only a count, build,
@@ -23,31 +23,35 @@ MAX_UNCOMPRESSED_BYTES = 80 * 1024 * 1024
 MAX_MEMBERS = 30
 
 PDF_MSG = (
-    "This is a PDF, not a 23andMe raw-data zip. Download the genome zip "
-    "(usually named genome_….zip), not a health report or a printed summary."
+    "This is a PDF, not your 23andMe or Ancestry raw-data zip. Download the genome zip "
+    "(usually named genome_….zip) or the Ancestry zip (dna-data-<date>.zip, which contains "
+    "AncestryDNA.txt), not a health report or a printed summary."
 )
 IMAGE_MSG = (
     "This looks like an image or screenshot, not raw genotype data. "
-    "Upload the genome zip from the 23andMe download email."
+    "Upload your 23andMe or Ancestry raw-data zip."
 )
 NEED_ZIP_MSG = (
-    "Upload the .zip of your 23andMe raw data. It is usually named genome_….zip. "
+    "Upload your 23andMe or Ancestry raw-data zip. A 23andMe file is usually named genome_….zip. "
+    "An Ancestry file is usually named dna-data-<date>.zip and contains AncestryDNA.txt. "
     "Do not upload a loose text file, a PDF, or a photo of the page."
 )
 HEADER_MSG = (
-    "This file does not look like 23andMe raw data. Expected comment lines starting "
-    "with #, then columns rsid, chromosome, position, and genotype."
+    "This file does not look like raw DNA data from 23andMe or Ancestry. Expected comment lines "
+    "starting with #, then a column line with rsid, chromosome, position, and the genotype "
+    "(or allele1 and allele2)."
 )
 PARSE_MSG = (
     "The header looks like genotype text, but the marker parser could not read it. "
-    "Use the 23andMe raw download: the first line should mention 23andMe and the "
-    "column line should be rsid, chromosome, position, genotype."
+    "Use your 23andMe or Ancestry raw-data zip: comment lines should start with #, then a "
+    "column line with rsid, chromosome, position, and the genotype (or allele1 and allele2)."
 )
 
-_HEADER_NEEDED = {"rsid", "chromosome", "position", "genotype"}
+_HEADER_CORE = {"rsid", "chromosome", "position"}
 _DATA_RSID = re.compile(r"^(rs\d+|i\d+)$", re.IGNORECASE)
 _DATA_POS = re.compile(r"^\d+$")
 _DATA_GT = re.compile(r"^[ACGTDI\-]{0,8}$", re.IGNORECASE)
+_DATA_ALLELE = re.compile(r"^[ACGT0]$", re.IGNORECASE)
 
 
 class Rejected(ValueError):
@@ -82,8 +86,10 @@ def _sniff(data: bytes, filename: str) -> str:
 
 
 def _is_header(text: str) -> bool:
-    cols = [part.strip().lower() for part in re.split(r"[\t,]+", text.strip()) if part.strip()]
-    return _HEADER_NEEDED <= set(cols)
+    cols = {part.strip().lower() for part in re.split(r"[\t,]+", text.strip()) if part.strip()}
+    if not _HEADER_CORE <= cols:
+        return False
+    return "genotype" in cols or {"allele1", "allele2"} <= cols
 
 
 def _is_data_row(line: str) -> bool:
@@ -94,6 +100,8 @@ def _is_data_row(line: str) -> bool:
         return False
     if not _DATA_POS.match(parts[2]):
         return False
+    if len(parts) >= 5 and _DATA_ALLELE.match(parts[3]) and _DATA_ALLELE.match(parts[4]):
+        return True
     return bool(_DATA_GT.match(parts[3]))
 
 
@@ -147,6 +155,13 @@ def _skip_member(name: str) -> bool:
     return False
 
 
+def _member_rank(name: str) -> int:
+    lower = name.lower()
+    if "genome" in lower or "ancestrydna" in lower:
+        return 0
+    return 1
+
+
 def _unsafe_name(name: str) -> bool:
     base = name.replace("\\", "/")
     if base.startswith("/") or base.startswith("../") or "/../" in base or base == "..":
@@ -183,14 +198,14 @@ def screen_upload(
     with zf:
         infos = zf.infolist()
         if len(infos) > MAX_MEMBERS:
-            raise Rejected("The zip has too many files to be a 23andMe raw-data download.")
+            raise Rejected("The zip has too many files to be your 23andMe or Ancestry raw-data zip.")
         uncompressed = 0
         for info in infos:
             if _unsafe_name(info.filename):
                 raise Rejected("The zip contains an unsafe path and was rejected.")
             if info.flag_bits & 0x1:
                 raise Rejected(
-                    "Password-protected zips are not supported. Upload the standard 23andMe genome zip."
+                    "Password-protected zips are not supported. Upload your 23andMe or Ancestry raw-data zip."
                 )
             uncompressed += max(info.file_size, 0)
             if info.file_size > max_uncompressed or uncompressed > max_uncompressed:
@@ -201,7 +216,7 @@ def screen_upload(
         saw_image = False
         errors: list[Rejected] = []
         members = [info for info in infos if not _skip_member(info.filename)]
-        members.sort(key=lambda info: (0 if "genome" in info.filename.lower() else 1, info.filename.lower()))
+        members.sort(key=lambda info: (_member_rank(info.filename), info.filename.lower()))
         for info in members:
             with zf.open(info, "r") as handle:
                 blob = handle.read(max_uncompressed + 1)

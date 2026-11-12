@@ -10,7 +10,7 @@ from decimal import Decimal
 
 BASE_FEE = Decimal("10.00")
 SERVER_USAGE_FEE = Decimal("2.00")
-GENOME_PROCESSING_FEE = Decimal("1.00")
+GENOME_PROCESSING_FEE = Decimal("0.97")
 
 LINE_ITEMS = (
     {"code": "base", "label": "Base fee", "amount": BASE_FEE},
