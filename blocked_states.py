@@ -324,9 +324,10 @@ EXEMPT_PATH_PREFIXES = (
     "/favicon",
     "/og.png",
     "/sitemap.xml",
-    # PayPal delivers webhooks from its own network, not the visitor's state.
+    # PayPal and Stripe deliver webhooks from their own networks, not the visitor's state.
     "/paypal/webhook",
     "/PayPal/webhook",
+    "/stripe/webhook",
 )
 
 _cache: dict[str, tuple[float, Optional[str]]] = {}

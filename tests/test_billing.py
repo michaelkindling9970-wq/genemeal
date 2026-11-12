@@ -219,13 +219,17 @@ def test_webhook_is_exempt_from_geo_block(client, monkeypatch):
     assert client.post("/paypal/webhook", data=b"{}").status_code == 503
 
 
-def test_no_stripe_or_square_left_in_app():
+def test_paypal_module_does_not_embed_stripe_or_square():
+    """PayPal stays in billing.py. Card checkout lives in stripe_billing.py."""
     from pathlib import Path
 
     root = Path(__file__).resolve().parents[1]
-    for name in ("app.py", "billing.py", "storage.py", "requirements.txt", "blocked_states.py"):
+    for name in ("billing.py", "requirements.txt"):
         text = (root / name).read_text().lower()
         assert "stripe" not in text, name
+        assert "squareup" not in text, name
+    for name in ("app.py", "storage.py", "blocked_states.py", "stripe_billing.py"):
+        text = (root / name).read_text().lower()
         assert "squareup" not in text, name
 
 
@@ -260,7 +264,7 @@ def test_blocked_state_cannot_start_checkout(client, monkeypatch):
     home = client.get("/").get_data(as_text=True)
     assert "disabled" in home
     assert "Connecticut" in home
-    assert ">PayPal</button>" in home
+    assert home.index(">Credit or Debit Card</button>") < home.index(">PayPal</button>")
 
 
 def test_non_blocked_state_can_start_checkout(client, monkeypatch):

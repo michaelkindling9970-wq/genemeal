@@ -75,12 +75,16 @@ Original zip filenames are not stored. 23andMe’s names often include the custo
 | `PORT` | Listen port for `python app.py`. Default `8741`. |
 | `GENEMEAL_COOKIE_SECURE` | `1` marks the session cookie Secure. Leave unset for local HTTP. |
 | `GENEMEAL_FORBID_NETWORK` | `1` makes the FDC client refuse live HTTP. The test suite sets this. |
-| `BILLING_ENABLED` | `1` (default) allows checkout once the PayPal vars below are set. `0` refuses checkout even if credentials are present. |
+| `BILLING_ENABLED` | `1` (default) allows checkout once that gateway's credentials are set. `0` refuses both PayPal and card checkout even if credentials are present. |
 | `PAYPAL_CLIENT_ID` | REST app client ID from developer.paypal.com (Apps & Credentials) for the GeneMeal business account. |
 | `PAYPAL_CLIENT_SECRET` | That app's secret. Never commit it. |
 | `PAYPAL_WEBHOOK_ID` | ID of the webhook registered on that app for `/paypal/webhook`. Used to verify signatures. |
 | `PAYPAL_PLAN_ID` | `P-…` plan id printed by `scripts/create_paypal_plan.py`. |
 | `PAYPAL_ENV` | `sandbox` (default) or `live`. Credentials must match the environment. |
+| `STRIPE_SECRET_KEY` | Stripe secret or restricted key (`sk_` or `rk_`) used to create the Checkout Session. Never commit it. |
+| `STRIPE_PUBLISHABLE_KEY` | Stripe publishable key (`pk_`). Required before the card button is enabled. Never printed on the page. |
+| `STRIPE_WEBHOOK_SECRET` | Signing secret (`whsec_`) for `POST /stripe/webhook`. |
+| `STRIPE_PRICE_ID` | `price_…` id of the $13.00/month Stripe price. This is the only price id. |
 | `PUBLIC_BASE_URL` | Optional absolute origin for Checkout return URLs, such as `https://genemeal.onrender.com`. When unset, the request host is used. |
 
 Reminders that are due can be recorded with `POST /account/reminders/process` (CSRF token required). Nothing sends email.
@@ -97,7 +101,11 @@ GeneMeal Monthly is **$13.00** per month:
 
 The breakdown sits on the home page next to the upload control, and on `/pricing` (linked from the nav and footer). Amounts live in `pricing.py`. Upload, parse, the week plan, geo-block, and reminders behave as before. Upload is not blocked on a subscription.
 
-Checkout uses PayPal Subscriptions (`billing.py`) and stays disabled until every PayPal variable above is set and `BILLING_ENABLED=1`. While any are missing, Subscribe is disabled and the page says **Add PayPal credentials to enable checkout**. Visitors from blocked states are never offered or sent to checkout (HTTP 451), whether or not `GEO_BLOCK_ENABLED` is on.
+The pricing card shows two buttons. **Credit or Debit Card** is first and **PayPal** is second: side by side on wide viewports (Credit or Debit Card on the left) and stacked on narrow viewports (Credit or Debit Card on top). Visitors from blocked states are never offered or sent to checkout (HTTP 451), whether or not `GEO_BLOCK_ENABLED` is on.
+
+PayPal Subscriptions (`billing.py`) stay disabled until every PayPal variable above is set and `BILLING_ENABLED=1`. While any are missing, the PayPal button is disabled and the page says **Add PayPal credentials to enable checkout**.
+
+Credit or Debit Card uses Stripe Checkout (`stripe_billing.py`) for the same $13.00/month plan. The button submits only when `BILLING_ENABLED=1` and all four Stripe variables are set: `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, and `STRIPE_PRICE_ID`. While any are missing, the button stays disabled, the page says **Card checkout coming soon.**, and no Stripe request is made. A direct POST does not return 500.
 
 Setup:
 
@@ -108,7 +116,15 @@ Setup:
 
 Subscribe creates a subscription and redirects to PayPal's approval page. Status is recorded only from webhooks, which are verified with PayPal's `verify-webhook-signature` API. The return page does not grant access by itself.
 
-Statement descriptor: GeneMeal intends charges to read `GENEMEAL` (`billing.SOFT_DESCRIPTOR`). The PayPal Subscriptions API has no per-charge soft descriptor, so recurring charges use the account's credit card statement name (PayPal business settings). The descriptor must name this business, not another company's brand.
+Card checkout:
+
+1. In Stripe, create a $13.00/month price for this plan and put its id in `STRIPE_PRICE_ID`. Set the product statement descriptor to `GENEMEAL`.
+2. Add a webhook endpoint for `https://genemeal.onrender.com/stripe/webhook` with `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`, `charge.refunded`, and `charge.dispute.created`. Put its signing secret in `STRIPE_WEBHOOK_SECRET`.
+3. Set `STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY` in the host environment. Do not commit them.
+
+Credit or Debit Card creates a subscription Checkout Session and redirects to Stripe. Status is recorded only from the verified webhook. The return page does not grant access by itself. PayPal subscriptions are stored separately and are not overwritten by Stripe events.
+
+Statement descriptor: GeneMeal intends charges to read `GENEMEAL` (`billing.SOFT_DESCRIPTOR`). The PayPal Subscriptions API has no per-charge soft descriptor, so recurring charges use the account's credit card statement name (PayPal business settings). The descriptor must name this business, not another company's brand. Set the same name on the Stripe product.
 
 ## FoodData Central
 
@@ -126,7 +142,7 @@ Get a key from the USDA FoodData Central API docs when you want live foods. Unti
 pytest -q
 ```
 
-Covered: the existing geo-block tests, upload acceptance and rejection (synthetic genome zip, PDF, image, non-genome text, size), trait mapping, meal-plan shape and toggles, mocked FDC (no live network), encrypted storage, delete-my-data, status transitions, the $13 pricing breakdown, and Checkout (disabled without keys, subscription session when keys are set, signed webhook).
+Covered: the existing geo-block tests, upload acceptance and rejection (synthetic genome zip, PDF, image, non-genome text, size), trait mapping, meal-plan shape and toggles, mocked FDC (no live network), encrypted storage, delete-my-data, status transitions, the $13 pricing breakdown, PayPal Checkout (disabled without keys, subscription session when keys are set, signed webhook), and Stripe Checkout (card button shows "Card checkout coming soon." without keys and does not 500, subscription session when the four Stripe env vars are set, signed webhook).
 
 ## Next steps before any launch
 

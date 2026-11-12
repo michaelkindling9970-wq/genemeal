@@ -5,20 +5,36 @@
       <li><span>{{ item.label }}</span><span>{{ item.amount }}/mo</span></li>
     {% endfor %}
   </ul>
-  <p class="fine">Includes the MyPlate diet plan builder.</p>
   <p class="price-total"><span>Monthly total</span><strong>{{ pricing.total }}</strong></p>
   {% if pricing.subscription_status in ["active", "trialing"] %}
     <p class="fine">Subscription active.</p>
-  {% elif pricing.checkout_ready %}
-    <div class="pay-buttons pay-single">
-      <form method="post" action="{{ url_for('billing_checkout') }}">
-        <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-        <button type="submit" id="pay-paypal">PayPal</button>
-      </form>
-    </div>
-    <p class="fine">Subscribe starts a monthly PayPal subscription for this {{ pricing.total }} plan.</p>
   {% else %}
-    <p class="fine" id="checkout-waiting">{{ pricing.checkout_message }}</p>
-    <div class="pay-buttons pay-single"><button type="button" id="pay-paypal" class="secondary" disabled aria-disabled="true">PayPal</button></div>
+    <div class="pay-buttons">
+      {% if pricing.stripe_ready %}
+        <form method="post" action="{{ url_for('stripe_checkout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" id="pay-card">Credit or Debit Card</button>
+        </form>
+      {% else %}
+        <button type="button" id="pay-card" class="secondary" disabled aria-disabled="true">Credit or Debit Card</button>
+      {% endif %}
+      {% if pricing.checkout_ready %}
+        <form method="post" action="{{ url_for('billing_checkout') }}">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+          <button type="submit" id="pay-paypal">PayPal</button>
+        </form>
+      {% else %}
+        <button type="button" id="pay-paypal" class="secondary" disabled aria-disabled="true">PayPal</button>
+      {% endif %}
+    </div>
+    {% if pricing.stripe_message and pricing.stripe_message != pricing.checkout_message %}
+      <p class="fine" id="card-waiting">{{ pricing.stripe_message }}</p>
+    {% endif %}
+    {% if pricing.checkout_message %}
+      <p class="fine" id="checkout-waiting">{{ pricing.checkout_message }}</p>
+    {% endif %}
+    {% if pricing.checkout_ready %}
+      <p class="fine">Subscribe starts a monthly PayPal subscription for this {{ pricing.total }} plan.</p>
+    {% endif %}
   {% endif %}
 </section>

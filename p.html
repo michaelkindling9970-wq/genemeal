@@ -49,10 +49,13 @@
       <li><span>Genome analysis / processing fee</span><span>$1.00/mo</span></li>
     
   </ul>
-  <p class="fine">Includes the MyPlate diet plan builder.</p>
   <p class="price-total"><span>Monthly total</span><strong>$13.00</strong></p>
-  
-    <div class="pay-buttons pay-single">
+
+    <div class="pay-buttons">
+      <form method="post" action="/stripe/checkout">
+        <input type="hidden" name="csrf_token" value="db61ee3a4e0dc6a1a893ff28c8acb781">
+        <button type="submit" id="pay-card">Credit or Debit Card</button>
+      </form>
       <form method="post" action="/billing/checkout">
         <input type="hidden" name="csrf_token" value="db61ee3a4e0dc6a1a893ff28c8acb781">
         <button type="submit" id="pay-paypal">PayPal</button>
