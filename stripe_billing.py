@@ -1,9 +1,11 @@
-"""Stripe Checkout for the Credit Card button.
+"""Stripe Checkout for the Credit or Debit Card button.
 
 Runs alongside PayPal (billing.py); neither replaces the other. Keys come from
-the environment only. Nothing in this file is a live credential. The Credit
-Card button stays on the page either way. It submits only when BILLING_ENABLED=1
-and STRIPE_SECRET_KEY, STRIPE_PRICE_ID, and STRIPE_WEBHOOK_SECRET are all set.
+the environment only. Nothing in this file is a live credential. The button
+label is "Credit or Debit Card". It submits only when BILLING_ENABLED=1 and
+STRIPE_SECRET_KEY, STRIPE_PUBLISHABLE_KEY, STRIPE_WEBHOOK_SECRET, and
+STRIPE_PRICE_ID are all set. If any of those are missing, the button does not
+start checkout and the page says card checkout is coming soon.
 
 Flow:
   1. POST /stripe/checkout creates a Checkout Session (mode=subscription) for
@@ -33,7 +35,9 @@ import storage
 API_BASE = "https://api.stripe.com"
 SIGNATURE_TOLERANCE = 300
 
-KEYS_MISSING_MESSAGE = "Add Stripe keys to enable card checkout"
+CARD_BUTTON_LABEL = "Credit or Debit Card"
+COMING_SOON_MESSAGE = "Card checkout coming soon."
+KEYS_MISSING_MESSAGE = COMING_SOON_MESSAGE
 BILLING_OFF_MESSAGE = "Set BILLING_ENABLED=1 to enable checkout"
 
 _SECRET_RE = re.compile(r"(?:sk|rk|pk)_(?:test|live)_[A-Za-z0-9]+|whsec_[A-Za-z0-9]+")
@@ -59,6 +63,10 @@ def secret_key() -> str:
     return _clean("STRIPE_SECRET_KEY")
 
 
+def publishable_key() -> str:
+    return _clean("STRIPE_PUBLISHABLE_KEY")
+
+
 def price_id() -> str:
     return _clean("STRIPE_PRICE_ID")
 
@@ -72,7 +80,7 @@ def billing_enabled() -> bool:
 
 
 def keys_present() -> bool:
-    return bool(secret_key() and price_id() and webhook_secret())
+    return bool(secret_key() and publishable_key() and webhook_secret() and price_id())
 
 
 def checkout_ready() -> bool:
@@ -91,7 +99,7 @@ def checkout_view() -> dict:
 
 def safe_error(exc: BaseException) -> str:
     text = str(exc)
-    for value in (secret_key(), webhook_secret()):
+    for value in (secret_key(), publishable_key(), webhook_secret()):
         if value:
             text = text.replace(value, "[redacted]")
     return _SECRET_RE.sub("[redacted]", text)[:400]

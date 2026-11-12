@@ -35,21 +35,20 @@ def test_home_and_pricing_page_show_fee_labels(client):
         assert "$1.00" in body
         assert "$13.00" in body
         assert billing.KEYS_MISSING_MESSAGE in body
-        assert stripe_billing.KEYS_MISSING_MESSAGE in body
+        assert stripe_billing.COMING_SOON_MESSAGE in body
         assert "disabled" in body
         assert _myplate_billing_sentence() not in body
+        assert 'action="/stripe/checkout"' not in body
         card_at = body.index('id="pay-card"')
         paypal_at = body.index('id="pay-paypal"')
         assert card_at < paypal_at
-        assert ">Credit Card</button>" in body[card_at:paypal_at]
+        assert ">Credit or Debit Card</button>" in body[card_at:paypal_at]
         assert ">PayPal</button>" in body[paypal_at:]
-        assert "Credit or Debit" not in body
         card = body[body.rindex("<button", 0, card_at):body.index("</button>", card_at)]
+        assert card.endswith(">Credit or Debit Card")
         assert "Stripe" not in card
-        assert "Debit" not in card
         assert 'type="button"' in card
         assert "disabled" in card
-        assert ">Credit Card" in card
 
 
 def test_billing_flag_off_keeps_fees(client, monkeypatch):

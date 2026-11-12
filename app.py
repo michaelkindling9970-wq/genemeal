@@ -224,17 +224,20 @@ def stripe_checkout():
             mimetype="text/html",
         )
     user = _load()
-    if not stripe_billing.keys_present():
-        _notice(stripe_billing.KEYS_MISSING_MESSAGE, "error")
-        return redirect(url_for("home"))
-    if not stripe_billing.billing_enabled():
-        _notice(stripe_billing.BILLING_OFF_MESSAGE, "error")
-        return redirect(url_for("home"))
     try:
+        if not stripe_billing.keys_present():
+            _notice(stripe_billing.COMING_SOON_MESSAGE, "error")
+            return redirect(url_for("home"))
+        if not stripe_billing.billing_enabled():
+            _notice(stripe_billing.BILLING_OFF_MESSAGE, "error")
+            return redirect(url_for("home"))
         url = stripe_billing.start_checkout(user, _external_base())
     except Exception as exc:
         app.logger.info("stripe checkout start failed: %s", stripe_billing.safe_error(exc))
-        _notice("Card checkout could not be started. Check the Stripe keys and price.", "error")
+        if not stripe_billing.keys_present():
+            _notice(stripe_billing.COMING_SOON_MESSAGE, "error")
+        else:
+            _notice("Card checkout could not be started. Check the Stripe keys and price.", "error")
         return redirect(url_for("home"))
     return redirect(url, code=303)
 

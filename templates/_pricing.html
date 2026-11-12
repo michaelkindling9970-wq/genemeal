@@ -13,10 +13,10 @@
       {% if pricing.stripe_ready %}
         <form method="post" action="{{ url_for('stripe_checkout') }}">
           <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-          <button type="submit" id="pay-card">Credit Card</button>
+          <button type="submit" id="pay-card">Credit or Debit Card</button>
         </form>
       {% else %}
-        <button type="button" id="pay-card" class="secondary" disabled aria-disabled="true">Credit Card</button>
+        <button type="button" id="pay-card" class="secondary" disabled aria-disabled="true">Credit or Debit Card</button>
       {% endif %}
       {% if pricing.checkout_ready %}
         <form method="post" action="{{ url_for('billing_checkout') }}">
