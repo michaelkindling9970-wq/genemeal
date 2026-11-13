@@ -32,6 +32,7 @@ def _no_paypal_env(monkeypatch):
         "STRIPE_PRICE_ID",
         "STRIPE_WEBHOOK_SECRET",
         "STRIPE_PUBLISHABLE_KEY",
+        "STRIPE_PORTAL_LOGIN_URL",
         "PREVIEW_MODE",
         "PREVIEW_TOKEN",
         "BILLING_ENABLED",

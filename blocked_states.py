@@ -333,6 +333,8 @@ EXEMPT_PATH_PREFIXES = (
     "/paypal/webhook",
     "/PayPal/webhook",
     "/stripe/webhook",
+    # Opening the hosted customer portal is not a charge. /stripe/checkout stays blocked.
+    "/stripe/portal",
 )
 
 # Visitor-facing routes that handle genetic data or payment. The state block
