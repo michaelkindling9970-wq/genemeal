@@ -188,6 +188,7 @@ CONTENT_STATUS = {
     "/": 200,
     "/pricing": 200,
     "/research/stress-diet": 200,
+    "/unsubscribe": 200,
     "/robots.txt": 200,
     "/sitemap.xml": 200,
     "/favicon.ico": 204,
@@ -228,7 +229,7 @@ def test_content_open_sensitive_blocked(client, monkeypatch, state):
     for path, status in CONTENT_STATUS.items():
         response = client.get(path)
         assert response.status_code == status, path
-        if path in ("/", "/pricing", "/research/stress-diet"):
+        if path in ("/", "/pricing", "/research/stress-diet", "/unsubscribe"):
             assert "Not available in" not in response.get_data(as_text=True)
     for path in BLOCKED_GET:
         response = client.get(path)
