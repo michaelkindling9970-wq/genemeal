@@ -70,7 +70,7 @@ Original zip filenames are not stored. 23andMe’s names often include the custo
 | `GENEMEAL_FERNET_KEY` | Fernet key for files and saved notes. See the generator above. |
 | `FDC_API_KEY` | USDA FoodData Central key. Empty means the offline approximate table. Never hard-code a key. |
 | `DATA_DIR` | Where the SQLite file, encrypted uploads, and FDC cache live. Default `./data`. |
-| `GEO_BLOCK_ENABLED` | `1` turns on the 19-state genetic-privacy block (HTTP 451). Default off. |
+| `GEO_BLOCK_ENABLED` | `1` turns on the state genetic-privacy block (HTTP 451) for genome upload, results, and billing routes. Content pages stay available. Default off. |
 | `REMINDER_EMAIL_ENABLED` | `1` logs a stub “send” for due reminders. This build does not open SMTP and does not deliver mail. Default is log-only, and the address is not written to the log. |
 | `PORT` | Listen port for `python app.py`. Default `8741`. |
 | `GENEMEAL_COOKIE_SECURE` | `1` marks the session cookie Secure. Leave unset for local HTTP. |
@@ -151,6 +151,6 @@ Do not deploy this tree as-is.
 1. Lawyer review of the privacy policy, terms, consent, retention, and the state genetic-privacy list in `blocked_states.py`.
 2. Create a USDA FoodData Central key and set `FDC_API_KEY` in the host environment. Do not commit it.
 3. Set `SECRET_KEY` and `GENEMEAL_FERNET_KEY` in the host environment. Keep the Fernet key. There is no recovery if it is lost.
-4. Turn on `GEO_BLOCK_ENABLED=1` only after that review. Unknown IP lookups stay allowed; robots and the favicon stay reachable.
+4. Turn on `GEO_BLOCK_ENABLED=1` only after that review. Unknown IP lookups stay allowed. Content pages, robots.txt, the sitemap, and static assets stay reachable in every state; upload, results, and billing routes return 451.
 5. Render (or any other host) is a later decision. A `Procfile` is present (`gunicorn app:app`) so a host can boot the app, but this project does not deploy itself. Wire reminders to a real mailer only after the legal review — the current sender is a stub.
 6. Replace the anonymous session cookie with a real account design if more than one person will use a server. The session id is a convenience for a local demo, not production authentication.

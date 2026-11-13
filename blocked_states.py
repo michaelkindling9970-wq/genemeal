@@ -1,6 +1,8 @@
 """Shared US-state geo block for GeneMeal (genetics + meal-plan app).
 
 Enable with GEO_BLOCK_ENABLED=1. Off by default.
+The block applies only to genome upload, results, and billing routes.
+Content pages, robots.txt, sitemap.xml, and static assets stay available in every state.
 IP→state uses ip-api.com (free, no key). Raw IPs are never logged — only the resolved state code on deny.
 """
 from __future__ import annotations
@@ -326,10 +328,27 @@ EXEMPT_PATH_PREFIXES = (
     "/favicon",
     "/og.png",
     "/sitemap.xml",
+    "/static",
     # PayPal and Stripe deliver webhooks from their own networks, not the visitor's state.
     "/paypal/webhook",
     "/PayPal/webhook",
     "/stripe/webhook",
+)
+
+# Visitor-facing routes that handle genetic data or payment. The state block
+# applies only to these. Webhooks under the same prefixes stay exempt above.
+BLOCKED_PATH_PREFIXES = (
+    "/upload",
+    "/parse",
+    "/results",
+    "/plan",
+    "/diet",
+    "/billing",
+    "/stripe",
+    "/paypal",
+    "/PayPal",
+    "/account",
+    "/preview-login",
 )
 
 _cache: dict[str, tuple[float, Optional[str]]] = {}
@@ -397,6 +416,22 @@ def path_exempt(path: str) -> bool:
     return False
 
 
+def path_is_blocked_scope(path: str) -> bool:
+    """True for genome upload, results, and billing routes.
+
+    Content pages are not in scope. Provider webhooks and static/crawl files
+    stay exempt even when their URL sits under a billing prefix.
+    """
+    if not path or path_exempt(path):
+        return False
+    if path != "/" and path.endswith("/"):
+        path = path.rstrip("/") or "/"
+    for prefix in BLOCKED_PATH_PREFIXES:
+        if path == prefix or path.startswith(prefix + "/"):
+            return True
+    return False
+
+
 
 def visitor_state(request, *, fetch=None) -> Optional[str]:
     return resolve_state(client_ip(request), fetch=fetch)
@@ -421,9 +456,9 @@ def billing_blocked(request, *, fetch=None, bill_fetch=None) -> tuple[bool, Opti
 def render_unavailable_html(state: Optional[str]) -> str:
     """Clean 451 page naming the state and statute, with a link to the full text.
 
-    The visible body stays state-specific. The <head> uses the same default title
-    and description as templates/base.html so link previews do not show the
-    "Not available in <State>" headline. base.html has no twitter card or og:image.
+    The visible body stays state-specific. The <head> uses the same default title,
+    description, share image, and Twitter card as templates/base.html so link
+    previews do not show the "Not available in <State>" headline.
     """
     info = alert_copy(state)
     # Escape via simple replace for attributes/text we control from our catalog.
@@ -444,6 +479,11 @@ def render_unavailable_html(state: Optional[str]) -> str:
     preview_title = esc(site_meta.SITE_TITLE)
     preview_description = esc(site_meta.SITE_DESCRIPTION)
     preview_url = esc(site_meta.SITE_HOME_URL)
+    preview_image = esc(site_meta.OG_IMAGE_URL)
+    preview_image_alt = esc(site_meta.OG_IMAGE_ALT)
+    preview_image_w = esc(str(site_meta.OG_IMAGE_WIDTH))
+    preview_image_h = esc(str(site_meta.OG_IMAGE_HEIGHT))
+    preview_twitter = esc(site_meta.TWITTER_CARD)
     return f"""<!doctype html>
 <html lang="en">
 <head>
@@ -456,6 +496,12 @@ def render_unavailable_html(state: Optional[str]) -> str:
 <meta property="og:title" content="{preview_title}">
 <meta property="og:description" content="{preview_description}">
 <meta property="og:url" content="{preview_url}">
+<meta property="og:image" content="{preview_image}">
+<meta property="og:image:width" content="{preview_image_w}">
+<meta property="og:image:height" content="{preview_image_h}">
+<meta property="og:image:alt" content="{preview_image_alt}">
+<meta name="twitter:card" content="{preview_twitter}">
+<meta name="twitter:image" content="{preview_image}">
 <style>
   :root {{ color-scheme: light; }}
   * {{ box-sizing: border-box; }}
@@ -518,7 +564,7 @@ def render_unavailable_html(state: Optional[str]) -> str:
 def should_block(request, *, fetch=None, bill_fetch=None) -> tuple[bool, Optional[str]]:
     if not enabled():
         return False, None
-    if path_exempt(request.path):
+    if not path_is_blocked_scope(request.path):
         return False, None
     state = resolve_state(client_ip(request), fetch=fetch)
     return is_blocked_state(state, fetch=bill_fetch), state

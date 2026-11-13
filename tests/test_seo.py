@@ -1,6 +1,16 @@
 import re
 
+import site_meta
+
 KEYWORDS = ("nutrigenomics", "DNA diet", "personalized nutrition", "gene-based diet", "ancestry meal plan")
+SHARE_TAGS = (
+    f'<meta property="og:image" content="{site_meta.OG_IMAGE_URL}">',
+    '<meta property="og:image:width" content="1200">',
+    '<meta property="og:image:height" content="630">',
+    f'<meta property="og:image:alt" content="{site_meta.OG_IMAGE_ALT}">',
+    f'<meta name="twitter:card" content="{site_meta.TWITTER_CARD}">',
+    f'<meta name="twitter:image" content="{site_meta.OG_IMAGE_URL}">',
+)
 
 
 def test_homepage_seo(client):
@@ -24,3 +34,20 @@ def test_homepage_seo(client):
 def test_pricing_override(client):
     page = client.get("/pricing").get_data(as_text=True)
     assert '<meta name="description" content="GeneMeal pricing' in page
+
+
+def test_base_template_share_image(client):
+    assert site_meta.OG_IMAGE_URL == "https://genemeal.onrender.com/static/og.png"
+    assert site_meta.TWITTER_CARD == "summary_large_image"
+    for path in ("/", "/pricing", "/research/stress-diet"):
+        page = client.get(path).get_data(as_text=True)
+        for tag in SHARE_TAGS:
+            assert tag in page, (path, tag)
+    raw = client.get("/static/og.png")
+    assert raw.status_code == 200
+    assert raw.mimetype == "image/png"
+    body = raw.get_data()
+    assert body[:8] == b"\x89PNG\r\n\x1a\n"
+    width = int.from_bytes(body[16:20], "big")
+    height = int.from_bytes(body[20:24], "big")
+    assert (width, height) == (1200, 630)
