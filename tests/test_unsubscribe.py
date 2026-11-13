@@ -255,3 +255,14 @@ def test_portal_without_a_url_does_not_return_500(client, monkeypatch):
     assert fake.calls[0][1] == "/v1/billing_portal/sessions"
     page = client.get("/unsubscribe").get_data(as_text=True)
     assert stripe_billing.PORTAL_UNAVAILABLE_MESSAGE in page
+
+
+def test_unsubscribe_page_has_paypal_autopay_button(client):
+    page = client.get("/unsubscribe").get_data(as_text=True)
+    assert (
+        '<a class="button" href="https://www.paypal.com/myaccount/autopay/" '
+        'target="_blank" rel="noopener noreferrer">Manage PayPal subscription</a>'
+    ) in page
+    assert page.index(">Manage card subscription</button>") < page.index(
+        "Manage PayPal subscription"
+    ) < page.index(">Back to the guide</a>")
