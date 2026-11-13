@@ -40,6 +40,7 @@ def test_sitemap(client):
         "https://genemeal.onrender.com/",
         "https://genemeal.onrender.com/pricing",
         "https://genemeal.onrender.com/research/stress-diet",
+        "https://genemeal.onrender.com/unsubscribe",
     ]
     assert locs == expected
     assert len(lastmods) == len(locs)

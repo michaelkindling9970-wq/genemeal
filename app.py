@@ -194,6 +194,12 @@ def research_stress():
     return render_template("research_stress.html")
 
 
+@app.get("/unsubscribe")
+def unsubscribe():
+    """How to cancel a subscription. This page does not call a billing API."""
+    return render_template("unsubscribe.html")
+
+
 @app.post("/billing/checkout")
 def billing_checkout():
     # Blocked-state visitors cannot be charged — independent of GEO_BLOCK_ENABLED.

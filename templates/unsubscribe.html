@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}Unsubscribe — GeneMeal{% endblock %}
+{% block body %}
+<section class="intro">
+  <h1>Unsubscribe</h1>
+  <p>PayPal subscriptions can be cancelled in the PayPal account's automatic payments settings.</p>
+  <p>GeneMeal does not have a card cancellation page. Card checkout on this site only starts a subscription.</p>
+  <p><a class="button" href="{{ url_for('home') }}">Back to the guide</a></p>
+</section>
+{% endblock %}
