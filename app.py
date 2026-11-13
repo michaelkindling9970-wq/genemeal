@@ -263,6 +263,25 @@ def stripe_checkout():
     return redirect(url, code=303)
 
 
+@app.post("/stripe/portal")
+def stripe_portal():
+    """Open Stripe's hosted customer portal. Does not charge or cancel.
+
+    Available in every state, including states where checkout is blocked.
+    """
+    user = _load()
+    customer_id = user.get("stripe_customer_id")
+    if not isinstance(customer_id, str) or not customer_id.strip():
+        return redirect(stripe_billing.portal_login_url(), code=303)
+    try:
+        url = stripe_billing.start_portal(customer_id.strip(), _external_base())
+    except Exception as exc:
+        app.logger.info("stripe portal start failed: %s", stripe_billing.safe_error(exc))
+        _notice(stripe_billing.PORTAL_UNAVAILABLE_MESSAGE, "error")
+        return redirect(url_for("unsubscribe"), code=303)
+    return redirect(url, code=303)
+
+
 @app.post("/stripe/webhook")
 def stripe_webhook():
     if not stripe_billing.webhook_secret():

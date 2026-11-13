@@ -267,7 +267,7 @@ def test_sensitive_routes_work_for_allowed_state(client, monkeypatch):
 def test_block_scope_matches_upload_results_billing():
     for path in CONTENT_STATUS:
         assert not B.path_is_blocked_scope(path), path
-    for path in ("/paypal/webhook", "/PayPal/webhook", "/stripe/webhook"):
+    for path in ("/paypal/webhook", "/PayPal/webhook", "/stripe/webhook", "/stripe/portal"):
         assert not B.path_is_blocked_scope(path), path
     for path in BLOCKED_GET + BLOCKED_POST:
         assert B.path_is_blocked_scope(path), path

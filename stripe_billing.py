@@ -16,6 +16,12 @@ Flow:
      Stripe ids go in their own columns, so PayPal records stay untouched.
 
 Uses the REST API directly (urllib), so no extra dependency is needed.
+
+Cancellation for an existing card subscription goes through Stripe's hosted
+customer portal (POST /stripe/portal). That call creates a Billing Portal
+session only. It does not charge the customer and it does not cancel a
+subscription. With no stored customer id, the visitor is sent to Stripe's
+no-code portal login link.
 """
 from __future__ import annotations
 
@@ -39,6 +45,9 @@ CARD_BUTTON_LABEL = "Credit or Debit Card"
 COMING_SOON_MESSAGE = "Card checkout coming soon."
 KEYS_MISSING_MESSAGE = COMING_SOON_MESSAGE
 BILLING_OFF_MESSAGE = "Set BILLING_ENABLED=1 to enable checkout"
+# Stripe's no-code customer portal login. STRIPE_PORTAL_LOGIN_URL overrides it.
+DEFAULT_PORTAL_LOGIN_URL = "https://billing.stripe.com/p/login/6oU8wJ15b3vfc6c9Xpe3e00"
+PORTAL_UNAVAILABLE_MESSAGE = "The card subscription page could not be opened."
 
 _SECRET_RE = re.compile(r"(?:sk|rk|pk)_(?:test|live)_[A-Za-z0-9]+|whsec_[A-Za-z0-9]+")
 
@@ -175,6 +184,33 @@ def session_params(user: dict, base_url: str) -> dict:
         if email:
             params["customer_email"] = email
     return params
+
+
+def portal_login_url() -> str:
+    """Hosted portal login. An explicit STRIPE_PORTAL_LOGIN_URL wins."""
+    return _clean("STRIPE_PORTAL_LOGIN_URL") or DEFAULT_PORTAL_LOGIN_URL
+
+
+def start_portal(customer_id: str, base_url: str) -> str:
+    """Create a Billing Portal session and return its hosted URL.
+
+    The body is only the customer and the return URL. Stripe applies the
+    Dashboard's default portal configuration, so this does not send a
+    configuration id, does not charge, and does not cancel.
+    """
+    client = build_client()
+    session = client.request(
+        "POST",
+        "/v1/billing_portal/sessions",
+        {
+            "customer": customer_id,
+            "return_url": base_url.rstrip("/") + "/unsubscribe",
+        },
+    )
+    url = session.get("url") or ""
+    if not url:
+        raise CheckoutError("Stripe did not return a portal URL")
+    return url
 
 
 def start_checkout(user: dict, base_url: str) -> str:

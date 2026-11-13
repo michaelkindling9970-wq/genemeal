@@ -85,7 +85,8 @@ Original zip filenames are not stored. 23andMe’s names often include the custo
 | `STRIPE_PUBLISHABLE_KEY` | Stripe publishable key (`pk_`). Required before the card button is enabled. Never printed on the page. |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret (`whsec_`) for `POST /stripe/webhook`. |
 | `STRIPE_PRICE_ID` | `price_…` id of the $13.00/month Stripe price. This is the only price id. |
-| `PUBLIC_BASE_URL` | Optional absolute origin for Checkout return URLs, such as `https://genemeal.onrender.com`. When unset, the request host is used. |
+| `STRIPE_PORTAL_LOGIN_URL` | Optional. Overrides the hosted customer-portal login link used when this browser has no stored Stripe customer id. When unset, the app uses `https://billing.stripe.com/p/login/6oU8wJ15b3vfc6c9Xpe3e00`. |
+| `PUBLIC_BASE_URL` | Optional absolute origin for Checkout and portal return URLs, such as `https://genemeal.onrender.com`. When unset, the request host is used. |
 
 Reminders that are due can be recorded with `POST /account/reminders/process` (CSRF token required). Nothing sends email.
 
@@ -124,6 +125,8 @@ Card checkout:
 
 Credit or Debit Card creates a subscription Checkout Session and redirects to Stripe. Status is recorded only from the verified webhook. The return page does not grant access by itself. PayPal subscriptions are stored separately and are not overwritten by Stripe events.
 
+Card cancellation uses Stripe's hosted customer portal. `POST /stripe/portal` creates a Billing Portal session when this browser already has a stored Stripe customer id, then redirects to that session. The request sends only the customer id and a return URL of `/unsubscribe`. It does not send a portal configuration id, it does not charge, and it does not call a cancel API. Cancellation at the end of the billing period is a setting on the Dashboard's default customer portal configuration. Visitors with no stored customer id are redirected to `STRIPE_PORTAL_LOGIN_URL`, or to the default hosted login link when that variable is unset. `/unsubscribe` and `/stripe/portal` stay available in blocked states. Checkout stays blocked there.
+
 Statement descriptor: GeneMeal intends charges to read `GENEMEAL` (`billing.SOFT_DESCRIPTOR`). The PayPal Subscriptions API has no per-charge soft descriptor, so recurring charges use the account's credit card statement name (PayPal business settings). The descriptor must name this business, not another company's brand. Set the same name on the Stripe product.
 
 ## FoodData Central
@@ -142,7 +145,7 @@ Get a key from the USDA FoodData Central API docs when you want live foods. Unti
 pytest -q
 ```
 
-Covered: the existing geo-block tests, upload acceptance and rejection (synthetic genome zip, PDF, image, non-genome text, size), trait mapping, meal-plan shape and toggles, mocked FDC (no live network), encrypted storage, delete-my-data, status transitions, the $13 pricing breakdown, PayPal Checkout (disabled without keys, subscription session when keys are set, signed webhook), and Stripe Checkout (card button shows "Card checkout coming soon." without keys and does not 500, subscription session when the four Stripe env vars are set, signed webhook).
+Covered: the existing geo-block tests, upload acceptance and rejection (synthetic genome zip, PDF, image, non-genome text, size), trait mapping, meal-plan shape and toggles, mocked FDC (no live network), encrypted storage, delete-my-data, status transitions, the $13 pricing breakdown, PayPal Checkout (disabled without keys, subscription session when keys are set, signed webhook), Stripe Checkout (card button shows "Card checkout coming soon." without keys and does not 500, subscription session when the four Stripe env vars are set, signed webhook), and the hosted card portal (session for a stored customer id, login-link fallback, CSRF, and blocked states).
 
 ## Next steps before any launch
 
@@ -151,6 +154,6 @@ Do not deploy this tree as-is.
 1. Lawyer review of the privacy policy, terms, consent, retention, and the state genetic-privacy list in `blocked_states.py`.
 2. Create a USDA FoodData Central key and set `FDC_API_KEY` in the host environment. Do not commit it.
 3. Set `SECRET_KEY` and `GENEMEAL_FERNET_KEY` in the host environment. Keep the Fernet key. There is no recovery if it is lost.
-4. Turn on `GEO_BLOCK_ENABLED=1` only after that review. Unknown IP lookups stay allowed. Content pages, robots.txt, the sitemap, and static assets stay reachable in every state; upload, results, and billing routes return 451.
+4. Turn on `GEO_BLOCK_ENABLED=1` only after that review. Unknown IP lookups stay allowed. Content pages, robots.txt, the sitemap, static assets, `/unsubscribe`, and the card portal stay reachable in every state; upload, results, and billing checkout routes return 451.
 5. Render (or any other host) is a later decision. A `Procfile` is present (`gunicorn app:app`) so a host can boot the app, but this project does not deploy itself. Wire reminders to a real mailer only after the legal review — the current sender is a stub.
 6. Replace the anonymous session cookie with a real account design if more than one person will use a server. The session id is a convenience for a local demo, not production authentication.
