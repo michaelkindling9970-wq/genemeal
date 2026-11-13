@@ -9,7 +9,8 @@ import hmac
 import os
 import re
 import secrets
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
 
 from flask import Flask, Response, abort, flash, jsonify, redirect, render_template, request, session, url_for
 
@@ -27,10 +28,15 @@ import storage
 import traits
 
 app = Flask(__name__)
-# Same defaults templates/base.html renders for <title>, meta description, and og:title.
+# Same defaults templates/base.html renders for title, description, and the share image.
 app.jinja_env.globals.update(
     site_title=site_meta.SITE_TITLE,
     site_description=site_meta.SITE_DESCRIPTION,
+    site_og_image=site_meta.OG_IMAGE_URL,
+    site_og_image_width=site_meta.OG_IMAGE_WIDTH,
+    site_og_image_height=site_meta.OG_IMAGE_HEIGHT,
+    site_og_image_alt=site_meta.OG_IMAGE_ALT,
+    site_twitter_card=site_meta.TWITTER_CARD,
 )
 app.config.update(
     SECRET_KEY=os.environ.get("SECRET_KEY") or os.urandom(32).hex(),
@@ -51,7 +57,10 @@ fdc_client_factory = None
 
 @app.before_request
 def geo_block_gate():
-    """Deny visitors from blocked US states when GEO_BLOCK_ENABLED=1. Logs state only, never IP."""
+    """Deny upload, results, and billing routes from blocked US states when GEO_BLOCK_ENABLED=1.
+
+    Content pages stay available so they can be indexed. Logs state only, never IP.
+    """
     blocked, state = blocked_states.should_block(request)
     if not blocked:
         return None
@@ -560,22 +569,89 @@ def delete_data():
     return redirect(url_for("home"))
 
 
+_SITEMAP_SKIP_ENDPOINTS = {"robots", "sitemap", "favicon", "health"}
+
+
+def _lastmod_for_endpoint(endpoint: str) -> str:
+    """UTC date of the view or the template it renders."""
+    view = app.view_functions.get(endpoint)
+    candidates: list[Path] = []
+    code = getattr(view, "__code__", None)
+    if code is not None:
+        candidates.append(Path(code.co_filename))
+        for const in code.co_consts:
+            if isinstance(const, str) and const.endswith(".html"):
+                candidates.append(Path(app.root_path) / "templates" / const)
+    mtimes: list[float] = []
+    for path in candidates:
+        try:
+            mtimes.append(path.stat().st_mtime)
+        except OSError:
+            continue
+    if not mtimes:
+        mtimes.append(Path(__file__).stat().st_mtime)
+    when = datetime.fromtimestamp(max(mtimes), timezone.utc)
+    return when.strftime("%Y-%m-%d")
+
+
+def indexable_entries() -> list[tuple[str, str]]:
+    """Public content pages for the sitemap, derived from the route map.
+
+    Upload, results, billing, account, admin, and API routes are left out.
+    A new GET page with no URL parameters is included on its own.
+    """
+    found: dict[str, str] = {}
+    for rule in app.url_map.iter_rules():
+        endpoint = rule.endpoint or ""
+        if endpoint in _SITEMAP_SKIP_ENDPOINTS or endpoint.startswith("static"):
+            continue
+        if "GET" not in (rule.methods or set()):
+            continue
+        if rule.arguments:
+            continue
+        path = rule.rule
+        if path != "/" and path.endswith("/"):
+            path = path.rstrip("/") or "/"
+        if blocked_states.path_is_blocked_scope(path) or blocked_states.path_exempt(path):
+            continue
+        if path.startswith("/static"):
+            continue
+        found[path] = _lastmod_for_endpoint(endpoint)
+    return sorted(found.items(), key=lambda item: (item[0] != "/", item[0]))
+
+
+def _xml_escape(value: str) -> str:
+    return (
+        value.replace("&", "&amp;")
+        .replace("<", "&lt;")
+        .replace(">", "&gt;")
+        .replace('"', "&quot;")
+        .replace("'", "&apos;")
+    )
+
+
 @app.get("/robots.txt")
 def robots():
     lines = ["User-agent: *", "Allow: /$", "Allow: /pricing", "Allow: /research/"]
     for path in ("/results", "/diet", "/plan", "/account/", "/upload", "/parse/",
                  "/billing/", "/stripe/", "/preview-login", "/PayPal/", "/paypal/", "/health"):
         lines.append(f"Disallow: {path}")
-    lines.append(f"Sitemap: {_external_base().rstrip('/')}/sitemap.xml")
+    lines.append(f"Sitemap: {site_meta.SITE_ORIGIN}/sitemap.xml")
     return Response("\n".join(lines) + "\n", mimetype="text/plain")
 
 
 @app.get("/sitemap.xml")
 def sitemap():
-    base = _external_base().rstrip("/")
-    urls = "".join(f"<url><loc>{base}{p}</loc></url>" for p in ("/", "/pricing", "/research/stress-diet"))
-    xml = '<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' + urls + "</urlset>"
-    return Response(xml, mimetype="application/xml")
+    origin = site_meta.SITE_ORIGIN.rstrip("/")
+    body = [
+        '<?xml version="1.0" encoding="UTF-8"?>',
+        '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">',
+    ]
+    for path, lastmod in indexable_entries():
+        loc = _xml_escape(f"{origin}{path}")
+        body.append(f"<url><loc>{loc}</loc><lastmod>{lastmod}</lastmod></url>")
+    body.append("</urlset>")
+    return Response("\n".join(body) + "\n", mimetype="application/xml")
 
 
 @app.get("/favicon.ico")

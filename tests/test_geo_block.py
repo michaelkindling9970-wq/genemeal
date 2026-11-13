@@ -55,7 +55,10 @@ def test_off_by_default(client, monkeypatch):
 def test_denies_blocked_state(client, monkeypatch):
     monkeypatch.setenv("GEO_BLOCK_ENABLED", "1")
     monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "CA")
-    r = client.get("/")
+    home = client.get("/")
+    assert home.status_code == 200
+    assert "Not available in California" not in home.get_data(as_text=True)
+    r = client.get("/results")
     assert r.status_code == 451
     assert "Not available in California" in r.get_data(as_text=True)
     assert "Genetic Information Privacy Act" in r.get_data(as_text=True)
@@ -104,7 +107,8 @@ def test_denies_pa_after_enacted(client, monkeypatch):
     )
     # Also seed persist path via refresh
     assert "PA" in B.refresh_pending_watches(fetch=lambda w: "Became Law")
-    r = client.get("/")
+    assert client.get("/").status_code == 200
+    r = client.get("/results")
     assert r.status_code == 451
 
 
@@ -119,12 +123,15 @@ def test_allows_pa_while_pending(client, monkeypatch):
     assert client.get("/").status_code == 200
 
 def test_va_block_page_preview_uses_site_defaults(client, monkeypatch):
-    """Crawlers geolocated into Virginia still see GeneMeal's normal link preview."""
+    """A blocked route's 451 page keeps GeneMeal's normal link preview, including the share image."""
     assert site_meta.SITE_TITLE == SITE_TITLE
     assert site_meta.SITE_DESCRIPTION == SITE_DESCRIPTION
     monkeypatch.setenv("GEO_BLOCK_ENABLED", "1")
     monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "VA")
-    r = client.get("/")
+    home = client.get("/")
+    assert home.status_code == 200
+    assert "Not available in Virginia" not in home.get_data(as_text=True)
+    r = client.get("/results")
     assert r.status_code == 451
     page = r.get_data(as_text=True)
     head, _, body = page.partition("</head>")
@@ -135,8 +142,12 @@ def test_va_block_page_preview_uses_site_defaults(client, monkeypatch):
     assert f'<meta property="og:title" content="{SITE_TITLE}">' in head
     assert f'<meta property="og:description" content="{SITE_DESCRIPTION}">' in head
     assert '<meta property="og:url" content="https://genemeal.onrender.com/">' in head
-    assert "twitter:" not in head
-    assert "og:image" not in head
+    assert f'<meta property="og:image" content="{site_meta.OG_IMAGE_URL}">' in head
+    assert '<meta property="og:image:width" content="1200">' in head
+    assert '<meta property="og:image:height" content="630">' in head
+    assert f'<meta property="og:image:alt" content="{site_meta.OG_IMAGE_ALT}">' in head
+    assert f'<meta name="twitter:card" content="{site_meta.TWITTER_CARD}">' in head
+    assert f'<meta name="twitter:image" content="{site_meta.OG_IMAGE_URL}">' in head
     assert "<h1>Not available in Virginia</h1>" in body
     assert "Virginia state statute Genetic privacy protections prevents you from using this service." in body
     assert ">Genetic privacy protections</span>" in body
@@ -148,7 +159,7 @@ def test_va_block_page_preview_uses_site_defaults(client, monkeypatch):
 def test_block_page_names_state_and_statute(client, monkeypatch):
     monkeypatch.setenv("GEO_BLOCK_ENABLED", "1")
     monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "CA")
-    r = client.get("/")
+    r = client.get("/results")
     assert r.status_code == 451
     body = r.get_data(as_text=True)
     assert "California" in body
@@ -163,13 +174,102 @@ def test_pa_alert_once_enacted(client, monkeypatch):
     monkeypatch.setenv("GEO_BLOCK_ENABLED", "1")
     monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "PA")
     assert "PA" in B.refresh_pending_watches(fetch=lambda w: "Became Law")
-    r = client.get("/")
+    assert client.get("/").status_code == 200
+    r = client.get("/billing/success")
     assert r.status_code == 451
     body = r.get_data(as_text=True)
     assert "Pennsylvania" in body
     assert "Genetic Information Privacy Act" in body
     assert "HB 1530" in body
     assert "palegis.us" in body
+
+
+CONTENT_STATUS = {
+    "/": 200,
+    "/pricing": 200,
+    "/research/stress-diet": 200,
+    "/robots.txt": 200,
+    "/sitemap.xml": 200,
+    "/favicon.ico": 204,
+    "/static/style.css": 200,
+    "/static/og.png": 200,
+    "/health": 200,
+}
+BLOCKED_GET = (
+    "/results",
+    "/plan",
+    "/diet",
+    "/billing/success",
+    "/billing/cancel",
+    "/preview-login",
+    "/account/status",
+)
+BLOCKED_POST = (
+    "/upload",
+    "/parse/confirm",
+    "/plan",
+    "/billing/checkout",
+    "/stripe/checkout",
+    "/account/requested",
+    "/account/waiting",
+    "/account/reminders/process",
+    "/account/data",
+)
+
+
+def _as_state(code):
+    return lambda ip, fetch=None, code=code: code
+
+
+@pytest.mark.parametrize("state", ["CA", "VA"])
+def test_content_open_sensitive_blocked(client, monkeypatch, state):
+    monkeypatch.setenv("GEO_BLOCK_ENABLED", "1")
+    monkeypatch.setattr(B, "resolve_state", _as_state(state))
+    for path, status in CONTENT_STATUS.items():
+        response = client.get(path)
+        assert response.status_code == status, path
+        if path in ("/", "/pricing", "/research/stress-diet"):
+            assert "Not available in" not in response.get_data(as_text=True)
+    for path in BLOCKED_GET:
+        response = client.get(path)
+        assert response.status_code == 451, path
+        assert "Not available in" in response.get_data(as_text=True)
+    for path in BLOCKED_POST:
+        response = client.post(path)
+        assert response.status_code == 451, path
+    assert client.post("/paypal/webhook", data=b"{}").status_code != 451
+    assert client.post("/PayPal/webhook", data=b"{}").status_code != 451
+    assert client.post("/stripe/webhook", data=b"{}").status_code != 451
+
+
+def test_sensitive_routes_work_for_allowed_state(client, monkeypatch):
+    monkeypatch.setenv("GEO_BLOCK_ENABLED", "1")
+    monkeypatch.setattr(B, "resolve_state", lambda ip, fetch=None: "NY")
+    assert client.get("/").status_code == 200
+    assert client.get("/results").status_code == 200
+    assert client.get("/billing/success").status_code == 200
+    assert client.get("/plan").status_code == 302
+    assert client.get("/diet").status_code == 302
+    assert client.get("/account/status").status_code == 200
+    client.get("/")
+    with client.session_transaction() as sess:
+        token = sess["csrf"]
+    upload = client.post("/upload", data={"csrf_token": token})
+    assert upload.status_code == 302
+    assert upload.status_code != 451
+    checkout = client.post("/billing/checkout", data={"csrf_token": token})
+    assert checkout.status_code == 302
+    card = client.post("/stripe/checkout", data={"csrf_token": token})
+    assert card.status_code == 302
+
+
+def test_block_scope_matches_upload_results_billing():
+    for path in CONTENT_STATUS:
+        assert not B.path_is_blocked_scope(path), path
+    for path in ("/paypal/webhook", "/PayPal/webhook", "/stripe/webhook"):
+        assert not B.path_is_blocked_scope(path), path
+    for path in BLOCKED_GET + BLOCKED_POST:
+        assert B.path_is_blocked_scope(path), path
 
 
 def test_alert_copy_covers_all_hard_blocked_states():
