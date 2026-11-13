@@ -10,8 +10,8 @@ from __future__ import annotations
 from fdc import FdcClient, FdcError
 
 DISCLAIMER = (
-    "Not medical advice. This 7-day menu is an educational sketch built from a few "
-    "public nutrition markers and generic calorie and protein placeholders. It does "
+    "Not medical advice. This 7-day menu is an educational sketch built from 11 "
+    "genetic public nutrition markers and genetic calorie and protein placeholders. It does "
     "not diagnose, treat, or prevent any condition, and it is not a prescription for "
     "you. Genotype effects are usually small. Talk with a clinician or registered "
     "dietitian before changing how you eat, especially if you are pregnant, managing "
