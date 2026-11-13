@@ -8,6 +8,7 @@
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <button type="submit">Manage card subscription</button>
   </form>
+  <p><a class="button" href="https://www.paypal.com/myaccount/autopay/" target="_blank" rel="noopener noreferrer">Manage PayPal automatic payments</a></p>
   <p><a class="button" href="{{ url_for('home') }}">Back to the guide</a></p>
 </section>
 {% endblock %}
