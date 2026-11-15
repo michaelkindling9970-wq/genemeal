@@ -127,7 +127,7 @@ def test_checkout_creates_subscription_and_redirects_to_approval(client, monkeyp
     assert "P-PLAN1" not in page
 
 
-def test_plan_is_1997_usd_monthly():
+def test_plan_is_3497_usd_monthly():
     fake = _FakePayPal()
     result = billing.create_product_and_plan(fake)
     assert result["plan_id"] == "P-PLAN1"
@@ -135,7 +135,7 @@ def test_plan_is_1997_usd_monthly():
     assert plan["product_id"] == "PROD-1"
     cycle = plan["billing_cycles"][0]
     assert cycle["frequency"] == {"interval_unit": "MONTH", "interval_count": 1}
-    assert cycle["pricing_scheme"]["fixed_price"] == {"value": "19.97", "currency_code": "USD"}
+    assert cycle["pricing_scheme"]["fixed_price"] == {"value": "34.97", "currency_code": "USD"}
 
 
 def test_webhook_activated_then_sale_then_cancelled(client, monkeypatch):
