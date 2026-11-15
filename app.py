@@ -37,6 +37,15 @@ app.jinja_env.globals.update(
     site_og_image_height=site_meta.OG_IMAGE_HEIGHT,
     site_og_image_alt=site_meta.OG_IMAGE_ALT,
     site_twitter_card=site_meta.TWITTER_CARD,
+    contact_email=site_meta.CONTACT_EMAIL,
+    legal_last_updated=site_meta.LEGAL_LAST_UPDATED,
+    hero_photo_credit=site_meta.HERO_PHOTO_CREDIT,
+    hero_photo_credit_url=site_meta.HERO_PHOTO_CREDIT_URL,
+    hero_photo_source_url=site_meta.HERO_PHOTO_SOURCE_URL,
+    blocked_state_count=len(blocked_states.BLOCKED_STATES),
+    blocked_state_names=sorted(
+        (blocked_states.STATE_LAWS.get(code) or {}).get("name", code) for code in blocked_states.BLOCKED_STATES
+    ),
 )
 app.config.update(
     SECRET_KEY=os.environ.get("SECRET_KEY") or os.urandom(32).hex(),
@@ -186,6 +195,26 @@ def _parse_reminders(rows: list[dict]) -> list[dict]:
 @app.get("/pricing")
 def pricing_page():
     return render_template("pricing.html")
+
+
+@app.get("/about")
+def about():
+    return render_template("about.html")
+
+
+@app.get("/contact")
+def contact():
+    return render_template("contact.html")
+
+
+@app.get("/privacy")
+def privacy():
+    return render_template("privacy.html")
+
+
+@app.get("/terms")
+def terms():
+    return render_template("terms.html")
 
 
 @app.get("/research/stress-diet")

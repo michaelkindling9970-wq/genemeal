@@ -1,6 +1,6 @@
 from pathlib import Path
 
-_LEDE = "You download the file yourself from 23andMe / Ancestry. This notebook never logs in for you."
+_LEDE = "You download the file yourself from 23andMe / Ancestry. GeneMeal never logs in for you."
 
 
 def test_home_lede_names_23andme_and_ancestry(client):

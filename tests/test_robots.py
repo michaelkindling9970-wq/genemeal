@@ -38,8 +38,12 @@ def test_sitemap(client):
     ]
     assert expected == [
         "https://genemeal.onrender.com/",
+        "https://genemeal.onrender.com/about",
+        "https://genemeal.onrender.com/contact",
         "https://genemeal.onrender.com/pricing",
+        "https://genemeal.onrender.com/privacy",
         "https://genemeal.onrender.com/research/stress-diet",
+        "https://genemeal.onrender.com/terms",
         "https://genemeal.onrender.com/unsubscribe",
     ]
     assert locs == expected

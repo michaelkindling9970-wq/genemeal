@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Privacy Policy — GeneMeal{% endblock %}
+{% block description %}How GeneMeal collects, encrypts, uses and deletes your DNA file, marker notes and billing records.{% endblock %}
+{% block og_title %}Privacy Policy — GeneMeal{% endblock %}
+{% block body %}
+<article class="page legal">
+  <h1>Privacy Policy</h1>
+  <p class="updated">Last updated {{ legal_last_updated }}</p>
+  <p class="lede">This page explains, in plain language, what GeneMeal collects, what we do with it, and how to delete it. Questions or requests: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+
+  <h2>The short version</h2>
+  <ul>
+    <li>Your uploaded DNA file is encrypted on our server and deleted once you confirm your markers.</li>
+    <li>We keep only short marker notes and your menu, also encrypted, until you delete them.</li>
+    <li>You can delete your data at any time, yourself, in one step.</li>
+    <li>We don't sell your data or share it for advertising. There are no ads or ad trackers on this site.</li>
+    <li>Stripe and PayPal process payments. We never see your card number.</li>
+  </ul>
+
+  <h2>What we collect</h2>
+  <ul>
+    <li><strong>A session cookie.</strong> A random ID in a signed browser cookie links your browser to your record. It lasts up to 60 days. We don't ask for your name or create a password account.</li>
+    <li><strong>Your raw DNA file.</strong> The zip you upload is checked, read, and stored encrypted on our server only until you confirm your markers. If the file is rejected, it is deleted.</li>
+    <li><strong>Marker notes.</strong> From your file we keep a short summary: the nutrition markers GeneMeal uses, your genotype for each, the number of markers read, the genome build and the testing-service label. The full genotype table is not kept.</li>
+    <li><strong>Your menu and choices.</strong> The 7-day menu you generate and the options you pick (for example the weight-loss or build-muscle toggles).</li>
+    <li><strong>Progress.</strong> Where you are in the steps, and the dates the guide suggests you check back.</li>
+    <li><strong>Billing records.</strong> If you subscribe, we store the subscription and customer IDs that Stripe or PayPal give us and whether your subscription is active. Your card or PayPal account details stay with Stripe or PayPal.</li>
+    <li><strong>Email address, only if you gave one.</strong> The site no longer asks for an email. If you entered one on an earlier version, it is stored with your record and may be passed to PayPal to pre-fill its checkout. GeneMeal does not currently send any email.</li>
+    <li><strong>Your approximate location, briefly.</strong> When you load GeneMeal pages, your IP address is sent to the lookup service ip-api.com to find your US state, because GeneMeal isn't offered in some states. We don't write your IP address to logs or our database. It is held in server memory with the state result for up to an hour so we don't look it up again. If access is denied, we log only the state code.</li>
+    <li><strong>Diet builder inputs.</strong> The age, sex and activity level you enter in the diet builder are used to calculate your targets and aren't saved.</li>
+  </ul>
+
+  <h2>How we use it</h2>
+  <ul>
+    <li>To read your markers and build your food targets and menu.</li>
+    <li>To remember your progress and whether you've subscribed.</li>
+    <li>To check whether GeneMeal is offered in your state.</li>
+    <li>To answer you if you contact us.</li>
+  </ul>
+  <p>We don't use your genetic data for research, advertising or profiling, and we don't sell, rent or trade any of your data.</p>
+
+  <h2>Who else handles data</h2>
+  <ul>
+    <li><strong>Render</strong> hosts the GeneMeal server and its storage.</li>
+    <li><strong>Stripe</strong> and <strong>PayPal</strong> process payments under their own privacy policies.</li>
+    <li><strong>ip-api.com</strong> receives your IP address for the state check described above.</li>
+    <li><strong>Google Fonts</strong> serves the site's fonts, so your browser contacts Google's servers when pages load.</li>
+    <li><strong>USDA FoodData Central</strong> may be queried for nutrition facts about foods. Only food names are sent, never your data.</li>
+  </ul>
+  <p>We may disclose data if the law requires it.</p>
+
+  <h2>How we protect it</h2>
+  <p>Your uploaded file, marker notes and menu are encrypted at rest with Fernet (AES-based) encryption. The site is served over HTTPS. No system is perfectly secure, which is why we keep as little as we can and delete the raw file as soon as it's read.</p>
+
+  <h2 id="your-choices">Your choices</h2>
+  <ul>
+    <li><strong>Delete your data:</strong> use <a href="{{ url_for('home') }}#your-data">Delete my data</a> on the guide page. It immediately removes your encrypted upload, marker notes, menu, progress and saved email from our server and clears your session.</li>
+    <li><strong>Ask us:</strong> email <a href="mailto:{{ contact_email }}">{{ contact_email }}</a> to ask what we hold about you, to correct it, or to delete it, for example if you've lost your session cookie.</li>
+    <li><strong>Cancel billing:</strong> deleting your data doesn't cancel a subscription. Use the <a href="{{ url_for('unsubscribe') }}">Cancel subscription</a> page. Stripe and PayPal keep their own payment records under their own policies.</li>
+  </ul>
+
+  <h2>How long we keep it</h2>
+  <p>The raw DNA file is deleted when you confirm your markers (or right away if it's rejected). Everything else stays until you delete it or ask us to.</p>
+
+  <h2>Who GeneMeal is for</h2>
+  <p>GeneMeal is for adults 18 and over in the United States, outside the states where it isn't offered. Please only upload your own DNA file.</p>
+
+  <h2>Changes</h2>
+  <p>If we change this policy, we'll update this page and the date at the top.</p>
+</article>
+{% endblock %}

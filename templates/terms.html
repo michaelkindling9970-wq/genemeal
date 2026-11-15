@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% block title %}Terms of Service — GeneMeal{% endblock %}
+{% block description %}The terms for using GeneMeal and the GeneMeal monthly subscription.{% endblock %}
+{% block og_title %}Terms of Service — GeneMeal{% endblock %}
+{% block body %}
+<article class="page legal">
+  <h1>Terms of Service</h1>
+  <p class="updated">Last updated {{ legal_last_updated }}</p>
+  <p class="lede">By using GeneMeal you agree to these terms. They're written to be read. Questions: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>.</p>
+
+  <h2>What GeneMeal is</h2>
+  <p>GeneMeal reads a short list of nutrition-related markers from a raw DNA file you upload and gives you general, educational food guidance and a sample menu.</p>
+
+  <h2>Not medical advice</h2>
+  <p>GeneMeal is educational. It does not diagnose, treat, cure or prevent any disease or condition, and it is not a substitute for a doctor or registered dietitian. Genotype effects on diet are usually small. Talk with a clinician before making major changes to your diet, especially if you are pregnant, have a medical condition, have food allergies, or take medication.</p>
+
+  <h2>Who can use it</h2>
+  <ul>
+    <li>You must be 18 or older and in the United States.</li>
+    <li>GeneMeal isn't offered in {{ blocked_state_count }} states with genetic-privacy laws: {{ blocked_state_names | join(", ") }}. Uploads, results and checkout are turned off for visitors from those states.</li>
+    <li>Upload only your own DNA file, or one you have clear permission to use.</li>
+  </ul>
+
+  <h2>Subscription and billing</h2>
+  <p>GeneMeal Monthly is $19.97 per month and automatically renews each month at $19.97 until you cancel. Payments are processed by Stripe (card) or PayPal.</p>
+  <ul>
+    <li><strong>Cancel anytime online</strong> from the <a href="{{ url_for('unsubscribe') }}">Cancel subscription</a> page. Cancellation stops future renewals and takes effect at the end of your current billing period, so you keep access until then.</li>
+    <li><strong>Refunds:</strong> we do not refund a paid month or unused days after you cancel, unless the law requires it.</li>
+    <li><strong>Deleting your data does not cancel billing.</strong> You must also cancel your subscription to stop charges.</li>
+    <li>We won't charge you a higher price without telling you first and getting your agreement.</li>
+  </ul>
+
+  <h2>Your data</h2>
+  <p>You own your DNA data. Our <a href="{{ url_for('privacy') }}">Privacy Policy</a> explains how we handle it and how to delete it.</p>
+
+  <h2>Acceptable use</h2>
+  <p>Don't misuse the service: no uploading files you have no right to, trying to access other people's data, disrupting the site, or getting around the state restrictions.</p>
+
+  <h2>No guarantees</h2>
+  <p>GeneMeal is provided as is. We work to keep it accurate and available, but we can't promise it will be error-free or uninterrupted, or that any particular result will follow from the guidance. To the extent the law allows, GeneMeal is not liable for indirect or consequential losses from using the service, and our total liability is limited to what you paid in the 12 months before the claim. Nothing here limits rights you have under consumer-protection laws that can't be waived.</p>
+
+  <h2>Changes</h2>
+  <p>We may update these terms. We'll change the date at the top when we do. Changes to price follow the subscription section above.</p>
+</article>
+{% endblock %}

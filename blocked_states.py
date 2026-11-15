@@ -544,6 +544,9 @@ def render_unavailable_html(state: Optional[str]) -> str:
   }}
   a.statute-link:hover {{ color: #1f6a4e; border-bottom-color: #1f6a4e; }}
   .fine {{ margin: 1.15rem 0 0; font-size: .88rem; color: #4d5e55; }}
+  .links {{ margin: 1rem 0 0; font-size: .88rem; }}
+  .links a {{ color: #143d2e; display: inline-block; padding: .2rem 0; }}
+  a:focus-visible {{ outline: 3px solid #e1b15a; outline-offset: 2px; }}
 </style>
 </head>
 <body>
@@ -557,6 +560,7 @@ def render_unavailable_html(state: Optional[str]) -> str:
   </div>
   <p><a class="statute-link" href="{url}" target="_blank" rel="noopener noreferrer">Read the full statute text</a></p>
   <p class="fine">If you think this is a mistake (for example you are on a VPN), try again without a VPN from a location where GeneMeal is offered.</p>
+  <p class="links"><a href="/">Home</a> · <a href="/about">About</a> · <a href="/contact">Contact</a> · <a href="/privacy">Privacy Policy</a> · <a href="/terms">Terms of Service</a></p>
 </main>
 </body>
 </html>

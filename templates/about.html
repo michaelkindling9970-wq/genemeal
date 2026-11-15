@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}About — GeneMeal{% endblock %}
+{% block description %}About GeneMeal: a small, independent nutrigenomics service that turns the raw DNA file you already have into general meal guidance. Educational, not medical advice.{% endblock %}
+{% block og_title %}About GeneMeal{% endblock %}
+{% block body %}
+<article class="page">
+  <h1>About GeneMeal</h1>
+  <p class="lede">GeneMeal is a small, independent service that turns the raw DNA file you already have from 23andMe or Ancestry into everyday meal guidance.</p>
+
+  <h2>What it does</h2>
+  <p>GeneMeal reads a short list of nutrition-related DNA markers that appear in published research, such as markers linked to lactose tolerance, omega-3 conversion and saturated-fat response. It uses fixed, rule-based logic to adjust daily food-group targets, mark foods that suit your markers, and draft a 7-day menu. The same file always gives the same result.</p>
+
+  <h2>What it doesn't do</h2>
+  <ul>
+    <li>It doesn't diagnose, treat or prevent any condition. It's educational, not medical advice.</li>
+    <li>It doesn't analyze ancestry, disease risk or anything outside its marker list.</li>
+    <li>It doesn't log in to your testing account. You download your own file and upload it.</li>
+    <li>It doesn't sell your data, and this site has no ads or ad trackers.</li>
+  </ul>
+
+  <h2>How we treat your data</h2>
+  <p>Uploads are encrypted on our server. The raw file is deleted once you confirm your markers, and you can delete everything else at any time. Payments go through Stripe or PayPal, so we never see your card number. The details are in our <a href="{{ url_for('privacy') }}">Privacy Policy</a>.</p>
+
+  <h2>The science, honestly</h2>
+  <p>Most diet-related gene effects are small, and everyday habits matter more. GeneMeal treats your markers as gentle nudges on top of general healthy-eating guidance, not as rules. You can read more on our <a href="{{ url_for('research_stress') }}">research notes</a>.</p>
+
+  <h2>Get in touch</h2>
+  <p>Questions, feedback or data requests: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a>. See the <a href="{{ url_for('contact') }}">Contact</a> page for details.</p>
+</article>
+{% endblock %}

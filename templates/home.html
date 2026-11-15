@@ -1,16 +1,96 @@
 {% extends "base.html" %}
 {% block title %}Nutrigenomics Meal Plans from Your DNA | GeneMeal{% endblock %}
 {% block body %}
-<section class="intro">
-  <h1>Nutrigenomics meal plans from your raw DNA file.</h1>
-  <p class="lede">GeneMeal is a nutrigenomics notebook: it checks a short list of nutrition markers that show up in public research, then drafts a DNA diet: a 7-day menu with personalized nutrition targets. You download the file yourself from 23andMe / Ancestry. This notebook never logs in for you.</p>
-  <p class="status">Status <strong>{{ user.status.replace('_', ' ') }}</strong>
-    {% if user.marker_count %} · {{ user.marker_count }} markers{% endif %}
-    {% if user.genome_build %} · build {{ user.genome_build }}{% endif %}
-  </p>
+<section class="hero">
+  <div class="hero-copy">
+    <p class="eyebrow">Personalized nutrition from your DNA</p>
+    <h1>Nutrigenomics meal plans from the DNA file you already have.</h1>
+    <p class="lede">Upload the raw DNA file from 23andMe or Ancestry. GeneMeal reads a short list of nutrition markers from published research and turns them into daily food targets and a 7-day menu.</p>
+    <p class="hero-cta">
+      <a class="button primary" href="#start">Get started</a>
+      <span class="hero-price"><strong>$19.97/month</strong> · cancel anytime</span>
+    </p>
+    <p class="fine">You download the file yourself from 23andMe / Ancestry. GeneMeal never logs in for you.</p>
+  </div>
+  <figure class="hero-photo">
+    {# Photo: "Salmon poke bowl with colorful vegetables" by Vonita Buirski on Unsplash (Unsplash License, commercial use allowed).
+       Source: https://unsplash.com/photos/salmon-poke-bowl-with-colorful-vegetables-and-chopsticks-oj-5gzN_SDg #}
+    <img src="{{ url_for('static', filename='img/hero-poke-bowl.webp') }}"
+         srcset="{{ url_for('static', filename='img/hero-poke-bowl-720.webp') }} 720w, {{ url_for('static', filename='img/hero-poke-bowl.webp') }} 1200w"
+         sizes="(max-width: 800px) 100vw, 520px"
+         width="1200" height="900" fetchpriority="high"
+         alt="A bowl of seared salmon with shredded purple cabbage, carrot, beetroot, kale and edamame">
+    <figcaption>Photo: <a href="{{ hero_photo_source_url }}" target="_blank" rel="noopener noreferrer">{{ hero_photo_credit }} on Unsplash</a></figcaption>
+  </figure>
+</section>
+{% set trust_compact = false %}{% include "_trust.html" %}
+
+<section class="how" id="how-it-works" aria-labelledby="how-heading">
+  <h2 id="how-heading">How it works</h2>
+  <ol class="how-steps">
+    <li><span class="how-num" aria-hidden="true">1</span><h3>Download your raw DNA file</h3><p>Request it from your 23andMe or Ancestry account. It arrives as a zip, usually within a few days to a few weeks.</p></li>
+    <li><span class="how-num" aria-hidden="true">2</span><h3>Upload the zip</h3><p>GeneMeal reads only the nutrition markers it uses. After you confirm, the raw file is deleted.</p></li>
+    <li><span class="how-num" aria-hidden="true">3</span><h3>Get your week</h3><p>See your daily food-group targets, foods matched to your markers, and a 7-day menu.</p></li>
+  </ol>
+  <div class="which-file">
+    <h3>Which file do I need?</h3>
+    <p>The <strong>raw DNA data</strong> file (a <code>.zip</code>) from your DNA testing service. Not the PDF health report, not a screenshot. You don't need a new test.</p>
+    <details>
+      <summary>Getting the file from 23andMe</summary>
+      <ol>
+        <li>Sign in to 23andMe and open <strong>Settings → 23andMe Data → Download raw data</strong> (or use the button below).</li>
+        <li>Confirm your date of birth, tick the box, and submit the request.</li>
+        <li>23andMe emails you when the download is ready. People often wait about a week; it can take up to 30 days.</li>
+        <li>Download the <code>genome_….zip</code> file and upload it below.</li>
+      </ol>
+    </details>
+    <details>
+      <summary>Getting the file from Ancestry</summary>
+      <ol>
+        <li>Sign in to Ancestry and open <strong>DNA → Settings → Download DNA data</strong>.</li>
+        <li>Confirm the request, then open the link Ancestry emails you.</li>
+        <li>Download the zip file and upload it below.</li>
+      </ol>
+    </details>
+  </div>
 </section>
 
-<section class="card dna-explainer" id="how-it-works">
+<section class="sample" id="sample-report" aria-labelledby="sample-heading">
+  <div class="sample-head">
+    <h2 id="sample-heading">What your report looks like</h2>
+    <p class="sample-label">Sample — not real data</p>
+  </div>
+  <p class="fine">This preview uses made-up results for a fictional person to show the layout. Your report depends on your own file.</p>
+  <div class="sample-grid">
+    <article class="sample-card">
+      <h3>Lactose</h3>
+      <p class="sample-call">MCM6/LCT · <span>likely lactose-sensitive</span></p>
+      <p>Regular milk is swapped for lactose-free milk, yogurt and fortified soy.</p>
+    </article>
+    <article class="sample-card">
+      <h3>Omega-3</h3>
+      <p class="sample-call">FADS1 · <span>may make less omega-3</span></p>
+      <p>Salmon, sardines, walnuts, chia and flax get a ★.</p>
+    </article>
+    <article class="sample-card">
+      <h3>Saturated fat</h3>
+      <p class="sample-call">APOA2 · <span>typical response</span></p>
+      <p>No change. All portions stay available.</p>
+    </article>
+  </div>
+  <div class="sample-day">
+    <h3>Sample day</h3>
+    <ul>
+      <li><strong>Breakfast</strong> Lactose-free yogurt, berries, walnuts ★</li>
+      <li><strong>Lunch</strong> Lentil and vegetable soup, whole-grain bread</li>
+      <li><strong>Dinner</strong> Baked salmon ★, brown rice, roasted broccoli</li>
+      <li><strong>Snack</strong> Apple with peanut butter</li>
+    </ul>
+  </div>
+</section>
+
+
+<section class="card dna-explainer" id="dna-explainer">
   <h2>How your DNA shapes your plan</h2>
   <p>GeneMeal reads a short list of specific DNA markers from the file you upload, nothing more, and uses them to build a gene-based diet plan that fits you. Already took a DNA test for ancestry? The raw DNA file from ancestry or DNA testing services is all you need for an ancestry meal plan. GeneMeal does not analyze ancestry; it only reads nutrition markers.</p>
   <ol class="steps">
@@ -40,10 +120,11 @@
   <p class="banner error" role="alert">{{ user.error }}</p>
 {% endif %}
 
-<ol class="steps">
+<h2 class="section-title" id="start">Get started</h2>
+<ol class="steps" aria-labelledby="start">
   <li class="step">
-    <h2>Open the 23andMe/ancestry download page</h2>
-    <p>23andMe does not offer an API for other apps. You request the file in your own account. This button opens their raw-data tool in a new tab.</p>
+    <h2>Open the 23andMe or Ancestry download page</h2>
+    <p>You request the file in your own account. These buttons open the raw-data pages in a new tab.</p>
     <p><a class="button" href="{{ download_url }}" target="_blank" rel="noopener noreferrer">Open 23andMe raw data</a></p>
     <p><a class="button" href="https://help.ancestry.com/hc/en-us/articles/53933317283603-Downloading-DNA-Data" target="_blank" rel="noopener noreferrer">Open Ancestry raw data</a></p>
   </li>
@@ -52,9 +133,7 @@
     <p>On that page, confirm your date of birth, tick the checkbox, and submit. 23andMe emails you when the <strong>raw data download is ready</strong>. People often see that note in about a week. It can take up to 30 days.</p>
     <form method="post" action="{{ url_for('mark_requested') }}" class="stack">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
-      <label for="email">Email for a local reminder <span class="fine">(optional)</span></label>
-      <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" value="{{ user.email or '' }}">
-      <p class="fine">Two times are stored: about 7 days from now and about 30 days from now. Mail is not sent unless <code>REMINDER_EMAIL_ENABLED=1</code>, and even then this build only logs a stub. It does not deliver email.</p>
+      <p class="fine">Mark your progress here so the page remembers where you are.</p>
       <button type="submit">I requested my file</button>
     </form>
     <form method="post" action="{{ url_for('mark_waiting') }}" class="stack tight">
@@ -64,14 +143,14 @@
     {% if reminders %}
       <ul class="reminders">
         {% for row in reminders %}
-          <li>{{ row.kind }} reminder · {{ row.label }}{% if row.sent_at %} · recorded {{ row.channel or 'done' }}{% endif %}</li>
+          <li>Check back around {{ row.label }}</li>
         {% endfor %}
       </ul>
     {% endif %}
   </li>
   <li class="step">
-    <h2>Drop the genome zip</h2>
-    <p>Use the zip from that email, usually named <code>genome_….zip</code>. The server unzips it, checks for <code>#</code> comment lines and the columns rsid, chromosome, position, and genotype, then counts markers. PDFs, screenshots, and other files are refused. Limit 50 MB.</p>
+    <h2>Upload the genome zip</h2>
+    <p>Use the zip from that email, usually named <code>genome_….zip</code>. GeneMeal checks that it is a raw DNA data file and reads the nutrition markers it uses. PDFs, screenshots, and other files are refused. Limit 50 MB.</p>
     {% include "_pricing.html" %}
     <form method="post" action="{{ url_for('upload') }}" enctype="multipart/form-data" id="upload-form">
       <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
@@ -91,14 +170,42 @@
     {% if user.status == 'uploaded' %}
       The file is read. <a href="{{ url_for('results') }}">Review markers and confirm</a>.
     {% else %}
-      Notes are confirmed. {% if is_subscriber %}<a href="{{ url_for('plan') }}">Open the week</a>{% else %}<a href="{{ url_for('pricing_page') }}">Subscribe to get your week</a>{% endif %}.
+      Your markers are saved. {% if is_subscriber %}<a href="{{ url_for('plan') }}">Open the week</a>{% else %}<a href="{{ url_for('pricing_page') }}">Subscribe to get your week</a>{% endif %}.
     {% endif %}
   </p>
 {% endif %}
 
+<section class="faq" id="faq" aria-labelledby="faq-heading">
+  <h2 id="faq-heading">Questions</h2>
+  <details>
+    <summary>What does GeneMeal read from my file?</summary>
+    <p>Only a short list of nutrition-related markers (for example lactose, omega-3, saturated fat, gluten-related gene types and appetite). It does not analyze ancestry, disease risk, or anything else in the file. The full genotype table is not kept.</p>
+  </details>
+  <details>
+    <summary>Is this medical advice?</summary>
+    <p>No. GeneMeal gives general, educational nutrition guidance. It does not diagnose, treat, or prevent any condition, and genotype effects on diet are usually small. Talk with a doctor or registered dietitian before making big changes.</p>
+  </details>
+  <details>
+    <summary>What happens to my DNA file?</summary>
+    <p>The uploaded zip is encrypted on our server while you review your markers. When you confirm, the raw file is deleted and only the short marker notes are kept, also encrypted. You can delete everything at any time below or from the <a href="{{ url_for('privacy') }}#your-choices">Privacy Policy</a> page.</p>
+  </details>
+  <details>
+    <summary>How do I cancel?</summary>
+    <p>Online, anytime, from the <a href="{{ url_for('unsubscribe') }}">Cancel subscription</a> page: card subscriptions through Stripe's customer portal, PayPal subscriptions under Automatic payments in PayPal. Cancellation takes effect at the end of your current billing period. Deleting your data does not cancel billing on its own.</p>
+  </details>
+  <details>
+    <summary>Why isn't GeneMeal available in my state?</summary>
+    <p>Some states have genetic-privacy laws with requirements GeneMeal doesn't meet yet, so uploads, results and checkout are turned off for visitors from those {{ blocked_state_count }} states: {{ blocked_state_names | join(", ") }}. Reading pages like this one still works everywhere.</p>
+  </details>
+  <details>
+    <summary>Do I need a new DNA test?</summary>
+    <p>No. If you've already tested with 23andMe or Ancestry, the raw data file from that test is all you need.</p>
+  </details>
+</section>
+
 <section class="danger-zone">
-  <h2>Delete my data</h2>
-  <p>This removes the encrypted upload, the trait notes, the menu, the reminders, and the session row on this server.</p>
+  <h2 id="your-data">Delete my data</h2>
+  <p>This removes your encrypted upload, your marker notes, your menu, and your saved progress from our server. It does not cancel billing.</p>
   <form method="post" action="{{ url_for('delete_data') }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <label class="check"><input type="checkbox" name="confirm" value="yes" required> Yes, delete the encrypted file and my records</label>
