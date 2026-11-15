@@ -1,4 +1,4 @@
-"""PayPal Subscriptions for the GeneMeal $19.97/month plan.
+"""PayPal Subscriptions for the GeneMeal $34.97/month plan.
 
 Credentials come from the environment only. Nothing in this file is a live
 credential. Checkout stays off until BILLING_ENABLED=1 (default) and the PayPal
@@ -6,7 +6,7 @@ vars are all set. Missing vars return a disabled control; they never raise on
 page render.
 
 Flow:
-  1. scripts/create_paypal_plan.py creates the product + $19.97/month plan once
+  1. scripts/create_paypal_plan.py creates the product + $34.97/month plan once
      and prints the plan id for PAYPAL_PLAN_ID.
   2. POST /billing/checkout creates a subscription and redirects the buyer to
      PayPal's approval page.

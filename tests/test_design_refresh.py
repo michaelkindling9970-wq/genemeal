@@ -68,7 +68,7 @@ def test_hero_has_one_primary_button_price_and_photo(client):
     hero = body.split('<section class="hero">', 1)[1].split("</section>", 1)[0]
     assert hero.count('class="button primary"') == 1
     assert 'href="#start"' in hero and 'id="start"' in body
-    assert "$19.97/month</strong> · cancel anytime" in hero
+    assert "$34.97/month</strong> · cancel anytime" in hero
     assert "hero-poke-bowl.webp" in hero and 'alt="' in hero
     assert "Unsplash" in hero
     assert (ROOT / "static" / "img" / "hero-poke-bowl.webp").stat().st_size < 200_000
@@ -112,7 +112,7 @@ def test_payment_buttons_and_disclaimer_unchanged(client):
         assert card_at < paypal_at
         assert ">Credit or Debit Card</button>" in body[card_at:paypal_at]
         assert ">PayPal</button>" in body[paypal_at:paypal_at + 200]
-    assert pricing.monthly_total() == pricing.Decimal("19.97")
+    assert pricing.monthly_total() == pricing.Decimal("34.97")
 
 
 def test_style_rules_for_mobile_nav_card_padding_and_research_counter():

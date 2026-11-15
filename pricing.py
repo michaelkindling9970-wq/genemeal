@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-BASE_FEE = Decimal("17.00")
+BASE_FEE = Decimal("32.00")
 SERVER_USAGE_FEE = Decimal("2.00")
 GENOME_PROCESSING_FEE = Decimal("0.97")
 
@@ -26,7 +26,7 @@ LINE_ITEMS = (
 # Gray small-print subscription disclaimer shown just under the price.
 # Approved text; do not reword. When this is empty, nothing is rendered.
 SUBSCRIPTION_DISCLAIMER = (
-    "GeneMeal is $19.97 per month and automatically renews each month at $19.97 "
+    "GeneMeal is $34.97 per month and automatically renews each month at $34.97 "
     "until you cancel. You can cancel anytime online through your billing portal "
     "(Stripe or PayPal); cancellation stops future renewals and takes effect at the "
     "end of your current billing period, so you keep access until then. We do not "

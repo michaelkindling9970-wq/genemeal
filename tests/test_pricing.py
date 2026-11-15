@@ -11,13 +11,13 @@ def _myplate_billing_sentence() -> str:
 
 
 def test_fees_sum_to_monthly_price():
-    assert pricing.BASE_FEE == Decimal("17.00")
+    assert pricing.BASE_FEE == Decimal("32.00")
     assert pricing.SERVER_USAGE_FEE == Decimal("2.00")
     assert pricing.GENOME_PROCESSING_FEE == Decimal("0.97")
-    assert pricing.monthly_total() == Decimal("19.97")
+    assert pricing.monthly_total() == Decimal("34.97")
     assert (
         pricing.BASE_FEE + pricing.SERVER_USAGE_FEE + pricing.GENOME_PROCESSING_FEE
-        == Decimal("19.97")
+        == Decimal("34.97")
     )
 
 
@@ -29,11 +29,11 @@ def test_home_and_pricing_page_show_one_price_not_fee_lines(client):
         assert "Base fee" not in body
         assert "Server usage fee" not in body
         assert "processing fee" not in body
-        assert "$17.00" not in body
+        assert "$32.00" not in body
         assert "$2.00" not in body
         assert "$0.97" not in body
         assert "price-lines" not in body
-        assert '<p class="price-heading" id="pricing-heading">$19.97/month</p>' in body
+        assert '<p class="price-heading" id="pricing-heading">$34.97/month</p>' in body
         assert billing.KEYS_MISSING_MESSAGE in body
         assert stripe_billing.COMING_SOON_MESSAGE in body
         assert "disabled" in body
@@ -55,7 +55,7 @@ def test_billing_flag_off_keeps_price(client, monkeypatch):
     monkeypatch.setenv("BILLING_ENABLED", "0")
     body = client.get("/").get_data(as_text=True)
     assert "Base fee" not in body
-    assert "$19.97/month" in body
+    assert "$34.97/month" in body
     assert billing.KEYS_MISSING_MESSAGE in body
     assert client.get("/pricing").status_code == 200
 
@@ -102,16 +102,16 @@ def test_pay_buttons_sit_side_by_side_on_wide_and_stack_on_narrow():
     assert template.index('id="pay-card"') < template.index('id="pay-paypal"')
 
 
-def test_pages_show_1997_per_month_only(client):
+def test_pages_show_3497_per_month_only(client):
     for path in ("/", "/pricing"):
         body = client.get(path).get_data(as_text=True)
-        assert "$19.97/month" in body
+        assert "$34.97/month" in body
         assert "$12.97" not in body
         assert "prepaid" not in body.lower()
 
 
 DISCLAIMER = (
-    "GeneMeal is $19.97 per month and automatically renews each month at $19.97 until you cancel. "
+    "GeneMeal is $34.97 per month and automatically renews each month at $34.97 until you cancel. "
     "You can cancel anytime online through your billing portal (Stripe or PayPal); cancellation stops "
     "future renewals and takes effect at the end of your current billing period, so you keep access "
     "until then. We do not refund a paid month or unused days after you cancel, unless the law requires it. "

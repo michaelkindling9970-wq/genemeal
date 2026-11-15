@@ -84,7 +84,7 @@ Original zip filenames are not stored. 23andMe’s names often include the custo
 | `STRIPE_SECRET_KEY` | Stripe secret or restricted key (`sk_` or `rk_`) used to create the Checkout Session. Never commit it. |
 | `STRIPE_PUBLISHABLE_KEY` | Stripe publishable key (`pk_`). Required before the card button is enabled. Never printed on the page. |
 | `STRIPE_WEBHOOK_SECRET` | Signing secret (`whsec_`) for `POST /stripe/webhook`. |
-| `STRIPE_PRICE_ID` | `price_…` id of the $19.97/month Stripe price. This is the only price id. |
+| `STRIPE_PRICE_ID` | `price_…` id of the $34.97/month Stripe price. This is the only price id. |
 | `STRIPE_PORTAL_LOGIN_URL` | Optional. Overrides the hosted customer-portal login link used when this browser has no stored Stripe customer id. When unset, the app uses `https://billing.stripe.com/p/login/6oU8wJ15b3vfc6c9Xpe3e00`. |
 | `PUBLIC_BASE_URL` | Optional absolute origin for Checkout and portal return URLs, such as `https://genemeal.onrender.com`. When unset, the request host is used. |
 
@@ -94,9 +94,9 @@ Geo-block denies log the state code and path only. Raw IPs are not logged.
 
 ## Pricing
 
-GeneMeal Monthly is **$19.97** per month:
+GeneMeal Monthly is **$34.97** per month:
 
-- Base fee: **$17.00**/mo
+- Base fee: **$32.00**/mo
 - Server usage fee: **$2.00**/mo
 - Genome analysis / processing fee: **$1.00**/mo
 
@@ -106,12 +106,12 @@ The pricing card shows two buttons. **Credit or Debit Card** is first and **PayP
 
 PayPal Subscriptions (`billing.py`) stay disabled until every PayPal variable above is set and `BILLING_ENABLED=1`. While any are missing, the PayPal button is disabled and the page says **Add PayPal credentials to enable checkout**.
 
-Credit or Debit Card uses Stripe Checkout (`stripe_billing.py`) for the same $19.97/month plan. The button submits only when `BILLING_ENABLED=1` and all four Stripe variables are set: `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, and `STRIPE_PRICE_ID`. While any are missing, the button stays disabled, the page says **Card checkout coming soon.**, and no Stripe request is made. A direct POST does not return 500.
+Credit or Debit Card uses Stripe Checkout (`stripe_billing.py`) for the same $34.97/month plan. The button submits only when `BILLING_ENABLED=1` and all four Stripe variables are set: `STRIPE_SECRET_KEY`, `STRIPE_PUBLISHABLE_KEY`, `STRIPE_WEBHOOK_SECRET`, and `STRIPE_PRICE_ID`. While any are missing, the button stays disabled, the page says **Card checkout coming soon.**, and no Stripe request is made. A direct POST does not return 500.
 
 Setup:
 
 1. Create a REST app at developer.paypal.com on the GeneMeal business account (sandbox first) and copy the client ID and secret.
-2. Run `PAYPAL_CLIENT_ID=… PAYPAL_CLIENT_SECRET=… python scripts/create_paypal_plan.py` once. It creates the product and the $19.97/month plan and prints `PAYPAL_PLAN_ID`.
+2. Run `PAYPAL_CLIENT_ID=… PAYPAL_CLIENT_SECRET=… python scripts/create_paypal_plan.py` once. It creates the product and the $34.97/month plan and prints `PAYPAL_PLAN_ID`.
 3. On the app, add a webhook for `https://genemeal.onrender.com/paypal/webhook` with `BILLING.SUBSCRIPTION.ACTIVATED`, `BILLING.SUBSCRIPTION.CANCELLED`, `BILLING.SUBSCRIPTION.SUSPENDED`, `BILLING.SUBSCRIPTION.EXPIRED`, `BILLING.SUBSCRIPTION.PAYMENT.FAILED`, `BILLING.SUBSCRIPTION.RE-ACTIVATED`, `PAYMENT.SALE.COMPLETED`, `PAYMENT.SALE.REFUNDED`, and `PAYMENT.SALE.REVERSED`. Put its ID in `PAYPAL_WEBHOOK_ID`.
 4. Set the env vars on Render.
 
@@ -119,7 +119,7 @@ Subscribe creates a subscription and redirects to PayPal's approval page. Status
 
 Card checkout:
 
-1. In Stripe, create a $19.97/month price for this plan and put its id in `STRIPE_PRICE_ID`. Set the product statement descriptor to `GENEMEAL`.
+1. In Stripe, create a $34.97/month price for this plan and put its id in `STRIPE_PRICE_ID`. Set the product statement descriptor to `GENEMEAL`.
 2. Add a webhook endpoint for `https://genemeal.onrender.com/stripe/webhook` with `checkout.session.completed`, `checkout.session.async_payment_succeeded`, `checkout.session.async_payment_failed`, `customer.subscription.created`, `customer.subscription.updated`, `customer.subscription.deleted`, `invoice.paid`, `invoice.payment_failed`, `charge.refunded`, and `charge.dispute.created`. Put its signing secret in `STRIPE_WEBHOOK_SECRET`.
 3. Set `STRIPE_SECRET_KEY` and `STRIPE_PUBLISHABLE_KEY` in the host environment. Do not commit them.
 
@@ -145,7 +145,7 @@ Get a key from the USDA FoodData Central API docs when you want live foods. Unti
 pytest -q
 ```
 
-Covered: the existing geo-block tests, upload acceptance and rejection (synthetic genome zip, PDF, image, non-genome text, size), trait mapping, meal-plan shape and toggles, mocked FDC (no live network), encrypted storage, delete-my-data, status transitions, the $19.97 pricing breakdown, PayPal Checkout (disabled without keys, subscription session when keys are set, signed webhook), Stripe Checkout (card button shows "Card checkout coming soon." without keys and does not 500, subscription session when the four Stripe env vars are set, signed webhook), and the hosted card portal (session for a stored customer id, login-link fallback, CSRF, and blocked states).
+Covered: the existing geo-block tests, upload acceptance and rejection (synthetic genome zip, PDF, image, non-genome text, size), trait mapping, meal-plan shape and toggles, mocked FDC (no live network), encrypted storage, delete-my-data, status transitions, the $34.97 pricing breakdown, PayPal Checkout (disabled without keys, subscription session when keys are set, signed webhook), Stripe Checkout (card button shows "Card checkout coming soon." without keys and does not 500, subscription session when the four Stripe env vars are set, signed webhook), and the hosted card portal (session for a stored customer id, login-link fallback, CSRF, and blocked states).
 
 ## Next steps before any launch
 
