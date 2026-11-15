@@ -24,9 +24,16 @@ LINE_ITEMS = (
 
 
 # Gray small-print subscription disclaimer shown just under the price.
-# Left empty on purpose: the approved text comes from separate legal review.
-# When this is empty, nothing is rendered.
-SUBSCRIPTION_DISCLAIMER = ""
+# Approved text; do not reword. When this is empty, nothing is rendered.
+SUBSCRIPTION_DISCLAIMER = (
+    "GeneMeal is $19.97 per month and automatically renews each month at $19.97 "
+    "until you cancel. You can cancel anytime online through your billing portal "
+    "(Stripe or PayPal); cancellation stops future renewals and takes effect at the "
+    "end of your current billing period, so you keep access until then. We do not "
+    "refund a paid month or unused days after you cancel, unless the law requires it. "
+    "Deleting your account data does not cancel billing \u2014 you must also cancel "
+    "your subscription to stop charges."
+)
 
 
 def monthly_total() -> Decimal:
