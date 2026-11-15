@@ -137,3 +137,14 @@ def test_blocked_page_links_to_policies():
     html = blocked_states.render_unavailable_html("VA")
     for href in ('href="/privacy"', 'href="/terms"', 'href="/contact"'):
         assert href in html
+
+
+def test_warm_olive_clay_palette_tokens():
+    css = (ROOT / "static" / "style.css").read_text().lower()
+    for token in ("--paper: #f6f0e4", "--paper-2: #ede3d2", "--card: #fffbf5", "--ink: #252821",
+                  "--muted: #4f5851", "--green: #2d5a43", "--green-deep: #1b3328", "--leaf: #e7efe4",
+                  "--cta: #8c4520", "--cta-ink: #fffbf5", "--field-line: #9a7b5a", "--focus: #8f5a14"):
+        assert token in css, token
+    assert re.search(r"\.button\.primary \{[^}]*background: var\(--cta\)", css)
+    for pinkish in ("pink", "#ff69b4", "#ffc0cb"):
+        assert pinkish not in css
