@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from decimal import Decimal
 
-BASE_FEE = Decimal("10.00")
+BASE_FEE = Decimal("17.00")
 SERVER_USAGE_FEE = Decimal("2.00")
 GENOME_PROCESSING_FEE = Decimal("0.97")
 
@@ -21,6 +21,12 @@ LINE_ITEMS = (
         "amount": GENOME_PROCESSING_FEE,
     },
 )
+
+
+# Gray small-print subscription disclaimer shown just under the price.
+# Left empty on purpose: the approved text comes from separate legal review.
+# When this is empty, nothing is rendered.
+SUBSCRIPTION_DISCLAIMER = ""
 
 
 def monthly_total() -> Decimal:
@@ -38,4 +44,5 @@ def view() -> dict:
             for item in LINE_ITEMS
         ],
         "total": money(monthly_total()),
+        "disclaimer": SUBSCRIPTION_DISCLAIMER,
     }

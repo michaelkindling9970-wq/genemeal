@@ -9,7 +9,7 @@ start checkout and the page says card checkout is coming soon.
 
 Flow:
   1. POST /stripe/checkout creates a Checkout Session (mode=subscription) for
-     STRIPE_PRICE_ID ($13/month, same as the PayPal plan) and redirects.
+     STRIPE_PRICE_ID ($19.97/month, same as the PayPal plan) and redirects.
   2. Stripe calls POST /stripe/webhook. The Stripe-Signature header is verified
      (HMAC-SHA256 over "t.payload", 5 minute tolerance) before anything is saved.
   3. Status lands in the same users.subscription_status column PayPal uses.

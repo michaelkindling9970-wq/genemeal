@@ -1,4 +1,4 @@
-"""Create the GeneMeal PayPal product and $13/month plan once.
+"""Create the GeneMeal PayPal product and $19.97/month plan once.
 
 Usage (sandbox by default):
     PAYPAL_CLIENT_ID=... PAYPAL_CLIENT_SECRET=... python scripts/create_paypal_plan.py

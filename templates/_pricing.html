@@ -1,5 +1,7 @@
 <section class="pricing" id="pricing" aria-labelledby="pricing-heading">
-  <p class="price-heading" id="pricing-heading">{{ pricing.total }} per month</p>
+  <p class="price-heading" id="pricing-heading">{{ pricing.total }}/month</p>
+  {# Subscription disclaimer slot: gray small print, set pricing.SUBSCRIPTION_DISCLAIMER. #}
+  {% if pricing.disclaimer %}<p class="price-disclaimer" id="subscription-disclaimer">{{ pricing.disclaimer }}</p>{% endif %}
   <ul class="price-lines">
     {% for item in pricing.lines %}
       <li><span>{{ item.label }}</span><span>{{ item.amount }}/mo</span></li>
