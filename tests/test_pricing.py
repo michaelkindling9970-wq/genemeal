@@ -10,14 +10,14 @@ def _myplate_billing_sentence() -> str:
     return "Includes the " + "MyPlate diet plan builder."
 
 
-def test_fees_sum_to_thirteen():
-    assert pricing.BASE_FEE == Decimal("10.00")
+def test_fees_sum_to_monthly_price():
+    assert pricing.BASE_FEE == Decimal("17.00")
     assert pricing.SERVER_USAGE_FEE == Decimal("2.00")
     assert pricing.GENOME_PROCESSING_FEE == Decimal("0.97")
-    assert pricing.monthly_total() == Decimal("12.97")
+    assert pricing.monthly_total() == Decimal("19.97")
     assert (
         pricing.BASE_FEE + pricing.SERVER_USAGE_FEE + pricing.GENOME_PROCESSING_FEE
-        == Decimal("12.97")
+        == Decimal("19.97")
     )
 
 
@@ -30,10 +30,10 @@ def test_home_and_pricing_page_show_fee_labels(client):
         assert "Server usage fee" in body
         assert "Genome analysis / processing fee" in body
         assert "Monthly total" in body
-        assert "$10.00" in body
+        assert "$17.00" in body
         assert "$2.00" in body
         assert "$0.97" in body
-        assert "$12.97" in body
+        assert "$19.97" in body
         assert billing.KEYS_MISSING_MESSAGE in body
         assert stripe_billing.COMING_SOON_MESSAGE in body
         assert "disabled" in body
@@ -55,7 +55,7 @@ def test_billing_flag_off_keeps_fees(client, monkeypatch):
     monkeypatch.setenv("BILLING_ENABLED", "0")
     body = client.get("/").get_data(as_text=True)
     assert "Base fee" in body
-    assert "$12.97" in body
+    assert "$19.97" in body
     assert billing.KEYS_MISSING_MESSAGE in body
     assert client.get("/pricing").status_code == 200
 
@@ -100,3 +100,20 @@ def test_pay_buttons_sit_side_by_side_on_wide_and_stack_on_narrow():
     assert "@media (max-width: 480px) { .pay-buttons { grid-template-columns: 1fr; } }" in css
     assert "pay-single" not in template
     assert template.index('id="pay-card"') < template.index('id="pay-paypal"')
+
+
+def test_pages_show_1997_per_month_only(client):
+    for path in ("/", "/pricing"):
+        body = client.get(path).get_data(as_text=True)
+        assert "$19.97/month" in body
+        assert "$12.97" not in body
+        assert "prepaid" not in body.lower()
+
+
+def test_disclaimer_slot_renders_only_when_set(client, monkeypatch):
+    assert 'id="subscription-disclaimer"' not in client.get("/pricing").get_data(as_text=True)
+    monkeypatch.setattr(pricing, "SUBSCRIPTION_DISCLAIMER", "Example small print.")
+    body = client.get("/pricing").get_data(as_text=True)
+    slot = body.index('id="subscription-disclaimer"')
+    assert body.index('id="pricing-heading"') < slot < body.index('id="pay-card"')
+    assert "Example small print." in body
