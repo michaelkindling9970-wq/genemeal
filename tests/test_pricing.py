@@ -110,7 +110,27 @@ def test_pages_show_1997_per_month_only(client):
         assert "prepaid" not in body.lower()
 
 
+DISCLAIMER = (
+    "GeneMeal is $19.97 per month and automatically renews each month at $19.97 until you cancel. "
+    "You can cancel anytime online through your billing portal (Stripe or PayPal); cancellation stops "
+    "future renewals and takes effect at the end of your current billing period, so you keep access "
+    "until then. We do not refund a paid month or unused days after you cancel, unless the law requires it. "
+    "Deleting your account data does not cancel billing \u2014 you must also cancel your subscription to stop charges."
+)
+
+
+def test_disclaimer_text_under_price_on_home_and_pricing(client):
+    from markupsafe import escape
+    assert pricing.SUBSCRIPTION_DISCLAIMER == DISCLAIMER
+    for path in ("/", "/pricing"):
+        body = client.get(path).get_data(as_text=True)
+        slot = body.index('id="subscription-disclaimer"')
+        assert body.index('id="pricing-heading"') < slot < body.index('id="pay-card"')
+        assert str(escape(DISCLAIMER)) in body
+
+
 def test_disclaimer_slot_renders_only_when_set(client, monkeypatch):
+    monkeypatch.setattr(pricing, "SUBSCRIPTION_DISCLAIMER", "")
     assert 'id="subscription-disclaimer"' not in client.get("/pricing").get_data(as_text=True)
     monkeypatch.setattr(pricing, "SUBSCRIPTION_DISCLAIMER", "Example small print.")
     body = client.get("/pricing").get_data(as_text=True)
