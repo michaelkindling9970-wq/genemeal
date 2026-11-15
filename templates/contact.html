@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Contact — GeneMeal{% endblock %}
+{% block description %}Contact GeneMeal with questions, feedback, or privacy and data-deletion requests.{% endblock %}
+{% block og_title %}Contact GeneMeal{% endblock %}
+{% block body %}
+<article class="page">
+  <h1>Contact</h1>
+  <p class="lede">Email us at <a href="mailto:{{ contact_email }}" id="contact-email">{{ contact_email }}</a>.</p>
+
+  <h2>What to write to us about</h2>
+  <ul>
+    <li><strong>Questions or feedback</strong> about GeneMeal, your file, or your menu.</li>
+    <li><strong>Privacy and data requests</strong>, including asking what we hold about you or asking us to delete it.</li>
+    <li><strong>Billing questions.</strong> Please don't send card numbers or other payment details by email.</li>
+  </ul>
+  <p class="fine">Please don't email your DNA file or genetic results. We don't need them to help you.</p>
+
+  <h2>Do it yourself, right now</h2>
+  <ul>
+    <li><strong>Delete your data:</strong> use <a href="{{ url_for('home') }}#your-data">Delete my data</a> on the guide page. It removes your encrypted upload, marker notes, menu and saved progress from our server straight away.</li>
+    <li><strong>Cancel your subscription:</strong> use the <a href="{{ url_for('unsubscribe') }}">Cancel subscription</a> page. Card subscriptions are managed in Stripe's customer portal, PayPal subscriptions under Automatic payments in your PayPal account.</li>
+  </ul>
+  <p>If the self-serve options don't work for you, for example because you cleared your cookies or you're in a state where GeneMeal isn't offered, email us and we'll help.</p>
+</article>
+{% endblock %}

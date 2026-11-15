@@ -21,19 +21,19 @@ def test_fees_sum_to_monthly_price():
     )
 
 
-def test_home_and_pricing_page_show_fee_labels(client):
+def test_home_and_pricing_page_show_one_price_not_fee_lines(client):
     for path in ("/", "/pricing"):
         response = client.get(path)
         assert response.status_code == 200
         body = response.get_data(as_text=True)
-        assert "Base fee" in body
-        assert "Server usage fee" in body
-        assert "Genome analysis / processing fee" in body
-        assert "Monthly total" in body
-        assert "$17.00" in body
-        assert "$2.00" in body
-        assert "$0.97" in body
-        assert "$19.97" in body
+        assert "Base fee" not in body
+        assert "Server usage fee" not in body
+        assert "processing fee" not in body
+        assert "$17.00" not in body
+        assert "$2.00" not in body
+        assert "$0.97" not in body
+        assert "price-lines" not in body
+        assert '<p class="price-heading" id="pricing-heading">$19.97/month</p>' in body
         assert billing.KEYS_MISSING_MESSAGE in body
         assert stripe_billing.COMING_SOON_MESSAGE in body
         assert "disabled" in body
@@ -51,11 +51,11 @@ def test_home_and_pricing_page_show_fee_labels(client):
         assert "disabled" in card
 
 
-def test_billing_flag_off_keeps_fees(client, monkeypatch):
+def test_billing_flag_off_keeps_price(client, monkeypatch):
     monkeypatch.setenv("BILLING_ENABLED", "0")
     body = client.get("/").get_data(as_text=True)
-    assert "Base fee" in body
-    assert "$19.97" in body
+    assert "Base fee" not in body
+    assert "$19.97/month" in body
     assert billing.KEYS_MISSING_MESSAGE in body
     assert client.get("/pricing").status_code == 200
 

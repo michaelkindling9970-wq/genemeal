@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
+  <a class="skip-link" href="#main">Skip to content</a>
   <header class="top">
     <a class="brand" href="{{ url_for('home') }}">
       <svg viewBox="0 0 40 40" aria-hidden="true" class="mark">
@@ -42,7 +43,7 @@
       </svg>
       <span class="word">GeneMeal</span>
     </a>
-    <nav>
+    <nav aria-label="Main">
       <a href="{{ url_for('home') }}">Guide</a>
       <a href="{{ url_for('results') }}">Markers</a>
       <a href="{{ url_for('plan') if is_subscriber else url_for('pricing_page') }}">Week</a>
@@ -51,14 +52,25 @@
       <a href="{{ url_for('pricing_page') }}">Pricing</a>
     </nav>
   </header>
-  <div class="wrap">
+  <main class="wrap" id="main" tabindex="-1">
     {% if flash %}
       <p class="banner {{ flash.category }}" role="status">{{ flash.message }}</p>
     {% endif %}
     {% block body %}{% endblock %}
-    <footer>
+  </main>
+  <footer>
+    <div class="footer-inner">
+      <nav aria-label="Footer" class="footer-links">
+        <a href="{{ url_for('about') }}">About</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+        <a href="{{ url_for('privacy') }}">Privacy Policy</a>
+        <a href="{{ url_for('terms') }}">Terms of Service</a>
+        <a href="{{ url_for('pricing_page') }}">Pricing</a>
+        <a href="{{ url_for('unsubscribe') }}">Cancel subscription</a>
+      </nav>
       <p>{{ disclaimer }}</p>
-    </footer>
-  </div>
+      <p class="fine">Questions or data requests: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+    </div>
+  </footer>
 </body>
 </html>
