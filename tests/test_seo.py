@@ -51,3 +51,15 @@ def test_base_template_share_image(client):
     width = int.from_bytes(body[16:20], "big")
     height = int.from_bytes(body[20:24], "big")
     assert (width, height) == (1200, 630)
+
+GSC_VERIFICATION_TAG = (
+    '<meta name="google-site-verification" content="FcLeP7NLwFzbfUfp3czu61hN1WY0TDdcy9uenmCzebg" />'
+)
+
+
+def test_google_site_verification_in_head(client):
+    for path in ("/", "/pricing", "/about", "/research/stress-diet"):
+        page = client.get(path).get_data(as_text=True)
+        head = re.search(r"<head>(.*?)</head>", page, re.S).group(1)
+        assert GSC_VERIFICATION_TAG in head, path
+
