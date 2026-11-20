@@ -11,10 +11,10 @@ import blocked_states as B
 import site_meta
 import app as A
 
-SITE_TITLE = "Nutrigenomics Meal Plans from Your DNA | GeneMeal"
+SITE_TITLE = "GeneMeal: Weekly Nutrigenomic Meal Plans ($34.97/mo)"
 SITE_DESCRIPTION = (
-    "Nutrigenomics meal plans from your DNA: GeneMeal turns the raw DNA file from your DNA testing service "
-    "into a gene-based diet with personalized nutrition targets. Educational, not medical advice."
+    "Real-time meal-planning subscription with weekly nutrigenomic meal plan updates. "
+    "$34.97/month, cancel anytime. Not a DNA test or medical advice."
 )
 
 

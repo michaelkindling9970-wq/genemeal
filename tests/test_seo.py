@@ -69,3 +69,31 @@ def test_google_site_verification_in_head(client):
         head = re.search(r"<head>(.*?)</head>", page, re.S).group(1)
         assert GSC_VERIFICATION_TAG in head, path
 
+
+
+def test_legal_and_unsubscribe_snippets(client):
+    privacy = client.get("/privacy").get_data(as_text=True)
+    assert "<title>Privacy Policy | How GeneMeal Handles Your Data</title>" in privacy
+    assert "Not a DNA test or medical advice." in re.search(
+        r'<meta name="description" content="([^"]+)"', privacy
+    ).group(1)
+    assert '<meta property="og:title" content="Privacy Policy | How GeneMeal Handles Your Data">' in privacy
+
+    terms = client.get("/terms").get_data(as_text=True)
+    assert "<title>Terms of Service | GeneMeal Meal Plan Subscription</title>" in terms
+    assert "$34.97/month" in re.search(r'<meta name="description" content="([^"]+)"', terms).group(1)
+
+    unsub = client.get("/unsubscribe").get_data(as_text=True)
+    assert "<title>Unsubscribe or Cancel | GeneMeal Subscription Help</title>" in unsub
+    desc = re.search(r'<meta name="description" content="([^"]+)"', unsub).group(1)
+    assert 110 <= len(desc) <= 155
+    assert "from your DNA" not in desc
+    assert "Nutrigenomics Meal Plans from Your DNA" not in unsub
+
+
+def test_og_title_matches_document_title_on_public_pages(client):
+    for path in ("/", "/pricing", "/about", "/contact", "/research/stress-diet", "/privacy", "/terms", "/unsubscribe"):
+        page = client.get(path).get_data(as_text=True)
+        title = re.search(r"<title>(.*?)</title>", page, re.S).group(1).strip()
+        og = re.search(r'<meta property="og:title" content="([^"]+)"', page).group(1)
+        assert og == title, (path, og, title)
