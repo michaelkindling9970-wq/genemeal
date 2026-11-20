@@ -19,11 +19,16 @@ def test_homepage_seo(client):
     for k in KEYWORDS:
         assert k.lower() in low, k
     title = re.search(r"<title>(.*?)</title>", page, re.S).group(1)
-    assert title.strip().lower().startswith("nutrigenomics")
+    assert title.strip() == "GeneMeal: Weekly Nutrigenomic Meal Plans ($34.97/mo)"
+    assert len(title.strip()) <= 60
     h1 = re.search(r"<h1>(.*?)</h1>", page, re.S).group(1)
     assert "nutrigenomics" in h1.lower()
     desc = re.search(r'<meta name="description" content="([^"]+)"', page).group(1)
-    assert desc.lower().startswith("nutrigenomics")
+    assert desc == (
+        "Real-time meal-planning subscription with weekly nutrigenomic meal plan "
+        "updates. $34.97/month, cancel anytime. Not a DNA test or medical advice."
+    )
+    assert len(desc) <= 155
     assert re.search(r'<meta name="keywords" content="nutrigenomics,', page)
     assert 'rel="canonical"' in page and 'property="og:title"' in page and "application/ld+json" in page
     assert "23andMe" not in desc and "Ancestry" not in desc
@@ -33,7 +38,8 @@ def test_homepage_seo(client):
 
 def test_pricing_override(client):
     page = client.get("/pricing").get_data(as_text=True)
-    assert '<meta name="description" content="GeneMeal pricing' in page
+    assert '<title>GeneMeal Pricing: $34.97/mo Nutrigenomic Meal Plans</title>' in page
+    assert '<meta name="description" content="Simple $34.97/month meal-planning subscription' in page
 
 
 def test_base_template_share_image(client):
