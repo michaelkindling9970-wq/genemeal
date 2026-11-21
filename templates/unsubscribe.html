@@ -6,6 +6,7 @@
 <section class="intro">
   <h1>Unsubscribe</h1>
   <p>Paid by card? Use the Manage card subscription button to cancel. Paid with PayPal? Cancel under Automatic payments in your PayPal account. Your subscription stops at the end of the current billing period.</p>
+  <h2>Manage or cancel your subscription</h2>
   <form method="post" action="{{ url_for('stripe_portal') }}">
     <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
     <button type="submit">Manage card subscription</button>
