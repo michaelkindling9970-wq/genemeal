@@ -7,6 +7,9 @@
   <h1>Pricing</h1>
   <p class="lede">GeneMeal Monthly is {{ pricing.total }} per month for nutrigenomics-based personalized nutrition: your gene-based diet builder and weekly DNA diet plan.</p>
 </section>
-{% include "_pricing.html" %}
+<section aria-labelledby="subscribe-heading">
+  <h2 id="subscribe-heading">Start your monthly subscription</h2>
+  {% include "_pricing.html" %}
+</section>
 <p class="next"><a href="{{ url_for('home') }}">Back to the guide</a></p>
 {% endblock %}
