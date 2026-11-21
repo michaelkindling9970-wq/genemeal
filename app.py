@@ -22,6 +22,7 @@ import genome
 import dietplan
 import mealplan
 import pricing
+import blog
 import reminders
 import site_meta
 import storage
@@ -221,6 +222,31 @@ def terms():
 def research_stress():
     """Educational notes on diet, stress, and consumer genotype kits."""
     return render_template("research_stress.html")
+
+
+@app.get("/blog")
+def blog_index():
+    """Index of educational meal-planning guides."""
+    return render_template(
+        "blog_index.html",
+        posts=blog.POSTS,
+        not_medical=blog.NOT_MEDICAL_ADVICE,
+    )
+
+
+@app.get("/blog/<slug>")
+def blog_post(slug):
+    """A single educational guide drafted from the SEO outline queue."""
+    post = blog.get_post(slug)
+    if post is None:
+        abort(404)
+    return render_template(
+        "blog_post.html",
+        post=post,
+        not_medical=blog.NOT_MEDICAL_ADVICE,
+        subscription_disclaimer=pricing.SUBSCRIPTION_DISCLAIMER,
+        no_prepaid=blog.NO_PREPAID,
+    )
 
 
 @app.get("/unsubscribe")
@@ -671,6 +697,8 @@ def indexable_entries() -> list[tuple[str, str]]:
         if path.startswith("/static"):
             continue
         found[path] = _lastmod_for_endpoint(endpoint)
+    for path, lastmod in blog.sitemap_entries():
+        found.setdefault(path, lastmod)
     return sorted(found.items(), key=lambda item: (item[0] != "/", item[0]))
 
 
@@ -686,7 +714,7 @@ def _xml_escape(value: str) -> str:
 
 @app.get("/robots.txt")
 def robots():
-    lines = ["User-agent: *", "Allow: /$", "Allow: /pricing", "Allow: /research/"]
+    lines = ["User-agent: *", "Allow: /$", "Allow: /pricing", "Allow: /research/", "Allow: /blog/"]
     for path in ("/results", "/diet", "/plan", "/account/", "/upload", "/parse/",
                  "/billing/", "/stripe/", "/preview-login", "/PayPal/", "/paypal/", "/health"):
         lines.append(f"Disallow: {path}")

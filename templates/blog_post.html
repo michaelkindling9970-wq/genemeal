@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block description %}{{ post.meta }}{% endblock %}
+{% block og_title %}{{ post.title }}{% endblock %}
+{% block body %}
+<article class="page blog-post">
+  <header class="intro">
+    <p class="status">Blog</p>
+    <p class="updated">Published {{ post.published }}</p>
+    <h1>{{ post.title }}</h1>
+    <p class="lede">{{ post.lede }}</p>
+  </header>
+
+  {% for section in post.sections %}
+    <h2>{{ section.h2 }}</h2>
+    {% for para in section.paras %}
+      <p>{{ para }}</p>
+    {% endfor %}
+    {% if section.links %}
+      <p>
+        {% for link in section.links %}
+          <a href="{{ link.href }}">{{ link.label }}</a>{% if not loop.last %} · {% endif %}
+        {% endfor %}
+      </p>
+    {% endif %}
+  {% endfor %}
+
+  <aside class="blog-disclaimer" aria-label="Disclaimers">
+    <p><strong>Not medical advice.</strong> {{ not_medical }}</p>
+    <p><strong>Subscription terms.</strong> {{ subscription_disclaimer }} {{ no_prepaid }}</p>
+    <p class="fine">
+      <a href="{{ url_for('pricing_page') }}">Pricing</a> ·
+      <a href="{{ url_for('unsubscribe') }}">Cancel subscription</a> ·
+      <a href="{{ url_for('terms') }}">Terms of Service</a> ·
+      <a href="{{ url_for('blog_index') }}">All guides</a>
+    </p>
+  </aside>
+</article>
+{% endblock %}

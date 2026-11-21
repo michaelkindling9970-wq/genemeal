@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}GeneMeal Blog | Meal Planning Guides{% endblock %}
+{% block description %}Educational guides on GeneMeal meal planning, weekly menus, and pricing. $34.97/month, cancel anytime. Not a DNA test or medical advice.{% endblock %}
+{% block og_title %}GeneMeal Blog | Meal Planning Guides{% endblock %}
+{% block body %}
+<article class="page blog-index">
+  <header class="intro">
+    <p class="status">Blog</p>
+    <h1>GeneMeal blog</h1>
+    <p class="lede">Short educational guides about meal planning, weekly menus, and how GeneMeal's $34.97/month subscription works. These articles are not medical advice, and GeneMeal is not a DNA test.</p>
+  </header>
+  <ul class="blog-list">
+    {% for post in posts %}
+      <li>
+        <h2><a href="{{ url_for('blog_post', slug=post.slug) }}">{{ post.title }}</a></h2>
+        <p>{{ post.lede }}</p>
+        <p class="fine"><a href="{{ url_for('blog_post', slug=post.slug) }}">Read the guide</a></p>
+      </li>
+    {% endfor %}
+  </ul>
+  <p class="fine">{{ not_medical }}</p>
+</article>
+{% endblock %}

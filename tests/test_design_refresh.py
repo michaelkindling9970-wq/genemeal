@@ -6,7 +6,7 @@ import pricing
 import site_meta
 
 ROOT = Path(__file__).resolve().parents[1]
-CONTENT_PAGES = ("/", "/pricing", "/research/stress-diet", "/unsubscribe", "/about", "/contact", "/privacy", "/terms")
+CONTENT_PAGES = ("/", "/pricing", "/research/stress-diet", "/unsubscribe", "/about", "/contact", "/privacy", "/terms", "/blog", "/blog/existing-dna-file-to-weekly-meal-plans")
 DEV_NOTES = ("REMINDER_EMAIL_ENABLED", "this build", "only logs a stub", "Status <strong>", "session row",
              "notebook", "on this server", "Product framing")
 TRUST_LINES = (
