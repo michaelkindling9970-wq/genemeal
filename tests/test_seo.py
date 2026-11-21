@@ -97,3 +97,22 @@ def test_og_title_matches_document_title_on_public_pages(client):
         title = re.search(r"<title>(.*?)</title>", page, re.S).group(1).strip()
         og = re.search(r'<meta property="og:title" content="([^"]+)"', page).group(1)
         assert og == title, (path, og, title)
+
+
+def test_pricing_and_unsubscribe_have_h2_subheadings(client):
+    pricing = client.get("/pricing").get_data(as_text=True)
+    assert re.search(r"<h2\b", pricing)
+    assert "<h2 id=\"subscribe-heading\">Start your monthly subscription</h2>" in pricing
+    # Payment buttons stay first Credit or Debit Card, then PayPal, and keep their labels.
+    assert pricing.index('id="pay-card"') < pricing.index('id="pay-paypal"')
+    assert ">Credit or Debit Card</button>" in pricing
+    assert ">PayPal</button>" in pricing
+
+    unsub = client.get("/unsubscribe").get_data(as_text=True)
+    assert "<h2>Manage or cancel your subscription</h2>" in unsub
+    assert unsub.index("<h2>Manage or cancel your subscription</h2>") < unsub.index(
+        ">Manage card subscription</button>"
+    )
+    assert unsub.index(">Manage card subscription</button>") < unsub.index(
+        "Manage PayPal subscription"
+    )
