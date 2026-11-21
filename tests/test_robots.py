@@ -16,7 +16,7 @@ def _disallow_covers(rule, path):
 
 def test_robots_allows_public_blocks_private(client):
     t = client.get("/robots.txt").get_data(as_text=True)
-    for a in ("Allow: /$", "Allow: /pricing", "Allow: /research/"):
+    for a in ("Allow: /$", "Allow: /pricing", "Allow: /research/", "Allow: /blog/"):
         assert a in t
     for d in ("/results", "/diet", "/plan", "/account/", "/upload", "/billing/", "/stripe/"):
         assert f"Disallow: {d}" in t
@@ -39,6 +39,12 @@ def test_sitemap(client):
     assert expected == [
         "https://genemeal.onrender.com/",
         "https://genemeal.onrender.com/about",
+        "https://genemeal.onrender.com/blog",
+        "https://genemeal.onrender.com/blog/existing-dna-file-to-weekly-meal-plans",
+        "https://genemeal.onrender.com/blog/questions-before-choosing-dna-meal-planner",
+        "https://genemeal.onrender.com/blog/static-genetic-reports-vs-weekly-meal-plan-updates",
+        "https://genemeal.onrender.com/blog/stress-diet-practical-nutrigenomic-meal-planning",
+        "https://genemeal.onrender.com/blog/what-3497-monthly-nutrigenomic-meal-subscription-includes",
         "https://genemeal.onrender.com/contact",
         "https://genemeal.onrender.com/pricing",
         "https://genemeal.onrender.com/privacy",
