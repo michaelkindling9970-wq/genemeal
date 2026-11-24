@@ -642,10 +642,14 @@ def delete_data():
         _notice("Check the box to confirm deletion.", "error")
         return redirect(url_for("home"))
     uid = session.get("uid")
+    had_data = bool(uid) and storage.has_user_data(uid)
     if uid:
         storage.delete_user(uid)
     session.clear()
-    _notice("Your encrypted file and records were deleted from this server.", "ok")
+    if had_data:
+        _notice("Your encrypted file and records were deleted from this server.", "ok")
+    else:
+        _notice("No data file found to delete.", "error")
     return redirect(url_for("home"))
 
 

@@ -439,6 +439,33 @@ def mark_parsed(uid: str) -> None:
     _write_status(uid, "parsed", error=None)
 
 
+def has_user_data(uid: str) -> bool:
+    """True when this user has a stored file or records to delete."""
+    if encrypted_upload_path(uid) is not None:
+        return True
+    folder = _user_root(uid)
+    if folder.exists() and any(folder.iterdir()):
+        return True
+    user = get_user(uid)
+    if user is None:
+        return False
+    if user.get("status") != "new":
+        return True
+    if user.get("email") or user.get("error") or user.get("marker_count") is not None:
+        return True
+    if user.get("paypal_subscription_id") or user.get("subscription_status"):
+        return True
+    if user.get("stripe_customer_id") or user.get("stripe_subscription_id"):
+        return True
+    if get_summary(uid) is not None or get_plan(uid) is not None:
+        return True
+    if list_reminders(uid):
+        return True
+    with _connect() as conn:
+        row = conn.execute("SELECT 1 FROM files WHERE user_id = ? LIMIT 1", (uid,)).fetchone()
+    return row is not None
+
+
 def delete_user(uid: str) -> None:
     folder = _user_root(uid)
     if folder.exists():
