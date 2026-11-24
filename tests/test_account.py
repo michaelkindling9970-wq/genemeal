@@ -107,7 +107,22 @@ def test_delete_my_data(client):
     assert storage.get_user(uid) is None
     assert not (folder / uid).exists()
     page = client.get("/").get_data(as_text=True)
-    assert "deleted" in page.lower()
+    assert "Your encrypted file and records were deleted from this server." in page
+    assert client.get("/account/status").get_json()["status"] == "new"
+
+
+def test_delete_my_data_when_no_file(client):
+    # Visiting home creates a blank "new" user row, but no data file.
+    client.get("/")
+    status = client.get("/account/status").get_json()
+    assert status["status"] == "new"
+    assert status["has_raw_file"] is False
+    assert status["has_summary"] is False
+    response = post(client, "/account/data", {"confirm": "yes"})
+    assert response.status_code == 302
+    page = client.get("/").get_data(as_text=True)
+    assert "No data file found to delete." in page
+    assert "Your encrypted file and records were deleted from this server." not in page
     assert client.get("/account/status").get_json()["status"] == "new"
 
 
